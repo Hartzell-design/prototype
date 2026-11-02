@@ -1,0 +1,32 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NULLDRIVE · Racing Design System · Prototype by Hartzell Design</title>
+<!--@FONTS--><style>/*@CSS*/
+.hero{position:relative;min-height:calc(100vh - 56px);display:flex;flex-direction:column;justify-content:center;padding:60px 6%;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 50% 60% at 85% 20%,rgba(255,46,136,.18),transparent 70%),radial-gradient(ellipse 50% 60% at 10% 90%,rgba(0,240,255,.14),transparent 70%)}
+.hero>*{position:relative}
+h1{margin:14px 0 0;font-family:var(--f-display);font-weight:900;font-size:clamp(48px,8vw,120px);line-height:.9;letter-spacing:.03em}
+h1 span{background:linear-gradient(180deg,#fff 10%,var(--volt) 55%,#036c88 56%,var(--volt));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 18px rgba(0,240,255,.4))}
+.lead{font-size:20px;color:var(--text-dim);max-width:640px;margin:20px 0 40px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1200px}
+.card{display:block;padding:26px;color:var(--text);transition:transform .3s var(--e-launch)}
+.card:hover{transform:translateY(-6px)}
+.card .n{font-family:var(--f-mono);font-size:11px;letter-spacing:.2em;color:var(--pulse)}
+.card h3{margin:10px 0 8px;font-family:var(--f-display);font-size:20px;letter-spacing:.06em}
+.card p{margin:0 0 18px;color:var(--text-dim);font-size:15.5px}
+.card .go{font-family:var(--f-mono);font-size:12px;letter-spacing:.16em;color:var(--volt)}
+.card .ic{width:30px;height:30px;color:var(--volt)}
+@media (max-width:900px){.cards{grid-template-columns:1fr}}
+</style></head><body>
+<!--@NAV:none-->
+<div class="hero carbon">
+<div class="eyebrow">Hartzell Design · Portfolio Prototype</div>
+<h1><span>NULLDRIVE</span></h1>
+<p class="lead">A fictional neon street-racing game, and the design system behind it. Slipstream starts with tokens and HUD components, the Game UI is a playable three-lap race at the Neo-Kyoto Night GP, and the case study covers how the HUD evolves across five releases.</p>
+<div class="cards">
+<a class="card panel" href="library/index.html"><div class="n">01 · DESIGN LIBRARY</div><h3>Slipstream DS</h3><p>Tokens, typography, motion, iconography, and 14 live HUD components.</p><span class="go">OPEN LIBRARY →</span></a>
+<a class="card panel" href="game-ui/index.html"><div class="n">02 · GAME UI</div><h3>Race the Prototype</h3><p>Main menu, car select, a three-lap night race against rivals, and podium results, all built from the library.</p><span class="go">START ENGINE →</span></a>
+<a class="card panel" href="case-study/index.html"><div class="n">03 · CASE STUDY</div><h3>v1.0 → v3.0</h3><p>How the HUD grows through accessibility, live-ops, AI, and mobile releases without a rewrite.</p><span class="go">READ CASE STUDY →</span></a>
+</div>
+<p class="disc mono" style="margin-top:28px;font-size:11px;color:var(--text-mute);letter-spacing:.06em">NULLDRIVE is fictional. Any metrics are illustrative. Prototype by Hartzell Design.</p>
+</div>
+<script>/*@JS*/</script></body></html>

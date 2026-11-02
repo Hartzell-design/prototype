@@ -1,0 +1,275 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NULLDRIVE · Game UI · Prototype by Hartzell Design</title>
+<!--@FONTS-->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+  }
+}
+</script>
+<style>/*@CSS*/
+body{overflow:hidden}
+#app{position:relative;height:calc(100vh - 56px);min-height:560px;overflow:hidden;background:var(--void)}
+#road{position:absolute;inset:0;width:100%;height:100%;display:block}
+.scr{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity var(--d-lap) var(--e-launch),visibility 0s linear var(--d-lap)}
+.scr.on{opacity:1;visibility:visible;transition:opacity var(--d-lap) var(--e-launch)}
+.scr .in{transform:translateY(16px);transition:transform var(--d-lap) var(--e-launch)}
+.scr.on .in{transform:none}
+.dim{position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,6,10,.92) 0%,rgba(5,6,10,.6) 45%,rgba(5,6,10,.1) 75%)}
+.dimfull{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(5,6,10,.55),rgba(5,6,10,.92) 70%)}
+/* menu */
+#s-menu .in{position:absolute;left:6%;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:30px}
+#s-menu.on .in{transform:translateY(-50%)}
+.logo{font-family:var(--f-display);font-weight:900;font-size:clamp(48px,7vw,108px);line-height:.85;letter-spacing:.04em;position:relative}
+.logo .a{background:linear-gradient(180deg,#fff 10%,var(--volt) 55%,#036c88 56%,var(--volt));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 18px rgba(0,240,255,.45))}
+.logo .b{display:block;font-size:.34em;letter-spacing:.62em;color:var(--pulse);margin-top:.35em;filter:drop-shadow(0 0 10px rgba(255,46,136,.6))}
+.logo::after{content:"NULLDRIVE";position:absolute;left:3px;top:0;color:var(--pulse);opacity:.0;clip-path:inset(40% 0 45% 0);animation:glitch 4s steps(1) infinite}
+@keyframes glitch{0%,92%,100%{opacity:0}93%{opacity:.8;transform:translateX(6px)}95%{opacity:.6;transform:translateX(-4px);clip-path:inset(10% 0 70% 0)}97%{opacity:0}}
+.hint{font-family:var(--f-mono);font-size:11px;letter-spacing:.18em;color:var(--text-mute)}
+.hint b{color:var(--text-dim);font-weight:500;border:1px solid var(--line);padding:1px 6px;margin-right:4px}
+.feat{position:absolute;right:5%;bottom:9%;width:340px;padding:22px}
+.feat h3{margin:6px 0 4px;font-family:var(--f-display);font-size:22px;letter-spacing:.06em}
+.feat .row{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:12px;color:var(--text-dim);padding:8px 0;border-bottom:1px solid var(--line-soft)}
+.feat .row b{color:var(--text);font-weight:500}
+.prof{position:absolute;right:5%;top:5%;display:flex;align-items:center;gap:12px;padding:10px 16px 10px 10px}
+.prof .av{width:40px;height:40px;display:grid;place-items:center;background:linear-gradient(135deg,var(--pulse),var(--flux));font-family:var(--f-display);font-weight:900;clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px)}
+.prof b{display:block;font-family:var(--f-display);letter-spacing:.12em;font-size:14px}
+.prof span{font-family:var(--f-mono);font-size:10px;color:var(--text-mute);letter-spacing:.12em}
+.prof .xp{width:120px;height:3px;background:var(--line);margin-top:4px}.prof .xp i{display:block;width:64%;height:100%;background:var(--volt)}
+/* select */
+#s-select{background:radial-gradient(ellipse 60% 40% at 50% 62%,color-mix(in srgb,var(--cc,#00f0ff) 22%,transparent),transparent 70%),linear-gradient(180deg,var(--void),#0b0716)}
+#s-select .in{position:absolute;inset:0;display:grid;grid-template-rows:auto 1fr auto;padding:3.2% 5% 2.4%}
+.stitle{display:flex;justify-content:space-between;align-items:flex-end}
+.stitle h2{margin:4px 0 0;font-family:var(--f-display);font-size:clamp(24px,2.8vw,40px);letter-spacing:.1em}
+.stage{position:relative;display:grid;grid-template-columns:1fr 330px;gap:4%;align-items:center;min-height:0}
+.preview{position:relative;display:grid;place-items:center;min-height:0;height:100%}
+.preview .plat{position:absolute;left:10%;right:10%;bottom:14%;height:18%;border-radius:50%;border:1.5px solid var(--cc);box-shadow:0 0 40px var(--cc),inset 0 0 40px color-mix(in srgb,var(--cc) 40%,transparent);opacity:.65;transform:perspective(400px) rotateX(60deg)}
+.preview .big{position:relative;width:min(88%,720px);animation:hover 3s ease-in-out infinite}
+.preview .big svg{width:100%;height:auto;filter:drop-shadow(0 0 30px color-mix(in srgb,var(--cc) 50%,transparent))}
+@keyframes hover{50%{transform:translateY(-8px)}}
+.preview .nav{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;display:grid;place-items:center;background:var(--carbon-800);border:1px solid var(--line);color:var(--text);cursor:pointer;clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)}
+.preview .nav:hover{border-color:var(--cc);color:var(--cc)}
+.preview .nav svg{width:22px;height:22px}
+.preview .nav.l{left:0}.preview .nav.r{right:0}
+.preview .bgname{position:absolute;top:6%;left:0;right:0;text-align:center;font-family:var(--f-display);font-weight:900;font-size:clamp(50px,9vw,150px);color:transparent;-webkit-text-stroke:1px color-mix(in srgb,var(--cc) 40%,transparent);letter-spacing:.06em;white-space:nowrap;overflow:hidden}
+.spec{padding:24px}
+.spec .cls{font-family:var(--f-mono);font-size:11px;letter-spacing:.2em;color:var(--cc)}
+.spec h3{margin:4px 0 10px;font-family:var(--f-display);font-size:26px;letter-spacing:.06em}
+.spec p{margin:0 0 14px;color:var(--text-dim);font-size:15px}
+.spec .sd-stat{font-size:11px;margin-top:9px;grid-template-columns:6em 1fr 2.4em}
+.spec .sd-stat .b{height:7px}
+.spec .nums{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0 18px}
+.spec .nums div{border:1px solid var(--line);padding:8px;font-family:var(--f-mono);font-size:10px;color:var(--text-mute);letter-spacing:.1em}
+.spec .nums b{display:block;font-family:var(--f-display);font-size:17px;color:var(--text);letter-spacing:0}
+.carrow{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.carrow .sd-card{padding:12px 14px}
+.carrow .sd-card .art{height:48px;margin:2px 0 0}
+.carrow .sd-card h4{font-size:14px;margin:2px 0 0}
+.carrow .sd-card .sd-stat{display:none}
+.foot{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+/* race */
+#s-race .hudwrap{position:absolute;inset:0}
+#s-race .hud-frame{position:absolute;inset:0;background:transparent}
+.rtop{position:absolute;top:14px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+.ctrls{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);z-index:5;white-space:nowrap}
+#count{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;z-index:6}
+#count b{font-family:var(--f-display);font-weight:900;font-size:min(22vw,240px);color:#fff;text-shadow:0 0 40px var(--volt),0 0 80px var(--volt)}
+#count b.go{color:var(--apex);text-shadow:0 0 40px var(--apex),0 0 90px var(--apex)}
+#count b.anim{animation:cnt .8s var(--e-launch) both}
+@keyframes cnt{0%{transform:scale(2.2);opacity:0;filter:blur(10px)}30%{transform:scale(1);opacity:1;filter:none}100%{transform:scale(.8);opacity:0}}
+#finish{position:absolute;inset:0;display:none;place-items:center;z-index:7;background:radial-gradient(ellipse,rgba(5,6,10,.2),rgba(5,6,10,.8))}
+#finish.on{display:grid}
+#finish div{text-align:center;animation:cnt 2s var(--e-launch) both;animation-duration:1.6s}
+#finish b{display:block;font-family:var(--f-display);font-weight:900;font-size:min(12vw,140px);letter-spacing:.06em;background:linear-gradient(180deg,#fff,var(--solar));-webkit-background-clip:text;background-clip:text;color:transparent}
+#finish span{font-family:var(--f-mono);letter-spacing:.4em;color:var(--text-dim)}
+.flag{height:16px;margin:0 auto 18px;width:260px;background:repeating-conic-gradient(#fff 0 25%,#05060a 0 50%) 0 0/16px 16px}
+#pause{position:absolute;inset:0;z-index:8;display:none;place-items:center;background:rgba(5,6,10,.7);backdrop-filter:blur(6px)}
+#pause.on{display:grid}
+#pause .panel{padding:26px 22px 18px;min-width:320px}
+#pause h3{margin:0 0 14px 22px;font-family:var(--f-display);letter-spacing:.2em}
+/* loading */
+#s-load{background:radial-gradient(ellipse at 50% 120%,rgba(255,46,136,.35),transparent 60%),var(--void)}
+#s-load .lg{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);text-align:center}
+#s-load .lg svg{width:90px;height:90px;animation:lspin 1.6s var(--e-drift) infinite}
+@keyframes lspin{50%{transform:rotateY(180deg)}}
+#s-load .lg b{display:block;font-family:var(--f-display);font-weight:900;letter-spacing:.4em;font-size:26px;margin-top:12px}
+#s-load .pb{position:absolute;left:20%;right:20%;bottom:24%;height:3px;background:rgba(140,160,230,.15)}
+#s-load .pb i{position:absolute;inset:0 auto 0 0;width:0;background:linear-gradient(90deg,var(--volt),var(--pulse));box-shadow:0 0 12px var(--pulse)}
+#s-load .st{position:absolute;left:20%;right:20%;bottom:18%;display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:12px;color:var(--text-mute);letter-spacing:.12em}
+#s-load .tip{position:absolute;left:50%;bottom:9%;transform:translateX(-50%);font-family:var(--f-mono);font-size:12px;color:var(--text-dim);text-align:center}
+#s-load .tip em{color:var(--volt);font-style:normal}
+/* results */
+#s-results{background:radial-gradient(ellipse 70% 50% at 30% 80%,rgba(255,194,61,.12),transparent 70%),linear-gradient(180deg,#0b0716,var(--void))}
+#s-results .in{position:absolute;inset:0;display:grid;grid-template-columns:1.1fr 1fr;gap:4%;padding:3% 5%;align-items:center}
+.res-h h2{margin:6px 0 0;font-family:var(--f-display);font-size:clamp(28px,3.4vw,50px);letter-spacing:.08em;line-height:1}
+.res-h p{margin:8px 0 0;color:var(--text-dim)}
+.podium{display:grid;grid-template-columns:1fr 1.1fr 1fr;align-items:end;gap:10px;margin-top:4%;height:44vh;max-height:380px}
+.pod{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.pod .car{width:100%;max-width:220px;margin-bottom:-6px}
+.pod .nm{font-family:var(--f-display);font-weight:800;letter-spacing:.1em;font-size:15px;margin-bottom:8px;text-align:center}
+.pod .nm small{display:block;font-family:var(--f-mono);font-size:10px;color:var(--text-mute);font-weight:400}
+.pod .blk{width:100%;display:grid;place-items:center;font-family:var(--f-display);font-weight:900;font-size:44px;color:var(--void);clip-path:polygon(10px 0,calc(100% - 10px) 0,100% 100%,0 100%);transform-origin:bottom;animation:rise 1s var(--e-launch) both}
+.pod.p1 .blk{height:52%;background:linear-gradient(180deg,var(--solar),#a06a00);animation-delay:.5s}
+.pod.p2 .blk{height:36%;background:linear-gradient(180deg,#dfe6f7,#6d7690);animation-delay:.3s}
+.pod.p3 .blk{height:26%;background:linear-gradient(180deg,var(--ignite),#7a3000);animation-delay:.15s}
+.pod.you .nm{color:var(--pulse)}
+@keyframes rise{from{transform:scaleY(0)}}
+.cls{padding:18px 18px 14px;font-size:15px}
+.cls .sd-lb{animation:sdIn .5s var(--e-launch) both}
+.rstats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}
+.rstats div{border:1px solid var(--line);padding:10px;font-family:var(--f-mono);font-size:10px;color:var(--text-mute);letter-spacing:.12em}
+.rstats b{display:block;font-family:var(--f-display);font-size:18px;color:var(--text);letter-spacing:0}
+.rbtns{display:flex;gap:10px;flex-wrap:wrap}
+.xpbar{margin-top:12px;font-family:var(--f-mono);font-size:11px;color:var(--text-dim);letter-spacing:.1em}
+.xpbar .bar{height:5px;background:var(--line);margin-top:6px;transform:skewX(-20deg)}
+.xpbar .bar i{display:block;height:100%;width:64%;background:linear-gradient(90deg,var(--volt),var(--pulse));transition:width 1.6s var(--e-launch)}
+.bestline{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;color:var(--text-mute);margin:0 0 12px}
+.bestline b{color:var(--apex);font-weight:500}
+#wrongway{display:none;position:absolute;top:18%;left:50%;transform:translateX(-50%);z-index:6;font-family:var(--f-display);font-weight:900;letter-spacing:.32em;font-size:clamp(28px,4vw,48px);color:var(--redline);text-shadow:0 0 18px var(--redline);animation:sdBlink .4s steps(2) infinite}
+#wrongway.on{display:block}
+#flash{position:absolute;inset:0;pointer-events:none;z-index:4;opacity:0;background:radial-gradient(ellipse at center,transparent 42%,rgba(255,59,78,.5));transition:opacity .12s linear}
+#flash.on{opacity:1}
+.laptimes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.laptimes div{border:1px solid var(--line);padding:8px 10px;font-family:var(--f-mono);font-size:11px;color:var(--text-mute);letter-spacing:.08em}
+.laptimes b{display:block;color:var(--text);font-family:var(--f-display);font-size:16px;letter-spacing:0;margin-bottom:2px}
+.laptimes .hot b{color:var(--apex)}
+#s-race .vignette{position:absolute;inset:0;pointer-events:none;z-index:1;background:radial-gradient(ellipse at center,transparent 52%,rgba(0,0,0,.45) 100%)}
+#s-race .hudwrap{z-index:2}
+@media (max-width:1100px){.stage{grid-template-columns:1fr 280px}.feat{width:280px}#s-results .in{grid-template-columns:1fr;overflow:auto;align-items:start}.podium{height:30vh}}
+@media (max-width:800px){.stage{grid-template-columns:1fr}.spec{display:none}.carrow{grid-template-columns:repeat(2,1fr)}.feat{display:none}.ctrls{display:none}}
+</style></head><body>
+<!--@NAV:game-ui-->
+<div id="app">
+<canvas id="road"></canvas>
+<section class="scr on" id="s-menu"><div class="dim"></div>
+ <div class="panel prof"><div class="av">H</div><div><b>HARTZ</b><span>LV 24 · STREET LEGEND</span><div class="xp"><i></i></div></div></div>
+ <div class="in"><div><div class="eyebrow" style="margin-bottom:14px">Neon Street Circuit · Built with Slipstream DS</div><div class="logo"><span class="a">NULLDRIVE</span><span class="b">OVERCLOCK</span></div></div>
+ <div class="panel" style="padding:14px 10px;width:340px"><div class="sd-menu" id="menu"></div></div>
+ <div class="hint"><b>↑↓</b> NAVIGATE &nbsp; <b>ENTER</b> SELECT</div></div>
+ <div class="panel feat"><div class="eyebrow" style="color:var(--solar)">Featured Event</div><h3>NEO-KYOTO NIGHT GP</h3>
+ <div class="row"><span>LAPS</span><b>3</b></div><div class="row"><span>GRID</span><b>4 DRIVERS</b></div><div class="row"><span>CONDITIONS</span><b>WET NEON · 18°C</b></div><div class="row" style="border:0"><span>REWARD</span><b style="color:var(--solar)">+1,200 XP</b></div>
+ <button class="btn boost" style="width:100%;margin-top:14px" data-go="select" id="featBtn">Enter event</button></div>
+ <div class="sd-toasts" id="menuToasts" style="position:absolute;left:6%;bottom:6%;font-size:16px"></div>
+</section>
+<section class="scr" id="s-select"><div class="in">
+ <div class="stitle"><div><div class="eyebrow">Garage · Season 02 · Neon Monsoon</div><h2>SELECT YOUR MACHINE</h2></div><div class="hint"><b>← →</b> BROWSE &nbsp; <b>ENTER</b> RACE &nbsp; <b>ESC</b> BACK</div></div>
+ <div class="stage"><div class="preview"><div class="bgname" id="bgname"></div><div class="plat"></div><div class="big" id="bigcar"></div><div class="nav l" id="pv">${L}</div><div class="nav r" id="nx">${R}</div></div>
+  <div class="panel spec"><div class="cls" id="spCls"></div><h3 id="spName"></h3><p id="spDesc"></p><div class="nums"><div><b id="spTop"></b>TOP KM/H</div><div><b id="spAcc"></b>0–100 S</div><div><b id="spHp"></b>KW</div></div><div class="bestline" id="spBest"></div><div id="spStats"></div></div></div>
+ <div><div class="carrow" id="carrow"></div><div class="foot"><button class="btn ghost" data-go="menu">${L} Back</button><button class="btn lg" id="raceBtn">Race ${P}</button></div></div>
+</div></section>
+<section class="scr" id="s-load"><div class="lg">${LOGO}<b>NULLDRIVE</b></div><div class="pb"><i id="lpb"></i></div><div class="st"><span>LOADING <b style="color:var(--text)">NEO-KYOTO · NIGHT</b></span><span id="lpc">0%</span></div><div class="tip">TIP · <em>Drafting</em> behind a rival charges nitro 2× faster.</div></section>
+<section class="scr" id="s-race"><div class="vignette"></div><div class="hudwrap"><div class="hud-frame" id="hudF"><div id="hudEl"></div></div></div>
+ <div id="flash"></div><div id="wrongway">WRONG WAY</div>
+ <div class="rtop"><button class="btn sm ghost" id="pauseBtn">❚❚ Pause</button></div>
+ <div class="ctrls hint"><b>WASD</b> / <b>ARROWS</b> DRIVE &nbsp; <b>SHIFT</b> OVERCLOCK &nbsp; <b>ESC</b> PAUSE</div>
+ <div id="count"></div><div id="finish"><div><div class="flag"></div><b id="finP">P1</b><span id="finS">VICTORY</span></div></div>
+ <div id="pause"><div class="panel"><h3>PAUSED</h3><div class="sd-menu" id="pmenu"></div></div></div>
+</section>
+<section class="scr" id="s-results"><div class="in">
+ <div><div class="res-h"><div class="eyebrow" style="color:var(--solar)">Neo-Kyoto Night GP · Race Complete</div><h2 id="resTitle">VICTORY</h2><p id="resSub"></p></div><div class="podium" id="podium"></div></div>
+ <div><div class="panel cls"><div class="eyebrow" style="margin:0 0 12px">Final Classification</div><div id="classif"></div></div>
+ <div class="rstats" id="rstats"></div>
+ <div class="laptimes" id="lapTimes"></div>
+ <div class="xpbar"><div style="display:flex;justify-content:space-between"><span>LV 24 → <b style="color:var(--text)">LV 25</b></span><span style="color:var(--solar)">+1,200 XP</span></div><div class="bar"><i id="xpi"></i></div></div>
+ <div class="rbtns" style="margin-top:16px"><button class="btn" id="againBtn">${P} Race again</button><button class="btn secondary" data-go="select">Garage</button><button class="btn ghost" data-go="menu">Main menu</button></div></div>
+</div></section>
+</div>
+<script>/*@JS*/</script>
+<script>
+(()=>{const {$,$$}=SD;
+const CARS=[{n:'KAGE R-7',c:'HYPER · CLASS A',col:'#00f0ff',v:0,s:[86,72,90,60],top:342,acc:'2.4',kw:640,d:'A carbon-tube hypercar that\'s precise and planted. It\'s built for technical, high-grip circuits.'},
+ {n:'SERAPH GT',c:'GRAND TOURER · CLASS S',col:'#ff2e88',v:1,s:[92,80,70,88],top:358,acc:'2.2',kw:720,d:'A long-wheelbase GT with a huge nitro reserve. It owns the straights.'},
+ {n:'MERIDIAN X',c:'DRIFT · CLASS B',col:'#b6ff3b',v:2,s:[70,90,82,72],top:318,acc:'2.0',kw:560,d:'A short, twitchy, playful car that charges nitro fastest while drifting.'},
+ {n:'OBSIDIAN V12',c:'MUSCLE · CLASS S+',col:'#ff7a1a',v:3,s:[98,62,58,94],top:371,acc:'2.7',kw:810,d:'A brutal top speed with a reluctant turn-in. It wins the straights and the boosts, if you can get it pointed.'}];
+const RIVALS={'KAGE R-7':'VEX','SERAPH GT':'KAIZEN','MERIDIAN X':'ORIN-9','OBSIDIAN V12':'HALCYON'};
+const carKey=c=>'nulldrive.overclock.best.'+c.n.toLowerCase().replace(/\s+/g,'-');
+const loadBest=c=>{try{const v=localStorage.getItem(carKey(c));return v?+v:0}catch(e){return 0}};
+const saveBest=(c,ms)=>{try{const k=carKey(c),prev=+(localStorage.getItem(k)||0);if(!prev||ms<prev)localStorage.setItem(k,String(Math.round(ms)))}catch(e){}};
+const toStats=c=>{const acc=parseFloat(c.acc),grip=c.s[2]/100,nitro=c.s[3]/100,mer=c.n.startsWith('MERIDIAN'),obs=c.n.startsWith('OBSIDIAN');
+ return {top:c.top/3.6,accel:(100/3.6)/acc*1.25,brake:24+grip*14,grip:2.4+grip*5.2,turn:(obs?1.45:1.7)+grip*0.85,slip:0.28+(1-grip)*0.5,twitch:mer?1.28:obs?0.8:1,drain:0.34-nitro*0.12,regen:0.07+nitro*0.07,boostTop:1.07+nitro*0.09,boostAccel:1.25+nitro*0.35,drag:0.045,driftCharge:mer?1.85:1}};
+let sel=1,cur='menu',api=null,hud=null,paused=false,lastSnap=null,finishShown=false,raceToken=0;
+const show=id=>{$$('.scr').forEach(s=>s.classList.toggle('on',s.id==='s-'+id));cur=id;if(id==='select')drawSel()};
+const leaveTo=id=>{paused=false;$('#pause').classList.remove('on');$('#finish').classList.remove('on');finishShown=false;if(api&&id!=='race'&&id!=='load')api.endRace();show(id)};
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)leaveTo(g.dataset.go)});
+const MI=[['play','Quick Race','NEO-KYOTO',()=>show('select')],['season','Season 02','TIER 23',()=>SD.toast($('#menuToasts'),{type:'warn',title:'Live-ops · v2.0',msg:'Seasons ship in the v2.0 roadmap. See the case study.'})],['garage','Garage','4 CARS',()=>show('select')],['users','Multiplayer','LOCKED',()=>SD.toast($('#menuToasts'),{type:'info',title:'Coming soon',msg:'Cross-platform lobbies arrive in v3.0'})],['settings','Settings','',()=>SD.toast($('#menuToasts'),{type:'ai',title:'Accessibility',msg:'CB-safe palette and HUD scale ship in v1.5'})]];
+const menu=$('#menu');menu.innerHTML=MI.map((m,i)=>`<button class="${i===0?'on':''} ${m[2]==='LOCKED'?'lock':''}">${SD.icon(m[0])}${m[1]}<small>${m[2]}</small></button>`).join('');
+const mb=$$('#menu button');let mi=0;const hl=i=>{mi=i;mb.forEach((b,k)=>b.classList.toggle('on',k===i))};mb.forEach((b,i)=>{b.onmouseenter=()=>hl(i);b.onclick=()=>MI[i][3]()});
+const carrow=$('#carrow');carrow.innerHTML=CARS.map((c,i)=>`<div class="sd-card" data-i="${i}" style="--cc:${c.col}"><div class="cls">${c.c.split(' · ')[0]}</div><h4>${c.n}</h4><div class="art">${SD.car(c.col,c.v)}</div></div>`).join('');
+$$('#carrow .sd-card').forEach(c=>c.onclick=()=>{sel=+c.dataset.i;drawSel()});
+const drawSel=()=>{const c=CARS[sel];$('#s-select').style.setProperty('--cc',c.col);$('#bigcar').innerHTML=SD.car(c.col,c.v);$('#bgname').textContent=c.n.split(' ')[0];$('#spCls').textContent=c.c;$('#spName').textContent=c.n;$('#spDesc').textContent=c.d;$('#spTop').textContent=c.top;$('#spAcc').textContent=c.acc;$('#spHp').textContent=c.kw;
+ const b=loadBest(c);$('#spBest').innerHTML='BEST LAP <b>'+(b?SD.fmt(b):'--:--.---')+'</b>';
+ $('#spStats').innerHTML=['SPEED','ACCEL','GRIP','NITRO'].map((s,k)=>`<div class="sd-stat"><span>${s}</span><div class="b"><i style="width:0%" data-w="${c.s[k]}"></i></div><em>${c.s[k]}</em></div>`).join('');requestAnimationFrame(()=>requestAnimationFrame(()=>$$('#spStats i').forEach(i=>i.style.width=i.dataset.w+'%')));
+ $$('#carrow .sd-card').forEach((e,i)=>e.classList.toggle('sel',i===sel))};
+const step=d=>{sel=(sel+d+CARS.length)%CARS.length;drawSel()};$('#pv').onclick=()=>step(-1);$('#nx').onclick=()=>step(1);
+const bootPromise=import('./race.js').then(m=>m.boot($('#road'))).then(a=>{api=a;return a});
+bootPromise.catch(err=>{console.error(err);const d=document.createElement('div');d.textContent='Race engine failed to start. '+(err&&err.message?err.message:'');d.style.cssText='position:absolute;left:24px;bottom:24px;color:#ff3b4e;font:12px/1.4 ui-monospace,monospace;z-index:30;max-width:520px';$('#app').appendChild(d)});
+function ensureHud(){if(hud)return;SD.TRACK=api.map.path;const he=$('#hudEl');he.className='';hud=SD.hud(he,{});const sf=hud.el.querySelector('.sf');if(sf&&api.map.sf){sf.setAttribute('x1',api.map.sf.x1);sf.setAttribute('y1',api.map.sf.y1);sf.setAttribute('x2',api.map.sf.x2);sf.setAttribute('y2',api.map.sf.y2)}}
+function grid(){const player=CARS[sel];const ais=CARS.filter(c=>c!==player).slice().sort((a,b)=>b.top-a.top);const order=[ais[0],ais[1],player,ais[2]];
+ return order.map((c,slot)=>({name:c===player?'HARTZ':RIVALS[c.n],carName:c.n,color:c.col,you:c===player,stats:toStats(c),best:c===player?loadBest(c):0,weave:0.35+slot*0.22,caution:slot===0?0.96:0.91,phase:slot*1.4}))}
+const uOf=v=>{const t=((v%1)+1)%1;return api.map.flip?(1-t)%1:t};
+function updateHud(snap){const p=snap.player;if(!p||!hud)return;if(snap.mode==='count')hud.gauge.set(12+Math.random()*18,0.2+Math.random()*0.18,'N');else{const g=SD.gearFor(p.speed*3.6);hud.gauge.set(p.speed*3.6,g.rpm,g.gear)}
+ hud.boost.set(p.boost,p.boosting);hud.lap.set({lap:p.lap,laps:p.laps,ms:p.lapMs,best:p.best,delta:p.delta});hud.pos.set(p.pos,p.total);hud.gap(p.gapPos,p.gapText);hud.dmg.set(p.damage);
+ hud.map.set(uOf(p.u),snap.rivals.map(r=>uOf(r.u)));$('#wrongway').classList.toggle('on',!!p.wrong)}
+function showResults(results){const rows=results||[];const you=rows.find(r=>r.you)||rows[0];if(!you)return;const p=Math.max(1,rows.findIndex(r=>r.you)+1);const laps=you.laps||[];const best=laps.length?Math.min(...laps):0;const prev=loadBest(CARS[sel]);if(best)saveBest(CARS[sel],best);const record=best&&(!prev||best<prev);
+ $('#resTitle').textContent=p===1?'VICTORY':p<=3?'PODIUM FINISH':'P'+p+' FINISH';
+ $('#resSub').textContent=`${CARS[sel].n} · ${laps.length} laps · Total ${SD.fmt(you.finishMs)} · Best lap ${best?SD.fmt(best):'--:--.---'}${record?' · NEW RECORD':''}`;
+ const visual=[1,0,2];
+ $('#podium').innerHTML=visual.map(i=>{const x=rows[i];if(!x)return '';const pos=i+1;const vi=Math.max(0,CARS.findIndex(c=>c.n===x.car));return `<div class="pod p${pos} ${x.you?'you':''}"><div class="nm">${x.name}<small>${x.car}</small></div><div class="car">${SD.car(x.color,CARS[vi].v)}</div><div class="blk">${pos}</div></div>`}).join('');
+ $('#classif').innerHTML=rows.map((x,i)=>SD.lbRow({pos:i+1,name:x.name,car:x.car,color:x.color,you:x.you,time:i===0?SD.fmt(x.finishMs):'+'+(x.gapMs/1000).toFixed(3)})).join('');
+ $$('#classif .sd-lb').forEach((e,i)=>e.style.animationDelay=(i*.06)+'s');
+ $('#rstats').innerHTML=`<div><b>${best?SD.fmt(best):'--'}</b>BEST LAP</div><div><b>${Math.round(you.topKmh||0)}</b>TOP KM/H</div><div><b>${you.overtakes||0}</b>OVERTAKES</div><div><b>${you.boosts||0}</b>NITRO BURNS</div>`;
+ const hot=best;
+ $('#lapTimes').innerHTML=[0,1,2].map(i=>{const ms=laps[i];return `<div class="${ms&&ms===hot?'hot':''}"><b>${ms?SD.fmt(ms):'--:--.---'}</b>LAP ${i+1}</div>`}).join('');
+ $('#xpi').style.width='64%';show('results');setTimeout(()=>$('#xpi').style.width='96%',300)}
+function onFinish(snap){if(finishShown)return;finishShown=true;const rows=snap.results||[];const p=Math.max(1,rows.findIndex(r=>r.you)+1);
+ $('#finP').textContent='P'+p;$('#finS').textContent=p===1?'VICTORY':p<=3?'PODIUM':'FINISHED';$('#finish').classList.add('on');
+ setTimeout(()=>{if(cur==='race')showResults(rows)},2200)}
+function handle(ev,snap){if(!hud)return;if(ev.type==='toast')SD.toast(hud.toasts,ev.toast);
+ if(ev.type==='crash'){const f=$('#flash');f.classList.add('on');setTimeout(()=>f.classList.remove('on'),160)}
+ if(ev.type==='count'){const c=$('#count');c.innerHTML=`<b class="anim ${ev.label==='GO'?'go':''}">${ev.label}</b>`;if(ev.label==='GO')setTimeout(()=>{c.innerHTML=''},720)}
+ if(ev.type==='lap'){SD.toast(hud.toasts,{type:ev.isBest?'ok':'info',title:ev.isBest?'Personal best':'Lap '+ev.lap,msg:SD.fmt(ev.ms)});saveBest(CARS[sel],ev.ms)}
+ if(ev.type==='finish')onFinish(snap)}
+function startRace(){const token=++raceToken;finishShown=false;paused=false;$('#pause').classList.remove('on');$('#finish').classList.remove('on');$('#count').innerHTML='';$('#wrongway').classList.remove('on');show('load');
+ const lpb=$('#lpb'),lpc=$('#lpc');const t0=performance.now();
+ const tick=async()=>{if(token!==raceToken)return;const p=Math.min(1,(performance.now()-t0)/680);lpb.style.width=(p*100)+'%';lpc.textContent=Math.round(p*100)+'%';
+  if(p<1){requestAnimationFrame(tick);return}
+  try{await bootPromise}catch(e){return}
+  if(token!==raceToken)return;
+  ensureHud();if(hud.toasts)hud.toasts.innerHTML='';
+  const laps=/[?&]laps=(\d+)/.test(location.search)?Math.max(1,Math.min(9,+RegExp.$1)):3;
+  api.startRace({laps,cars:grid()});
+  const best=loadBest(CARS[sel]);
+  hud.lap.set({lap:1,laps,ms:0,best,delta:0});hud.pos.set(3,4);hud.dmg.set({front:0,left:0,right:0,rear:0});hud.boost.set(0.72,false);hud.gap(2,'+0.00');
+  show('race')};
+ requestAnimationFrame(tick)}
+const keys={};
+function readInput(){let steer=(keys.ArrowRight||keys.KeyD?1:0)-(keys.ArrowLeft||keys.KeyA?1:0);let throttle=(keys.ArrowUp||keys.KeyW)?1:0;let brake=(keys.ArrowDown||keys.KeyS)?1:0;let boost=!!(keys.ShiftLeft||keys.ShiftRight||keys.Space);
+ const pads=navigator.getGamepads?navigator.getGamepads():[];
+ for(const gp of pads){if(!gp)continue;const ax=gp.axes[0]||0;if(Math.abs(ax)>0.18)steer=ax;const rt=gp.buttons[7]?gp.buttons[7].value:0;const lt=gp.buttons[6]?gp.buttons[6].value:0;if(rt>0.05)throttle=Math.max(throttle,rt);if(lt>0.05)brake=Math.max(brake,lt);if((gp.buttons[0]&&gp.buttons[0].pressed)||(gp.buttons[5]&&gp.buttons[5].pressed))boost=true}
+ return {steer,throttle,brake,boost}}
+const setPause=v=>{if(cur!=='race')return;if(lastSnap&&(lastSnap.mode==='done'||lastSnap.player&&lastSnap.player.finished))return;paused=v;$('#pause').classList.toggle('on',v)};
+const PM=[['play','Resume',()=>setPause(false)],['flag','Restart',()=>{setPause(false);startRace()}],['garage','Quit to menu',()=>leaveTo('menu')]];
+$('#pmenu').innerHTML=PM.map((m,i)=>`<button class="${i===0?'on':''}">${SD.icon(m[0])}${m[1]}</button>`).join('');
+$$('#pmenu button').forEach((b,i)=>b.onclick=PM[i][2]);
+$('#pauseBtn').onclick=()=>setPause(true);
+$('#raceBtn').onclick=startRace;$('#againBtn').onclick=startRace;
+addEventListener('keydown',e=>{if(['Space','ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.code))e.preventDefault();keys[e.code]=true;
+ if(cur==='menu'){if(e.key==='ArrowDown')hl((mi+1)%mb.length);if(e.key==='ArrowUp')hl((mi-1+mb.length)%mb.length);if(e.key==='Enter')MI[mi][3]()}
+ else if(cur==='select'){if(e.key==='ArrowLeft')step(-1);if(e.key==='ArrowRight')step(1);if(e.key==='Enter')startRace();if(e.key==='Escape')leaveTo('menu')}
+ else if(cur==='race'){if(e.key==='p'||e.key==='P'||e.key==='Escape'){if(!(lastSnap&&lastSnap.mode==='done'))setPause(!paused)}}
+ else if(cur==='results'){if(e.key==='Enter')startRace();if(e.key==='Escape')leaveTo('menu')}});
+addEventListener('keyup',e=>{keys[e.code]=false});
+let last=performance.now();
+const loop=now=>{const dt=Math.min(.05,(now-last)/1000);last=now;
+ if(api){const snap=api.frame(dt,readInput(),paused&&cur==='race');lastSnap=snap;
+  if(cur==='race'&&snap.player){updateHud(snap);for(const ev of snap.events)handle(ev,snap)}}
+ requestAnimationFrame(loop)};
+requestAnimationFrame(loop);
+window.__game={show,startRace,leaveTo,showResults,apply(snap){lastSnap=snap;if(hud&&snap&&snap.player)updateHud(snap)},get api(){return api},get snap(){return lastSnap}};
+if(/[?&]screen=race(?:&|$)/.test(location.search))startRace();
+else if(/[?&]screen=select(?:&|$)/.test(location.search))show('select');
+})();
+
+</script></body></html>
