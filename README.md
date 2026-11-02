@@ -14,4 +14,4 @@ The root `index.html` redirects to the current prototype.
 
 Pushes to `main` run [`.github/workflows/pages.yml`](.github/workflows/pages.yml), which deploys the repository root with the official GitHub Pages actions. `.nojekyll` keeps Pages from processing the files with Jekyll.
 
-The repository owner needs to set **Settings → Pages → Source** to **GitHub Actions** before the site will publish.
+Pages source is GitHub Actions, so each push to `main` publishes the site.
