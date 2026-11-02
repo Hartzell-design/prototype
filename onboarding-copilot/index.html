@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Northbridge · AI Onboarding Copilot — Prototype by Hartzell Design</title>
+<meta name="description" content="Clickable prototype of an AI financial onboarding copilot. Fictional brand. Prototype by Hartzell Design.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230F2A4A'/%3E%3Cpath d='M10 22V10l12 12V10' stroke='%2378E3C1' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F4F5F7; --panel:#FFFFFF; --ink:#0B1220; --ink2:#2A3342; --muted:#5B6474; --faint:#8A93A3;
+  --line:#E6E8EC; --line2:#EEF0F3; --navy:#0F2A4A; --mint:#78E3C1; --brand:#1F4FD8; --brand-soft:#EEF3FF;
+  --ai:#6447E6; --ai-soft:#F3F0FF; --ai-line:#DDD5FF;
+  --ok:#067647; --ok-bg:#ECFDF3; --ok-line:#ABEFC6;
+  --warn:#B54708; --warn-bg:#FFFAEB; --warn-line:#FEDF89;
+  --bad:#B42318; --bad-bg:#FEF3F2; --bad-line:#FECDCA;
+  --r:12px; --shadow:0 1px 2px rgba(16,24,40,.04),0 1px 3px rgba(16,24,40,.06);
+  --shadow-lg:0 24px 48px -12px rgba(16,24,40,.18);
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.5;font-feature-settings:"cv11","ss01"}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-radius:6px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.app{display:grid;grid-template-rows:60px 1fr;height:100vh;height:100dvh}
+
+/* Top bar */
+.top{display:flex;align-items:center;gap:16px;padding:0 20px;background:var(--panel);border-bottom:1px solid var(--line);z-index:5}
+.brand{display:flex;align-items:center;gap:10px;font-weight:650;letter-spacing:-.01em;font-size:15px}
+.brand svg{flex:none}
+.sep{width:1px;height:20px;background:var(--line)}
+.crumb{color:var(--muted);font-weight:500}
+.top .spacer{flex:1}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:var(--muted);background:var(--bg);border:1px solid var(--line);padding:4px 10px;border-radius:999px}
+.pill .dot{width:6px;height:6px;border-radius:50%;background:#F79009;box-shadow:0 0 0 3px rgba(247,144,9,.15)}
+.secure{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:12px}
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--panel);padding:7px 12px;border-radius:9px;font-weight:550;font-size:13px;box-shadow:var(--shadow);transition:all .15s var(--ease)}
+.btn:hover{border-color:#CDD2DA;background:#FAFBFC}
+.btn-primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn-primary:hover{background:#1B2434;border-color:#1B2434}
+.btn-primary:disabled{background:#C5CAD3;border-color:#C5CAD3;cursor:not-allowed;box-shadow:none}
+
+/* Main split */
+.main{display:grid;grid-template-columns:minmax(380px,.92fr) 1.08fr;min-height:0}
+.chat{display:flex;flex-direction:column;background:var(--panel);border-right:1px solid var(--line);min-height:0}
+.chat-head{display:flex;align-items:center;gap:12px;padding:16px 22px;border-bottom:1px solid var(--line2)}
+.orb{width:36px;height:36px;border-radius:12px;flex:none;display:grid;place-items:center;background:radial-gradient(120% 120% at 20% 10%,#9C8BFF 0%,#6447E6 45%,#1F2A6B 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.2),0 4px 12px -2px rgba(100,71,230,.45)}
+.orb.sm{width:28px;height:28px;border-radius:9px}
+.chat-head h2{font-size:14px;margin:0;font-weight:650}
+.chat-head p{margin:0;color:var(--muted);font-size:12px}
+.online{display:inline-block;width:7px;height:7px;border-radius:50%;background:#17B26A;margin-right:6px;vertical-align:1px}
+.log{flex:1;overflow-y:auto;padding:22px 22px 8px;scroll-behavior:smooth}
+.row{display:flex;gap:10px;margin:0 0 12px;animation:in .35s var(--ease) both}
+.row.user{justify-content:flex-end}
+.row .orb{margin-top:2px}
+.row.cont .orb{visibility:hidden}
+@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.bubble{max-width:82%;padding:10px 14px;border-radius:14px;font-size:14px;line-height:1.55}
+.bot .bubble{background:#F3F4F7;color:var(--ink);border-top-left-radius:6px}
+.user .bubble{background:var(--ink);color:#fff;border-top-right-radius:6px}
+.bubble strong{font-weight:650}
+.term{all:unset;cursor:pointer;color:var(--ai);font-weight:550;border-bottom:1.5px dashed rgba(100,71,230,.45);padding-bottom:0;transition:background .15s}
+.term:hover,.term[aria-expanded="true"]{background:var(--ai-soft);border-radius:3px}
+.term:focus-visible{outline:2px solid var(--ai);outline-offset:2px;border-radius:3px}
+.typing{display:inline-flex;gap:4px;padding:14px 16px}
+.typing i{width:6px;height:6px;border-radius:50%;background:#98A2B3;animation:blink 1.2s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes blink{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+.thinking{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px;padding:10px 14px;background:#F8F7FF;border:1px solid var(--ai-line);border-radius:12px}
+.spin{width:12px;height:12px;border-radius:50%;border:2px solid var(--ai-line);border-top-color:var(--ai);animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* cards inside chat */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;width:min(360px,86%)}
+.attach{display:flex;gap:12px;align-items:center;padding:12px;background:#1A2332;border-color:#1A2332;color:#fff}
+.attach .meta{flex:1;min-width:0}
+.attach .name{font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.attach .sub{font-size:12px;color:#B8C0CC}
+.bar{height:4px;border-radius:4px;background:rgba(255,255,255,.15);margin-top:8px;overflow:hidden}
+.bar b{display:block;height:100%;width:0;background:var(--mint);transition:width 1.1s var(--ease)}
+.thumb{position:relative;flex:none;width:76px;height:50px;border-radius:7px;overflow:hidden}
+.thumb.id{background:linear-gradient(135deg,#E8EEF8,#C9D6EC)}
+.thumb.id::before{content:"";position:absolute;left:7px;top:9px;width:20px;height:26px;border-radius:3px;background:#9FB0CB}
+.thumb.id::after{content:"";position:absolute;left:33px;top:11px;width:34px;height:4px;border-radius:2px;background:#9FB0CB;box-shadow:0 8px 0 #B6C4DA,0 16px 0 #B6C4DA,0 24px 0 -0px #B6C4DA}
+.thumb.doc{width:42px;background:#fff}
+.thumb.doc::after{content:"";position:absolute;left:7px;top:8px;width:28px;height:3px;border-radius:2px;background:#C8CED8;box-shadow:0 7px 0 #E1E5EB,0 14px 0 #E1E5EB,0 21px 0 #E1E5EB,0 28px 0 #C8CED8}
+.scan{position:absolute;inset:0;pointer-events:none;opacity:0}
+.scanning .scan{opacity:1}
+.scan::before{content:"";position:absolute;left:0;right:0;height:16px;background:linear-gradient(180deg,transparent,rgba(120,227,193,.85),transparent);animation:scan 1s linear infinite}
+@keyframes scan{from{top:-16px}to{top:100%}}
+.xcard .xhead{display:flex;align-items:center;gap:8px;padding:11px 14px;border-bottom:1px solid var(--line2);font-size:12px;color:var(--muted)}
+.xcard .xhead b{color:var(--ink);font-weight:600}
+.xcard .xhead .ai-tag{margin-left:auto}
+.xrow{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--line2);font-size:13px;animation:in .3s var(--ease) both}
+.xrow:last-child{border-bottom:0}
+.xrow .k{color:var(--muted);width:112px;flex:none;font-size:12px}
+.xrow .v{flex:1;font-weight:550;font-variant-numeric:tabular-nums}
+.xrow.low{background:var(--warn-bg)}
+.xnote{font-size:12px;color:var(--warn);padding:0 14px 10px;background:var(--warn-bg);margin-top:-4px;display:flex;gap:6px;align-items:center}
+.xfoot{font-size:12px;color:var(--ok);padding:9px 14px;background:var(--ok-bg);border-top:1px solid var(--ok-line);display:flex;gap:6px;align-items:center}
+.xfoot.warn{color:var(--warn);background:var(--warn-bg);border-color:var(--warn-line)}
+.securecard{padding:14px}
+.securecard .lbl{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.securecard .inp{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--line);border-radius:9px;padding:9px 12px;font-variant-numeric:tabular-nums;letter-spacing:.12em;font-weight:600;background:#FBFBFC}
+.securecard .ok{color:var(--ok);font-size:12px;letter-spacing:0;font-weight:550;display:flex;gap:4px;align-items:center;opacity:0;transition:opacity .3s}
+.securecard.done .ok{opacity:1}
+
+/* badges */
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:2px 7px;border-radius:999px;border:1px solid;white-space:nowrap;line-height:16px}
+.b-ai{color:var(--ai);background:var(--ai-soft);border-color:var(--ai-line)}
+.b-hi{color:var(--ok);background:var(--ok-bg);border-color:var(--ok-line)}
+.b-md{color:var(--warn);background:var(--warn-bg);border-color:var(--warn-line)}
+.b-lo{color:var(--bad);background:var(--bad-bg);border-color:var(--bad-line)}
+.b-user{color:var(--ink2);background:#F2F4F7;border-color:var(--line)}
+.b-sec{color:#155EEF;background:#EFF4FF;border-color:#D1E0FF}
+.ai-tag{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--ai)}
+
+/* chips & composer */
+.dock{border-top:1px solid var(--line2);padding:12px 18px 14px;background:linear-gradient(180deg,rgba(255,255,255,.6),#fff)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;min-height:36px;margin-bottom:10px}
+.chips .hint{font-size:12px;color:var(--faint);align-self:center}
+.chip{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:7px 14px;font-size:13px;font-weight:550;box-shadow:var(--shadow);transition:all .15s var(--ease);animation:in .3s var(--ease) both;display:inline-flex;align-items:center;gap:7px}
+.chip:hover{border-color:var(--ai);color:var(--ai);background:var(--ai-soft);transform:translateY(-1px)}
+.chip.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip.primary:hover{background:#1B2434;color:#fff}
+.composer{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:12px;padding:6px 6px 6px 14px;background:#FBFBFC}
+.composer input{flex:1;border:0;background:transparent;font:inherit;color:var(--muted);outline:none;min-width:0}
+.composer .send{width:32px;height:32px;border-radius:8px;border:0;background:#E4E7EC;display:grid;place-items:center;cursor:not-allowed}
+.disclaim{font-size:11.5px;color:var(--muted);margin-top:8px;text-align:center}
+
+/* Form panel */
+.formwrap{overflow-y:auto;position:relative;min-height:0;scroll-behavior:smooth}
+.form{max-width:760px;margin:0 auto;padding:24px 28px 90px}
+.ph{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:14px}
+.ph h1{font-size:20px;letter-spacing:-.02em;margin:0;font-weight:650}
+.ph p{margin:2px 0 0;color:var(--muted);font-size:13px}
+.pct{font-variant-numeric:tabular-nums;font-weight:650;font-size:13px;text-align:right}
+.pct small{display:block;color:var(--muted);font-weight:500;font-size:12px}
+.progress{height:6px;border-radius:6px;background:#E4E7EC;overflow:hidden;margin-bottom:14px}
+.progress b{display:block;height:100%;width:0;background:linear-gradient(90deg,#1F4FD8,#6447E6);border-radius:6px;transition:width .6s var(--ease)}
+.rail{display:flex;gap:4px;margin-bottom:20px;flex-wrap:wrap}
+.rail li{list-style:none;display:flex;align-items:center;gap:6px;font-size:12px;color:var(--faint);font-weight:550;padding:4px 9px 4px 6px;border-radius:999px;transition:all .3s}
+.rail li i{width:16px;height:16px;border-radius:50%;border:1.5px solid #D0D5DD;display:grid;place-items:center;font-style:normal;font-size:10px}
+.rail li.done{color:var(--ink2)}
+.rail li.done i{background:var(--ok);border-color:var(--ok);color:#fff}
+.rail li.now{color:var(--ink);background:var(--panel);box-shadow:var(--shadow)}
+.rail li.now i{border-color:var(--brand);box-shadow:inset 0 0 0 3px #fff;background:var(--brand)}
+.rail{padding:0;margin-top:0}
+.sec{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);margin-bottom:14px;transition:box-shadow .3s,border-color .3s}
+.sec.active{border-color:#C9D4F5;box-shadow:0 0 0 4px rgba(31,79,216,.06),var(--shadow)}
+.sec-h{display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid var(--line2)}
+.sec-h h3{margin:0;font-size:13.5px;font-weight:650}
+.sec-h .count{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.sec-h .why{margin-left:auto;border:0;background:none;font-size:12px;color:var(--muted);display:inline-flex;align-items:center;gap:5px;padding:4px 6px;border-radius:6px}
+.sec-h .why:hover{color:var(--ink);background:var(--bg)}
+.whytext{display:none;font-size:12.5px;color:var(--ink2);background:#F8FAFC;border-bottom:1px solid var(--line2);padding:10px 16px;line-height:1.55}
+.sec.showwhy .whytext{display:flex;gap:8px}
+.fields{display:grid;grid-template-columns:1fr 1fr}
+.field{position:relative;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line2);min-height:64px;transition:background .6s}
+.field:nth-child(odd){border-right:1px solid var(--line2)}
+.field.wide{grid-column:1/-1;border-right:0}
+.fields .field:last-child,.fields .field:nth-last-child(2):nth-child(odd){border-bottom:0}
+.field .lab{font-size:12px;color:var(--muted);margin-bottom:3px;display:flex;align-items:center;gap:6px}
+.field .val{font-size:14px;font-weight:550;font-variant-numeric:tabular-nums;color:var(--ink);word-break:break-word}
+.field .empty{display:block;height:10px;width:110px;border-radius:5px;background:linear-gradient(90deg,#EEF0F3 0%,#F6F7F9 50%,#EEF0F3 100%);background-size:200% 100%;animation:shim 1.6s infinite;margin-top:6px}
+@keyframes shim{from{background-position:200% 0}to{background-position:-200% 0}}
+.field.flash{background:var(--ai-soft)}
+.field .meta{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex:none}
+.field .meta .b{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.edit{border:1px solid transparent;background:none;width:26px;height:26px;border-radius:7px;display:grid;place-items:center;color:var(--muted);transition:all .15s}
+.edit:hover{border-color:var(--line);background:var(--bg);color:var(--ink)}
+.field:not(.filled) .edit{display:none}
+.field .editor{display:flex;gap:6px;margin-top:4px}
+.field .editor input{flex:1;min-width:0;font:inherit;font-size:14px;font-weight:550;border:1px solid var(--brand);border-radius:8px;padding:6px 9px;box-shadow:0 0 0 3px rgba(31,79,216,.12);outline:none}
+.mini{border:1px solid var(--line);background:#fff;border-radius:7px;padding:5px 10px;font-size:12px;font-weight:600}
+.mini.dark{background:var(--ink);color:#fff;border-color:var(--ink)}
+.field.flagged{background:var(--warn-bg);box-shadow:inset 3px 0 0 #F79009}
+.flagbar{display:none;align-items:center;gap:8px;margin-top:8px;font-size:12px;color:var(--warn);flex-wrap:wrap}
+.review .field.flagged .flagbar{display:flex}
+.docs .doc{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line2)}
+.docs .doc:last-child{border-bottom:0}
+.docs .ic{width:32px;height:32px;border-radius:9px;background:var(--bg);display:grid;place-items:center;color:var(--muted);flex:none}
+.docs .dn{flex:1}
+.docs .dn b{display:block;font-size:13.5px;font-weight:600}
+.docs .dn span{font-size:12px;color:var(--muted)}
+.st{font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted);background:var(--bg);white-space:nowrap}
+.st.missing{color:var(--bad);background:var(--bad-bg);border-color:var(--bad-line);animation:pulse 1.6s ease-in-out 3}
+.st.proc{color:var(--ai);background:var(--ai-soft);border-color:var(--ai-line)}
+.st.ok{color:var(--ok);background:var(--ok-bg);border-color:var(--ok-line)}
+@keyframes pulse{50%{box-shadow:0 0 0 5px rgba(240,68,56,.12)}}
+.reviewbanner{display:none;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:var(--r);background:linear-gradient(135deg,#F7F5FFF2,#EEF3FFF2);backdrop-filter:blur(8px);border:1px solid var(--ai-line);margin-bottom:14px;animation:in .4s var(--ease)}
+.review .reviewbanner{display:flex;position:sticky;top:10px;z-index:3;box-shadow:0 -14px 0 2px var(--bg),0 8px 24px -10px rgba(31,42,107,.25)}
+.reviewbanner h4{margin:0 0 2px;font-size:14px}
+.reviewbanner p{margin:0;font-size:13px;color:var(--ink2)}
+.submitcard{display:none;padding:16px;align-items:center;gap:16px;flex-wrap:wrap}
+.review .submitcard{display:flex}
+.attest{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--ink2);flex:1;min-width:260px;cursor:pointer}
+.attest input{width:17px;height:17px;margin-top:2px;accent-color:var(--ink)}
+.credit{position:fixed;right:16px;bottom:14px;z-index:4;font-size:11.5px;color:var(--muted);background:rgba(255,255,255,.88);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:999px;padding:5px 11px;box-shadow:var(--shadow);text-decoration:none}
+.credit b{color:var(--ink);font-weight:600}
+.credit:hover{color:var(--ink)}
+
+/* tooltip */
+.pop{position:fixed;z-index:30;width:300px;background:#0F1726;color:#E9EDF3;border-radius:12px;padding:13px 14px 12px;font-size:13px;line-height:1.55;box-shadow:var(--shadow-lg);opacity:0;transform:translateY(4px) scale(.98);pointer-events:none;transition:opacity .15s,transform .15s var(--ease)}
+.pop.show{opacity:1;transform:none;pointer-events:auto}
+.pop h5{margin:0 0 4px;font-size:13px;color:#fff;display:flex;align-items:center;gap:6px}
+.pop .src{margin-top:8px;font-size:11px;color:#98A2B3}
+
+/* success */
+.success{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:24px;background:rgba(244,245,247,.7);backdrop-filter:blur(10px);opacity:0;pointer-events:none;transition:opacity .4s var(--ease);overflow:auto}
+.success.show{opacity:1;pointer-events:auto}
+.sbox{width:min(720px,100%);background:var(--panel);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow-lg);overflow:hidden;transform:translateY(12px) scale(.98);transition:transform .5s var(--ease)}
+.success.show .sbox{transform:none}
+.shero{padding:34px 36px 26px;background:radial-gradient(120% 140% at 0% 0%,#EEF3FF 0%,#fff 55%),#fff;border-bottom:1px solid var(--line2)}
+.check{width:52px;height:52px;border-radius:16px;background:var(--ok);display:grid;place-items:center;box-shadow:0 8px 20px -6px rgba(6,118,71,.5);margin-bottom:18px}
+.check path{stroke-dasharray:30;stroke-dashoffset:30}
+.success.show .check path{animation:draw .6s .25s var(--ease) forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.shero h2{font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:40px;letter-spacing:-.01em;line-height:1.1;margin:0 0 6px}
+.shero h2 em{color:var(--brand)}
+.shero p{margin:0;color:var(--muted);font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--line2)}
+.stat{padding:18px 20px;border-right:1px solid var(--line2)}
+.stat:last-child{border-right:0}
+.stat .n{font-size:24px;font-weight:650;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.stat .n small{font-size:13px;color:var(--muted);font-weight:500}
+.stat .l{font-size:12px;color:var(--muted);margin-top:2px}
+.stat.hl{background:linear-gradient(180deg,#F7F5FF,#fff)}
+.stat.hl .n{color:var(--ai)}
+.next{padding:18px 36px;display:grid;gap:10px}
+.next div{display:flex;align-items:center;gap:10px;font-size:13.5px}
+.next .st{margin-left:auto}
+.sfoot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 36px 18px;background:#FAFBFC;border-top:1px solid var(--line2);flex-wrap:wrap}
+.sfoot .fine{font-size:11.5px;color:var(--muted);max-width:420px}
+
+.formwrap{container-type:inline-size}
+@container (max-width:620px){
+  .fields{grid-template-columns:1fr}
+  .field:nth-child(odd){border-right:0}
+  .fields .field:nth-last-child(2):nth-child(odd){border-bottom:1px solid var(--line2)}
+}
+/* mobile tabs */
+.tabs{display:none}
+@media (max-width:920px){
+  .main{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+  .tabs{display:flex;gap:4px;padding:8px 12px;background:var(--panel);border-bottom:1px solid var(--line)}
+  .tabs button{flex:1;border:0;background:none;padding:8px;border-radius:8px;font-weight:600;font-size:13px;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px}
+  .tabs button[aria-selected="true"]{background:var(--bg);color:var(--ink)}
+  .tabs .n{background:var(--ai);color:#fff;border-radius:999px;font-size:11px;padding:0 6px;min-width:18px}
+  .chat,.formwrap{grid-row:2;grid-column:1}
+  .main[data-tab="chat"] .formwrap{display:none}
+  .main[data-tab="form"] .chat{display:none}
+  .crumb,.sep,.top .secure,.pill{display:none}
+  .credit{position:static;display:block;margin:0 auto;width:max-content}
+  .form{padding:18px 14px 30px}
+  .fields{grid-template-columns:1fr}
+  .field:nth-child(odd){border-right:0}
+  .fields .field:nth-last-child(2):nth-child(odd){border-bottom:1px solid var(--line2)}
+  .stats{grid-template-columns:1fr 1fr}
+  .stat:nth-child(2){border-right:0}.stat:nth-child(-n+2){border-bottom:1px solid var(--line2)}
+  .shero,.next,.sfoot{padding-left:22px;padding-right:22px}
+  .shero h2{font-size:32px}
+  .bubble{max-width:88%}
+}
+@media (min-width:921px){ .credit.inflow{display:none} }
+@media (max-width:920px){ .credit.fixed{display:none} }
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand">
+      <svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0F2A4A"/><path d="M10 22V10l12 12V10" stroke="#78E3C1" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Northbridge
+    </div>
+    <span class="sep"></span>
+    <span class="crumb">Open an account</span>
+    <span class="spacer"></span>
+    <span class="pill"><span class="dot"></span>Simulated demo · fictional data</span>
+    <span class="secure"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>256-bit encrypted</span>
+    <button class="btn" id="restart" type="button" aria-label="Restart demo"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>Restart demo</button>
+  </header>
+
+  <main class="main" id="main" data-tab="chat">
+    <div class="tabs" role="tablist">
+      <button role="tab" aria-selected="true" data-tab="chat">Copilot</button>
+      <button role="tab" aria-selected="false" data-tab="form">Application <span class="n" id="tabN">0</span></button>
+    </div>
+
+    <section class="chat" aria-label="Onboarding copilot chat">
+      <div class="chat-head">
+        <div class="orb" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M12 2l1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9z"/><circle cx="19" cy="19" r="2"/></svg></div>
+        <div>
+          <h2>Nora</h2>
+          <p><span class="online"></span>AI onboarding copilot · you review everything before it's submitted</p>
+        </div>
+      </div>
+      <div class="log" id="log" role="log" aria-live="polite"></div>
+      <div class="dock">
+        <div class="chips" id="chips" aria-label="Suggested replies"></div>
+        <div class="composer">
+          <input type="text" readonly placeholder="Choose a suggested reply above (demo mode)" aria-label="Message (disabled in demo)">
+          <button class="send" type="button" tabindex="-1" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#98A2B3" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        </div>
+        <div class="disclaim">Nora is an AI assistant and can make mistakes. Nothing is submitted without your review.</div>
+      </div>
+    </section>
+
+    <section class="formwrap" id="formwrap" aria-label="Application form">
+      <div class="form" id="form">
+        <div class="ph">
+          <div>
+            <h1>Your application</h1>
+            <p id="subtitle">Brokerage account · Northbridge Invest</p>
+          </div>
+          <div class="pct"><span id="pct">0%</span> complete<small id="eta">About 5 min left</small></div>
+        </div>
+        <div class="progress" aria-hidden="true"><b id="bar"></b></div>
+        <ol class="rail" id="rail"></ol>
+
+        <div class="reviewbanner" id="reviewbanner">
+          <div class="orb sm" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="#fff"><path d="M12 2l1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9z"/></svg></div>
+          <div><h4>Review &amp; confirm</h4><p id="reviewtext"></p></div>
+        </div>
+
+        <div id="sections"></div>
+
+        <div class="sec docs" id="docs">
+          <div class="sec-h"><h3>Documents</h3><span class="count" id="docCount">0 of 2 verified</span></div>
+          <div class="doc" id="doc-gov">
+            <div class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M14 10h4M14 14h4M6 16h6"/></svg></div>
+            <div class="dn"><b>Government-issued photo ID</b><span>Driver's license or passport</span></div>
+            <span class="st">Needed</span>
+          </div>
+          <div class="doc" id="doc-pay">
+            <div class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg></div>
+            <div class="dn"><b>Proof of income</b><span>Recent pay stub (last 60 days)</span></div>
+            <span class="st">Needed</span>
+          </div>
+        </div>
+
+        <div class="sec submitcard" id="submitcard">
+          <label class="attest"><input type="checkbox" id="attest"> <span>I confirm the information above is accurate and complete, and I agree to the Northbridge Account Agreement and electronic delivery of documents.</span></label>
+          <button class="btn btn-primary" id="submit" type="button" disabled>Submit application <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        </div>
+        <a class="credit inflow" href="https://hartzell.design" target="_blank" rel="noopener">Prototype by <b>Hartzell Design</b></a>
+      </div>
+    </section>
+  </main>
+</div>
+
+<a class="credit fixed" href="https://hartzell.design" target="_blank" rel="noopener">Prototype by <b>Hartzell Design</b></a>
+<div class="pop" id="pop" role="dialog" aria-modal="false" aria-labelledby="popT"><h5 id="popT"></h5><div id="popB"></div><div class="src">Plain-English explanation · not financial advice</div></div>
+
+<div class="success" id="success" aria-hidden="true">
+  <div class="sbox" role="dialog" aria-labelledby="sTitle">
+    <div class="shero">
+      <div class="check"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+      <h2 id="sTitle">Welcome to Northbridge, <em id="sName">Jordan</em>.</h2>
+      <p>Your application <b id="appId" style="color:var(--ink)">NB-2026-48213</b> has been submitted. We'll email you as soon as identity verification is complete.</p>
+    </div>
+    <div class="stats">
+      <div class="stat hl"><div class="n">~20 <small>min</small></div><div class="l">Saved vs. a typical form*</div></div>
+      <div class="stat"><div class="n">4:38</div><div class="l">Time to complete*</div></div>
+      <div class="stat"><div class="n" id="sFields">17<small>/18</small></div><div class="l">Fields filled by AI</div></div>
+      <div class="stat"><div class="n">100<small>%</small></div><div class="l">Reviewed by you</div></div>
+    </div>
+    <div class="next">
+      <div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#067647" stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Application and 2 documents received<span class="st ok">Done</span></div>
+      <div><span class="spin" aria-hidden="true"></span>Identity verification<span class="st proc">Usually under 2 min</span></div>
+      <div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8A93A3" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>Fund your account and get a portfolio suggestion<span class="st">Next</span></div>
+    </div>
+    <div class="sfoot">
+      <div class="fine">*Illustrative figures for demonstration only, not measured results. Northbridge is a fictional brand. Prototype by <a href="https://hartzell.design" target="_blank" rel="noopener" style="color:var(--ink)">Hartzell Design</a>.</div>
+      <button class="btn btn-primary" id="restart2" type="button">Restart demo</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+"use strict";
+const SPEED = /[?&]fast/.test(location.search) ? 0.12 : 1;
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const ICON = {
+  spark:'<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9z"/></svg>',
+  lock:'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>',
+  user:'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
+  check:'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  pencil:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>',
+  info:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>',
+  warn:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 3l10 18H2z"/><path d="M12 10v4M12 17h.01"/></svg>'
+};
+const GLOSSARY = {
+  kyc:["Know Your Customer (KYC)","Rules that require financial firms to verify who you are before opening an account. They help protect you, and the financial system, from fraud and identity theft."],
+  suitability:["Suitability","A regulatory obligation to understand your finances and goals, so any investment guidance actually fits your situation. It's about protecting you, not judging you."],
+  accredited:["Accredited investor","An SEC term for people who meet certain financial thresholds, such as $200k+ individual income in each of the last two years, or $1M+ net worth not counting your home. It only matters for certain private investments."],
+  beneficiary:["Beneficiary","The person who would receive this account's assets if something happened to you. Naming one can help assets transfer directly, often without probate. You can change it anytime."],
+  risk:["Risk tolerance","How comfortable you are with your investments rising and falling in value. It helps match you with suitable investments. There's no wrong answer."],
+  horizon:["Time horizon","How long you plan to keep this money invested before you expect to need it. Longer horizons can usually ride out more ups and downs."]
+};
+const SECTIONS = [
+  {id:"account",title:"Account",why:"Different account types have different tax treatment and rules. We confirm your choice up front so the rest of the application fits it.",
+    fields:[["accountType","Account type",1],["owner","Ownership",1]]},
+  {id:"personal",title:"Personal details",why:"Federal law (the Customer Identification Program) requires us to collect and verify your name, date of birth, address, and taxpayer ID when you open an account.",
+    fields:[["legalName","Full legal name"],["dob","Date of birth"],["ssn","Social Security number",1]]},
+  {id:"identity",title:"Address & ID",why:"We use your ID to confirm it's really you, and your address for tax documents and statements. Your ID image is encrypted and never shared for marketing.",
+    fields:[["homeAddress","Home address",1],["idNumber","Driver's license no."],["idExpiry","ID expiration"]]},
+  {id:"employment",title:"Employment & income",why:"Suitability rules require us to understand your financial situation before offering investment guidance. Income details are never used for marketing.",
+    fields:[["employmentStatus","Employment status"],["occupation","Occupation"],["employer","Employer"],["annualIncome","Annual income"],["accredited","Accredited investor",1]]},
+  {id:"beneficiary",title:"Beneficiary",why:"Optional. Naming a beneficiary helps your assets transfer directly to the people you choose. You can update it anytime after opening.",
+    fields:[["beneficiaryName","Primary beneficiary"],["relationship","Relationship"],["share","Allocation",1]]},
+  {id:"profile",title:"Investment profile",why:"Your goals and comfort with risk help us suggest investments that fit you. There are no wrong answers, and you can change these later.",
+    fields:[["riskTolerance","Risk tolerance"],["objective","Investment objective"],["timeHorizon","Time horizon",1]]}
+];
+const RAIL = ["Account","Identity","Documents","Employment","Beneficiary","Profile","Review"];
+const ALL = SECTIONS.flatMap(s => s.fields.map(f => ({id:f[0],label:f[1],wide:!!f[2],sec:s.id})));
+const TOTAL = ALL.length;
+
+let run = 0, S;
+const reset = () => { S = {f:{}, review:false, flagResolved:false, submitted:false, step:0, income:null, hooks:{}}; };
+
+class Cancel extends Error {}
+const sleep = ms => { const id = run; return new Promise((res, rej) => setTimeout(() => id === run ? res() : rej(new Cancel()), ms * SPEED)); };
+
+/* ---------- Form rendering ---------- */
+function renderForm(){
+  $("#sections").innerHTML = SECTIONS.map(s => `
+    <div class="sec" id="sec-${s.id}">
+      <div class="sec-h"><h3>${s.title}</h3><span class="count" data-count="${s.id}"></span>
+        <button class="why" type="button" aria-expanded="false" data-why="${s.id}">${ICON.info} Why we ask</button></div>
+      <div class="whytext">${ICON.info}<span>${s.why}</span></div>
+      <div class="fields">${s.fields.map(f => `
+        <div class="field${f[2]?" wide":""}" id="f-${f[0]}" data-id="${f[0]}">
+          <div style="min-width:0;flex:1">
+            <div class="lab">${f[1]}</div>
+            <div class="val"><span class="empty" aria-label="Not filled yet"></span></div>
+            <div class="flagbar"><span style="display:flex;gap:6px;align-items:flex-start;flex:1 1 100%">${ICON.warn}<span>Low confidence: glare on your ID. Please double-check.</span></span>
+              <button class="mini dark" type="button" data-confirm="${f[0]}">Looks right</button>
+              <button class="mini" type="button" data-edit="${f[0]}">Edit</button></div>
+          </div>
+          <div class="meta"><div class="b"></div>
+            <button class="edit" type="button" data-edit="${f[0]}" aria-label="Edit ${f[1]}" title="Edit">${ICON.pencil}</button></div>
+        </div>`).join("")}</div>
+    </div>`).join("");
+  $("#rail").innerHTML = RAIL.map((r,i) => `<li data-i="${i}"><i></i>${r}</li>`).join("");
+  ["gov","pay"].forEach(d => setDoc(d,"Needed",""));
+  $("#form").classList.remove("review");
+  $("#attest").checked = false;
+  $("#submit").disabled = true;
+  $("#submit").innerHTML = $("#submit").innerHTML.replace("Submitting…","Submit application");
+  $("#subtitle").textContent = "Brokerage account · Northbridge Invest";
+  setRail(0); updateProgress();
+}
+function badges(f){
+  const conf = f.conf != null ? `<span class="badge ${f.conf>=90?"b-hi":f.conf>=75?"b-md":"b-lo"}" title="AI confidence">${f.conf}%</span>` : "";
+  const map = {
+    chat:`<span class="badge b-ai">${ICON.spark} From chat</span>`,
+    inferred:`<span class="badge b-ai">${ICON.spark} AI inferred</span>`,
+    id:`<span class="badge b-ai">${ICON.spark} From ID</span>`,
+    paystub:`<span class="badge b-ai">${ICON.spark} From pay stub</span>`,
+    secure:`<span class="badge b-sec">${ICON.lock} Secure entry</span>`,
+    user:`<span class="badge b-user">${ICON.user} Edited by you</span>`,
+    confirmed:`<span class="badge b-hi">${ICON.check} Confirmed by you</span>`
+  };
+  return (map[f.src]||"") + (["user","confirmed","secure"].includes(f.src) ? "" : conf);
+}
+function paintField(id){
+  const f = S.f[id], el = $("#f-"+id);
+  if(!el) return;
+  el.classList.toggle("filled", !!f);
+  el.classList.toggle("flagged", !!(f && f.flag));
+  if(!f){ el.querySelector(".val").innerHTML = '<span class="empty" aria-label="Not filled yet"></span>'; el.querySelector(".b").innerHTML=""; return; }
+  el.querySelector(".val").textContent = f.value;
+  el.querySelector(".b").innerHTML = badges(f);
+}
+function fill(id, value, src, conf, opts={}){
+  const prev = S.f[id];
+  S.f[id] = {value, src, conf, ai: prev ? prev.ai : !["secure","user"].includes(src), flag: !!opts.flag};
+  paintField(id);
+  const el = $("#f-"+id);
+  el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 900);
+  focusSection(ALL.find(a => a.id===id).sec);
+  updateProgress();
+}
+function focusSection(sec){
+  document.querySelectorAll(".sec.active").forEach(e => e.id!=="sec-"+sec && e.classList.remove("active"));
+  const el = $(sec==="docs" ? "#docs" : "#sec-"+sec);
+  el.classList.add("active");
+  const wrap = $("#formwrap");
+  if(wrap.offsetParent === null) return;
+  const off = S.review ? $("#reviewbanner").offsetHeight + 24 : 18;
+  const top = el.offsetTop - off, bottom = el.offsetTop + el.offsetHeight + 18;
+  if(top < wrap.scrollTop || bottom > wrap.scrollTop + wrap.clientHeight) wrap.scrollTo({top: Math.max(0, bottom > wrap.scrollTop + wrap.clientHeight && el.offsetHeight < wrap.clientHeight ? bottom - wrap.clientHeight : top)});
+}
+function updateProgress(){
+  const n = Object.keys(S.f).length;
+  const docs = ["gov","pay"].filter(d => S["doc_"+d]==="ok").length;
+  const pct = S.submitted ? 100 : Math.round((n + docs) / (TOTAL + 2) * (S.review ? 100 : 96));
+  $("#pct").textContent = pct + "%";
+  $("#bar").style.width = pct + "%";
+  const left = Math.max(0, Math.ceil((1 - pct/100) * 5));
+  $("#eta").textContent = S.review ? "Ready for your review" : left <= 0 ? "Almost done" : `About ${left} min left`;
+  $("#tabN").textContent = n;
+  SECTIONS.forEach(s => { const c = s.fields.filter(f => S.f[f[0]]).length; document.querySelector(`[data-count="${s.id}"]`).textContent = `${c}/${s.fields.length}`; });
+}
+function setRail(i){
+  S.step = i;
+  document.querySelectorAll("#rail li").forEach((li,k) => {
+    li.className = k < i ? "done" : k === i ? "now" : "";
+    li.querySelector("i").innerHTML = k < i ? "✓" : "";
+  });
+}
+function setDoc(d, label, cls){
+  S["doc_"+d] = cls;
+  const st = $("#doc-"+d+" .st"); st.textContent = label; st.className = "st " + cls;
+  $("#docCount").textContent = `${["gov","pay"].filter(x => S["doc_"+x]==="ok").length} of 2 verified`;
+  updateProgress();
+}
+
+/* ---------- Editing ---------- */
+function openEdit(id){
+  const el = $("#f-"+id), f = S.f[id];
+  if(!f || el.querySelector(".editor")) return;
+  const val = el.querySelector(".val");
+  val.style.display = "none";
+  const ed = document.createElement("div");
+  ed.className = "editor";
+  ed.innerHTML = `<input type="text" aria-label="Edit value" value="${esc(f.value)}"><button class="mini dark" type="button">Save</button><button class="mini" type="button">Cancel</button>`;
+  val.after(ed);
+  const inp = ed.querySelector("input");
+  inp.focus(); inp.select();
+  const close = save => {
+    if(save){ const v = inp.value.trim() || f.value; S.f[id] = {...f, value:v, src:"user", conf:null, flag:false}; if(id==="idExpiry") resolveFlag(); }
+    ed.remove(); val.style.display = ""; paintField(id);
+    if(save){ el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 900); }
+  };
+  ed.children[1].onclick = () => close(true);
+  ed.children[2].onclick = () => close(false);
+  inp.onkeydown = e => { if(e.key==="Enter") close(true); if(e.key==="Escape") close(false); };
+}
+function resolveFlag(){
+  const f = S.f.idExpiry;
+  if(f && f.src !== "user") S.f.idExpiry = {...f, src:"confirmed", conf:null, flag:false};
+  paintField("idExpiry");
+  if(!S.flagResolved){ S.flagResolved = true; const rb=$("#reviewtext b:last-child"); if(rb){ rb.style.color="var(--ok)"; rb.textContent="All items reviewed. Ready to submit."; } S.hooks.flag && S.hooks.flag(); }
+  updateSubmit();
+}
+function updateSubmit(){ $("#submit").disabled = !(S.review && S.flagResolved && $("#attest").checked); }
+
+/* ---------- Chat ---------- */
+const log = $("#log");
+const scroll = () => requestAnimationFrame(() => log.scrollTop = log.scrollHeight);
+const fmt = t => esc(t).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\[\[(\w+)\|(.+?)\]\]/g,(m,k,l)=>`<button class="term" type="button" data-term="${k}" aria-expanded="false">${l}</button>`);
+let lastBot = false;
+function addRow(who, inner){
+  const row = document.createElement("div");
+  row.className = "row " + who + (who==="bot" && lastBot ? " cont" : "");
+  row.innerHTML = (who==="bot" ? '<div class="orb sm" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff"><path d="M12 2l1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9z"/></svg></div>' : "") + inner;
+  log.appendChild(row); lastBot = who==="bot"; scroll(); return row;
+}
+async function say(text, extra=0){
+  const t = addRow("bot", '<div class="bubble typing" aria-label="Nora is typing"><i></i><i></i><i></i></div>');
+  try { await sleep(Math.min(1500, 520 + text.length * 9) + extra); } finally { t.remove(); lastBot = log.lastElementChild ? log.lastElementChild.classList.contains("bot") : false; }
+  addRow("bot", `<div class="bubble">${fmt(text)}</div>`);
+}
+async function think(text, ms){
+  const t = addRow("bot", `<div class="thinking"><span class="spin"></span>${esc(text)}</div>`);
+  try { await sleep(ms); } finally { t.remove(); lastBot = log.lastElementChild ? log.lastElementChild.classList.contains("bot") : false; }
+}
+const user = text => addRow("user", `<div class="bubble">${esc(text)}</div>`);
+function choose(list, opts={}){
+  const box = $("#chips"), id = run;
+  box.innerHTML = "";
+  return new Promise(res => {
+    list.forEach((c,i) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "chip" + (c.primary ? " primary" : "");
+      b.style.animationDelay = (i*60)+"ms";
+      b.innerHTML = (c.icon ? ICON[c.icon] : "") + esc(c.label);
+      b.onclick = () => { if(id!==run) return; box.innerHTML = '<span class="hint"></span>'; if(!c.silent) user(c.say || c.label); res(c); };
+      box.appendChild(b);
+    });
+    if(opts.external) opts.external(() => { if(id!==run) return; box.innerHTML = ""; res({external:true}); });
+  });
+}
+const clearChips = () => $("#chips").innerHTML = '<span class="hint"></span>';
+
+async function upload(kind, name, size){
+  const row = addRow("user", `<div class="card attach"><div class="thumb ${kind}"><div class="scan"></div></div><div class="meta"><div class="name">${name}</div><div class="sub">${size} · Uploading…</div><div class="bar"><b></b></div></div></div>`);
+  await sleep(60);
+  row.querySelector(".bar b").style.width = "100%";
+  await sleep(1100);
+  row.querySelector(".sub").textContent = `${size} · Encrypted · Scanning`;
+  row.querySelector(".thumb").parentElement.classList.add("scanning");
+  return row;
+}
+async function extraction(title, rows, foot){
+  const row = addRow("bot", `<div class="card xcard"><div class="xhead">${ICON.spark}<b>${esc(title)}</b><span class="ai-tag">AI extraction</span></div><div class="xbody"></div></div>`);
+  const body = row.querySelector(".xbody");
+  for(const r of rows){
+    await sleep(380);
+    const lvl = r.conf>=90?"b-hi":r.conf>=75?"b-md":"b-lo";
+    body.insertAdjacentHTML("beforeend", `<div class="xrow${r.conf<75?" low":""}"><span class="k">${esc(r.k)}</span><span class="v">${esc(r.v)}</span><span class="badge ${lvl}">${r.conf}%</span></div>${r.note?`<div class="xnote">${ICON.warn}${esc(r.note)}</div>`:""}`);
+    r.fill && r.fill();
+    scroll();
+  }
+  if(foot){ await sleep(300); row.querySelector(".card").insertAdjacentHTML("beforeend", `<div class="xfoot${foot.warn?" warn":""}">${foot.warn?ICON.warn:ICON.check}${fmt(foot.text)}</div>`); scroll(); }
+}
+
+/* ---------- Script ---------- */
+async function script(){
+  await sleep(350);
+  await say("Hi, I'm **Nora**, Northbridge's onboarding copilot.");
+  await say("Instead of a long form, we'll just talk. I'll fill in your application on the right as we go, and you'll review every detail before anything is submitted.");
+  await say("To start, what kind of account would you like to open?");
+  const acct = await choose([{label:"Individual brokerage"},{label:"Joint brokerage"},{label:"Roth IRA"}]);
+  await sleep(250);
+  fill("accountType", acct.label, "chat", 99);
+  await sleep(250);
+  fill("owner", acct.label==="Joint brokerage" ? "Joint, with rights of survivorship" : "Individual (sole owner)", "inferred", 96);
+  $("#subtitle").textContent = `${acct.label} · Northbridge Invest`;
+  setRail(1);
+
+  await say(`Great choice. First, a few basics that [[kyc|Know Your Customer]] rules require. What's your full legal name and date of birth?`);
+  await choose([{label:"Jordan Ellis, born March 14, 1990"}]);
+  await think("Filling your details…", 700);
+  fill("legalName", "Jordan Ellis", "chat", 98);
+  await sleep(300);
+  fill("dob", "03/14/1990", "chat", 99);
+  await say("Thanks, Jordan. Next is your Social Security number. For your security it goes into an **encrypted field**. It never appears in this chat, and I can't read it back.");
+  await choose([{label:"Enter SSN securely", icon:"lock", silent:true}]);
+  const sc = addRow("user", `<div class="card securecard"><div class="lbl">${ICON.lock} Encrypted entry · Social Security number</div><div class="inp"><span class="digits"></span><span class="ok">${ICON.check} Encrypted</span></div></div>`);
+  const mask = "•••-••-4821";
+  for(let i=1;i<=mask.length;i++){ sc.querySelector(".digits").textContent = mask.slice(0,i); await sleep(70); }
+  sc.querySelector(".card").classList.add("done");
+  fill("ssn", "•••-••-4821", "secure");
+  setRail(2);
+
+  await say("Here's a shortcut: upload a photo of your driver's license and I'll pull your address and ID details for you. No typing.");
+  setDoc("gov","Requested","proc");
+  const up = await choose([{label:"Upload driver's license", icon:"spark", primary:true, silent:true},{label:"I'd rather type it"}]);
+  if(!up.silent){
+    await say("No problem. A photo of your ID is required to verify your identity anyway, so uploading it now saves you a step, and you'll still review everything I extract.");
+    await choose([{label:"OK, upload driver's license", primary:true, silent:true}]);
+  }
+  const card = await upload("id","drivers_license_front.jpg","2.1 MB");
+  setDoc("gov","Processing","proc");
+  await think("Reading your document and checking it against what you told me…", 1500);
+  card.querySelector(".scanning") && card.querySelector(".scanning").classList.remove("scanning");
+  card.querySelector(".sub").textContent = "2.1 MB · Encrypted · Processed";
+  await extraction("drivers_license_front.jpg", [
+    {k:"Name", v:"JORDAN ELLIS", conf:99, fill:() => fill("legalName","Jordan Ellis","id",99)},
+    {k:"Date of birth", v:"03/14/1990", conf:99, fill:() => fill("dob","03/14/1990","id",99)},
+    {k:"Address", v:"1520 Spruce St, Apt 4B, Philadelphia, PA 19102", conf:97, fill:() => fill("homeAddress","1520 Spruce St, Apt 4B, Philadelphia, PA 19102","id",97)},
+    {k:"License no.", v:"PA 34 829 117", conf:95, fill:() => fill("idNumber","PA 34 829 117","id",95)},
+    {k:"Expiration", v:"08/2029", conf:71, note:"Glare over this area. Flagged for your review.", fill:() => fill("idExpiry","08/2029","id",71,{flag:false})}
+  ], {text:"Name and date of birth **match** what you told me."});
+  setDoc("gov","Verified","ok");
+  await say("Done. I extracted 5 fields and confirmed your name and birthday match. The **expiration date** was partly covered by glare, so I've marked it low confidence (71%). I'll ask you to double-check it before you submit.");
+  setRail(3);
+
+  await say("Now a bit about your work and income. We ask because of [[suitability|suitability]] rules: we need to understand your financial picture before offering any investment guidance.");
+  await choose([{label:"I'm a product manager at Lumen Health"},{label:"Full-time, Lumen Health, PM", say:"Full-time PM at Lumen Health"}]);
+  await think("Updating employment details…", 650);
+  fill("employmentStatus","Employed, full-time","inferred",94);
+  await sleep(250); fill("occupation","Product Manager","chat",97);
+  await sleep(250); fill("employer","Lumen Health","chat",97);
+  await say("What's your approximate annual income? A range is fine.");
+  const inc = await choose([{label:"$100k–$150k", v:125},{label:"$150k–$200k", v:175},{label:"$200k+", v:225}]);
+  S.income = inc.v;
+  fill("annualIncome", inc.label, "chat", 99);
+  await say("Last one here: are you an [[accredited|accredited investor]]? Tap the term if you're not sure what it means.");
+  const acc = await choose([{label:"Not sure, what's that?"},{label:"Yes"},{label:"No"}]);
+  if(acc.label.startsWith("Not sure")){
+    await say("In plain English: it's an SEC category for people above certain income or net-worth thresholds, such as **$200k+ income** in each of the last two years, or **$1M+ net worth** not counting your home. It only matters for certain private investments.");
+    if(S.income < 200){
+      await say("Based on the income you shared, you likely don't qualify on income alone, so I've set this to **No** for now. You can change it anytime.");
+      fill("accredited","No (based on income shared)","inferred",88);
+    } else {
+      await say("Based on the income you shared, you **may** qualify. I've marked it as self-reported for now; we'd verify it only if you ever invest in a private offering.");
+      fill("accredited","Possibly (self-reported, unverified)","inferred",78);
+    }
+  } else {
+    fill("accredited", acc.label==="Yes" ? "Yes (self-reported)" : "No", "chat", 99);
+  }
+
+  await say("One thing is missing: to verify your income, we need a **recent pay stub**. I've flagged it on your document checklist.");
+  setDoc("pay","Missing","missing");
+  focusSection("docs");
+  const ps = await choose([{label:"Upload pay stub", icon:"spark", primary:true, silent:true},{label:"Remind me later"}]);
+  if(!ps.silent){
+    await say("You can add it within 30 days, but some account features stay limited until then. It only takes a few seconds now. Want to do it?");
+    await choose([{label:"Sure, upload pay stub", primary:true, silent:true}]);
+  }
+  const pcard = await upload("doc","lumen_paystub_oct_2026.pdf","348 KB");
+  setDoc("pay","Processing","proc");
+  await think("Extracting pay details and annualizing income…", 1400);
+  pcard.querySelector(".scanning") && pcard.querySelector(".scanning").classList.remove("scanning");
+  pcard.querySelector(".sub").textContent = "348 KB · Encrypted · Processed";
+  const ok = S.income === 125;
+  await extraction("lumen_paystub_oct_2026.pdf", [
+    {k:"Employer", v:"Lumen Health, Inc.", conf:98, fill:() => fill("employer","Lumen Health, Inc.","paystub",98)},
+    {k:"Pay period", v:"Oct 1 – Oct 15, 2026", conf:96},
+    {k:"Gross pay", v:"$5,920.00", conf:95},
+    {k:"YTD gross", v:"$112,480.00", conf:93}
+  ], ok ? {text:"Annualized income ≈ **$142,000**, consistent with your stated range."} : {warn:true, text:"Annualized income ≈ **$142,000**, lower than the range you shared."});
+  setDoc("pay","Verified","ok");
+  focusSection("docs");
+  if(ok){
+    await say("Verified. Your annualized income is about **$142,000**, which matches the range you gave. Both documents are now on file.");
+  } else {
+    await say("Verified, with one note: your pay stub annualizes to about **$142,000**, a bit below the range you picked. Bonuses or other income can explain that. I've updated the field to match, and you can change it in review.");
+    fill("annualIncome","$100k–$150k","paystub",90);
+  }
+  setRail(4);
+
+  await say("Would you like to name a [[beneficiary|beneficiary]]? It's optional, and you can change it anytime.");
+  const ben = await choose([{label:"Add my partner, Sam Ellis"},{label:"Skip for now"}]);
+  if(ben.label.startsWith("Add")){
+    await think("Adding beneficiary…", 600);
+    fill("beneficiaryName","Sam Ellis","chat",98);
+    await sleep(250); fill("relationship","Domestic partner","inferred",86);
+    await sleep(250); fill("share","100% primary","inferred",92);
+    await say("Added Sam as your primary beneficiary with 100% allocation. I guessed **domestic partner** for the relationship, so check that in review.");
+  } else {
+    fill("beneficiaryName","None named","chat",99);
+    await sleep(200); fill("relationship","Not applicable","inferred",99);
+    await sleep(200); fill("share","Not applicable","inferred",99);
+    await say("No problem. You can add one anytime from your account settings.");
+  }
+  setRail(5);
+
+  await say("Almost done. How would you describe your [[risk|risk tolerance]]? Picture your portfolio dropping 15% in a month. What would you do?");
+  const rk = await choose([{label:"Hold steady", v:"Moderate"},{label:"Sell some to be safe", v:"Conservative"},{label:"Buy more", v:"Aggressive"}]);
+  fill("riskTolerance", rk.v, "inferred", 90);
+  await say(`That suggests a **${rk.v.toLowerCase()}** risk tolerance. Last question: what's the main goal and [[horizon|time horizon]] for this money?`);
+  const g = await choose([{label:"Long-term growth, 10+ years", o:"Long-term growth", h:"10+ years"},{label:"A home in 3–5 years", o:"Save for a home purchase", h:"3–5 years"},{label:"Income in retirement", o:"Retirement income", h:"20+ years"}]);
+  fill("objective", g.o, "chat", 97);
+  await sleep(250); fill("timeHorizon", g.h, "chat", 97);
+  setRail(6);
+
+  // Review
+  await think("Checking your application for gaps and conflicts…", 1300);
+  S.review = true;
+  $("#form").classList.add("review");
+  S.f.idExpiry.flag = true; paintField("idExpiry");
+  const aiCount = Object.values(S.f).filter(f => f.ai).length;
+  $("#reviewtext").innerHTML = `Nora filled <b>${aiCount} of ${TOTAL}</b> fields from your chat and 2 documents. Every AI-filled value has an edit button. <b style="color:var(--warn)">1 item needs your attention.</b>`;
+  updateProgress();
+  $("#formwrap").scrollTo({top:0});
+  focusSection("identity");
+  await say(`That's everything. I filled **${aiCount} of ${TOTAL} fields** from our conversation and 2 documents. Please review the application. Anything marked AI can be edited, and **1 item needs your attention**: your ID expiration date.`);
+  let flagCb;
+  const flagP = new Promise(r => { flagCb = r; S.hooks.flag = r; });
+  if(!S.flagResolved){
+    const c = await choose([{label:"Confirm 08/2029 is correct", primary:true},{label:"Edit the expiration date", silent:true}], {external: cb => flagP.then(cb)});
+    if(c.label && c.label.startsWith("Confirm")) resolveFlag();
+    else if(c.silent){ openEdit("idExpiry"); clearChips(); await flagP; }
+  }
+  await say("Thanks for checking. Everything looks complete and consistent. When you're ready, confirm the attestation and submit.");
+  const subP = new Promise(r => S.hooks.submit = r);
+  const s = await choose([{label:"Agree & submit application", primary:true}], {external: cb => subP.then(cb)});
+  if(!s.external){
+    $("#attest").checked = true; updateSubmit();
+    await sleep(400);
+    await doSubmit();
+  }
+}
+async function doSubmit(){
+  if(S.submitted) return;
+  S.submitted = true;
+  S.hooks.submit && S.hooks.submit();
+  clearChips();
+  const b = $("#submit");
+  b.disabled = true; b.innerHTML = '<span class="spin" style="border-color:rgba(255,255,255,.35);border-top-color:#fff"></span>Submitting…';
+  updateProgress(); setRail(7);
+  await sleep(1200);
+  const aiCount = Object.values(S.f).filter(f => f.ai).length;
+  $("#sFields").innerHTML = `${aiCount}<small>/${TOTAL}</small>`;
+  $("#sName").textContent = (S.f.legalName ? S.f.legalName.value.split(" ")[0] : "Jordan");
+  $("#success").classList.add("show");
+  $("#success").setAttribute("aria-hidden","false");
+  setTimeout(() => $("#restart2").focus(), 300);
+}
+
+/* ---------- Wiring ---------- */
+const pop = $("#pop"); let popFor = null;
+function hidePop(){ pop.classList.remove("show"); if(popFor) popFor.setAttribute("aria-expanded","false"); popFor = null; }
+document.addEventListener("click", e => {
+  const t = e.target.closest(".term");
+  if(t){
+    if(popFor === t){ hidePop(); return; }
+    hidePop();
+    const [title, body] = GLOSSARY[t.dataset.term];
+    $("#popT").innerHTML = ICON.spark + " " + esc(title); $("#popB").textContent = body;
+    const r = t.getBoundingClientRect();
+    const w = Math.min(300, innerWidth - 24);
+    pop.style.width = w + "px";
+    pop.style.left = Math.max(12, Math.min(r.left, innerWidth - w - 12)) + "px";
+    pop.classList.add("show");
+    const h = pop.offsetHeight;
+    pop.style.top = (r.bottom + 8 + h > innerHeight ? r.top - h - 8 : r.bottom + 8) + "px";
+    t.setAttribute("aria-expanded","true"); popFor = t; return;
+  }
+  if(!e.target.closest("#pop")) hidePop();
+  const w = e.target.closest("[data-why]");
+  if(w){ const sec = w.closest(".sec"); const on = sec.classList.toggle("showwhy"); w.setAttribute("aria-expanded", on); }
+  const ed = e.target.closest("[data-edit]");
+  if(ed) openEdit(ed.dataset.edit);
+  const cf = e.target.closest("[data-confirm]");
+  if(cf) resolveFlag();
+});
+document.addEventListener("keydown", e => { if(e.key==="Escape") hidePop(); });
+$("#formwrap").addEventListener("scroll", hidePop, {passive:true});
+log.addEventListener("scroll", hidePop, {passive:true});
+$("#attest").addEventListener("change", updateSubmit);
+$("#submit").addEventListener("click", doSubmit);
+document.querySelectorAll(".tabs button").forEach(b => b.onclick = () => {
+  $("#main").dataset.tab = b.dataset.tab;
+  document.querySelectorAll(".tabs button").forEach(x => x.setAttribute("aria-selected", x===b));
+});
+function start(){
+  run++; reset(); hidePop();
+  log.innerHTML = ""; lastBot = false; clearChips();
+  $("#success").classList.remove("show"); $("#success").setAttribute("aria-hidden","true");
+  $("#main").dataset.tab = "chat"; document.querySelectorAll(".tabs button").forEach(x => x.setAttribute("aria-selected", x.dataset.tab==="chat"));
+  renderForm(); $("#formwrap").scrollTo({top:0});
+  script().catch(e => { if(!(e instanceof Cancel)) console.error(e); });
+}
+$("#restart").onclick = start; $("#restart2").onclick = start;
+window.__demo = { get state(){ return S; } };
+start();
+})();
+</script>
+</body>
+</html>
