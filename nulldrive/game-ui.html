@@ -131,6 +131,17 @@ body{overflow:hidden}
 #wrongway.on{display:block}
 #flash{position:absolute;inset:0;pointer-events:none;z-index:4;opacity:0;background:radial-gradient(ellipse at center,transparent 42%,rgba(255,59,78,.5));transition:opacity .12s linear}
 #flash.on{opacity:1}
+.gl-fail{position:absolute;inset:0;z-index:40;display:grid;place-items:center;padding:24px;background:rgba(5,6,10,.78);backdrop-filter:blur(8px)}
+.gl-fail[hidden]{display:none}
+.gl-card{width:min(680px,100%);padding:28px 28px 22px}
+.gl-card h2{margin:8px 0 10px;font-family:var(--f-display);font-weight:800;letter-spacing:.06em;font-size:clamp(18px,2.4vw,26px)}
+.gl-card .lead{margin:0 0 16px;color:var(--text-dim)}
+.gl-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+.gl-cols h3{margin:0;font-family:var(--f-display);letter-spacing:.14em;font-size:13px;color:var(--volt)}
+.gl-cols ol{margin:8px 0 0;padding-left:18px;color:var(--text-dim)}
+.gl-cols li{margin:4px 0}
+.gl-detail{min-height:1.2em;margin:0 0 14px;color:var(--text-mute);font-size:12px}
+@media (max-width:700px){.gl-cols{grid-template-columns:1fr}}
 .laptimes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
 .laptimes div{border:1px solid var(--line);padding:8px 10px;font-family:var(--f-mono);font-size:11px;color:var(--text-mute);letter-spacing:.08em}
 .laptimes b{display:block;color:var(--text);font-family:var(--f-display);font-size:16px;letter-spacing:0;margin-bottom:2px}
@@ -175,6 +186,33 @@ body{overflow:hidden}
  <div class="xpbar"><div style="display:flex;justify-content:space-between"><span>LV 24 → <b style="color:var(--text)">LV 25</b></span><span style="color:var(--solar)">+1,200 XP</span></div><div class="bar"><i id="xpi"></i></div></div>
  <div class="rbtns" style="margin-top:16px"><button class="btn" id="againBtn">${P} Race again</button><button class="btn secondary" data-go="select">Garage</button><button class="btn ghost" data-go="menu">Main menu</button></div></div>
 </div></section>
+<div id="gl-fail" class="gl-fail" hidden>
+ <div class="panel gl-card">
+  <div class="eyebrow">Graphics</div>
+  <h2 id="gl-title">HARDWARE ACCELERATION IS OFF</h2>
+  <p class="lead" id="gl-lead">NULLDRIVE draws the night city with WebGL. This browser did not create a graphics context.</p>
+  <div class="gl-cols">
+   <div>
+    <h3>CHROME</h3>
+    <ol>
+     <li>Open <span class="mono">chrome://settings/system</span></li>
+     <li>Turn on Use graphics acceleration when available</li>
+     <li>Relaunch Chrome, then press Retry</li>
+    </ol>
+   </div>
+   <div>
+    <h3>SAFARI</h3>
+    <ol>
+     <li>Settings, Advanced, then turn on Show features for web developers</li>
+     <li>In the Develop menu, uncheck Disable WebGL</li>
+     <li>Reload this page</li>
+    </ol>
+   </div>
+  </div>
+  <p class="gl-detail mono" id="gl-detail"></p>
+  <button class="btn" type="button" id="gl-retry">Retry</button>
+ </div>
+</div>
 </div>
 <script>/*@JS*/</script>
 <script>
@@ -203,8 +241,20 @@ const drawSel=()=>{const c=CARS[sel];$('#s-select').style.setProperty('--cc',c.c
  $('#spStats').innerHTML=['SPEED','ACCEL','GRIP','NITRO'].map((s,k)=>`<div class="sd-stat"><span>${s}</span><div class="b"><i style="width:0%" data-w="${c.s[k]}"></i></div><em>${c.s[k]}</em></div>`).join('');requestAnimationFrame(()=>requestAnimationFrame(()=>$$('#spStats i').forEach(i=>i.style.width=i.dataset.w+'%')));
  $$('#carrow .sd-card').forEach((e,i)=>e.classList.toggle('sel',i===sel))};
 const step=d=>{sel=(sel+d+CARS.length)%CARS.length;drawSel()};$('#pv').onclick=()=>step(-1);$('#nx').onclick=()=>step(1);
-const bootPromise=import('./race.js').then(m=>m.boot($('#road'))).then(a=>{api=a;return a});
-bootPromise.catch(err=>{console.error(err);const d=document.createElement('div');d.textContent='Race engine failed to start. '+(err&&err.message?err.message:'');d.style.cssText='position:absolute;left:24px;bottom:24px;color:#ff3b4e;font:12px/1.4 ui-monospace,monospace;z-index:30;max-width:520px';$('#app').appendChild(d)});
+function showGL(kind, err){
+  const el=$('#gl-fail'); if(!el) return;
+  el.hidden=false;
+  $('#gl-title').textContent=kind==='lost'?'GRAPHICS CONTEXT LOST':'HARDWARE ACCELERATION IS OFF';
+  $('#gl-lead').textContent=kind==='lost'
+    ?'The graphics context dropped, so the city is paused. It usually comes back on its own. If it stays blank, turn hardware acceleration on and retry.'
+    :'NULLDRIVE draws the night city with WebGL. This browser did not create a graphics context.';
+  $('#gl-detail').textContent=err&&err.message?err.message:'';
+}
+function hideGL(){const el=$('#gl-fail'); if(el) el.hidden=true}
+$('#app').addEventListener('nd-gl',e=>{if(e.detail==='lost')showGL('lost'); else hideGL()});
+$('#gl-retry').onclick=()=>location.reload();
+let bootPromise=import('./race.js').then(m=>m.boot($('#road'))).then(a=>{api=a;hideGL();return a});
+bootPromise.catch(err=>{console.error(err);showGL('fail',err)});
 function ensureHud(){if(hud)return;SD.TRACK=api.map.path;const he=$('#hudEl');he.className='';hud=SD.hud(he,{});const sf=hud.el.querySelector('.sf');if(sf&&api.map.sf){sf.setAttribute('x1',api.map.sf.x1);sf.setAttribute('y1',api.map.sf.y1);sf.setAttribute('x2',api.map.sf.x2);sf.setAttribute('y2',api.map.sf.y2)}}
 function grid(){const player=CARS[sel];const ais=CARS.filter(c=>c!==player).slice().sort((a,b)=>b.top-a.top);const order=[ais[0],ais[1],player,ais[2]];
  return order.map((c,slot)=>({name:c===player?'HARTZ':RIVALS[c.n],carName:c.n,color:c.col,you:c===player,stats:toStats(c),best:c===player?loadBest(c):0,weave:0.35+slot*0.22,caution:slot===0?0.96:0.91,phase:slot*1.4}))}

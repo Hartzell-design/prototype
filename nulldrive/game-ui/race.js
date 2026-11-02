@@ -1022,8 +1022,47 @@ function attractStats(i) {
   };
 }
 
+// Ask for WebGL2 with the safest attributes first. A failed getContext on the
+// visible canvas poisons later retries, so each attempt is probed on a
+// throwaway canvas. powerPreference, antialias, stencil, and
+// preserveDrawingBuffer are omitted: any one of them can make Mac Chrome or
+// Safari return null even when the GPU is fine.
+function acquireWebGL(canvas) {
+  const rect = canvas.getBoundingClientRect();
+  if (canvas.width < 2) canvas.width = Math.max(2, Math.floor(rect.width) || 300);
+  if (canvas.height < 2) canvas.height = Math.max(2, Math.floor(rect.height) || 150);
+  const attempts = [
+    { alpha: true, depth: true, stencil: false, antialias: false, premultipliedAlpha: true, preserveDrawingBuffer: false, failIfMajorPerformanceCaveat: false },
+    { alpha: true, depth: true, stencil: false, antialias: false, preserveDrawingBuffer: false, failIfMajorPerformanceCaveat: false },
+    { depth: true, stencil: false, antialias: false, preserveDrawingBuffer: false, failIfMajorPerformanceCaveat: false }
+  ];
+  const creationError = (event) => {
+    if (event.statusMessage) console.error('WebGL context creation error:', event.statusMessage);
+  };
+  canvas.addEventListener('webglcontextcreationerror', creationError);
+  for (const attrs of attempts) {
+    const test = document.createElement('canvas');
+    test.width = 8;
+    test.height = 8;
+    let probe = null;
+    try { probe = test.getContext('webgl2', attrs); } catch (e) { probe = null; }
+    if (!probe) continue;
+    const lose = probe.getExtension('WEBGL_lose_context');
+    if (lose) lose.loseContext();
+    let gl = null;
+    try { gl = canvas.getContext('webgl2', attrs); } catch (e) { gl = null; }
+    if (gl) return gl;
+    break;
+  }
+  const err = new Error('WebGL is unavailable');
+  err.name = 'WebGLUnavailable';
+  throw err;
+}
+
 export async function boot(canvas) {
   if (document.fonts?.ready) await document.fonts.ready.catch(() => {});
+  const gl = acquireWebGL(canvas);
+  let glLost = false;
   const track = buildTrack();
   track.laps = LAPS_DEFAULT;
   track.raceMs = 0;
@@ -1032,11 +1071,37 @@ export async function boot(canvas) {
   const camera = new THREE.PerspectiveCamera(70, 1, 0.1, 1800);
   scene.add(camera);
 
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance', alpha: false, preserveDrawingBuffer: true });
+  let renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({
+      canvas,
+      context: gl,
+      alpha: true,
+      antialias: false,
+      stencil: false,
+      premultipliedAlpha: true,
+      preserveDrawingBuffer: false,
+      failIfMajorPerformanceCaveat: false
+    });
+  } catch (e) {
+    const err = new Error('WebGL is unavailable');
+    err.name = 'WebGLUnavailable';
+    throw err;
+  }
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.85;
   renderer.setClearColor(0x05060a, 1);
+  canvas.addEventListener('webglcontextlost', (event) => {
+    event.preventDefault();
+    glLost = true;
+    canvas.dispatchEvent(new CustomEvent('nd-gl', { bubbles: true, detail: 'lost' }));
+  });
+  canvas.addEventListener('webglcontextrestored', () => {
+    glLost = false;
+    resize();
+    canvas.dispatchEvent(new CustomEvent('nd-gl', { bubbles: true, detail: 'restored' }));
+  });
 
 
   // Speed lines live on the camera.
@@ -1165,6 +1230,13 @@ export async function boot(canvas) {
     rp.needsUpdate = true;
   }
 
+  const _fwd = new THREE.Vector3();
+  const _up = new THREE.Vector3(0, 1, 0);
+  const _right = new THREE.Vector3();
+  const _cup = new THREE.Vector3();
+  const _back = new THREE.Vector3();
+  const _basis = new THREE.Matrix4();
+  const _eye = new THREE.Vector3();
   function updateCamera(dt, car) {
     if (!car) return;
     const back = 6.1, up = 2.05;
@@ -1186,12 +1258,25 @@ export async function boot(canvas) {
     const boost = car.boosting ? 0.07 : 0;
     shakeRef.v = Math.max(boost, shakeRef.v - dt * 0.9);
     const mag = shakeRef.v;
-    camera.position.set(
+    // Three's camera.lookAt mirrors left and right when the car faces +Z,
+    // so a left yaw showed up as a right turn. Build a right-handed basis
+    // whose +X is the car's right instead.
+    _eye.set(
       camPos.x + (Math.random() - 0.5) * mag,
       camPos.y + (Math.random() - 0.5) * mag * 0.6,
       camPos.z + (Math.random() - 0.5) * mag
     );
-    camera.lookAt(look);
+    _fwd.subVectors(look, _eye);
+    if (_fwd.lengthSq() < 1e-6) _fwd.set(0, 0, 1);
+    _fwd.normalize();
+    _right.crossVectors(_up, _fwd);
+    if (_right.lengthSq() < 1e-8) _right.set(1, 0, 0);
+    _right.normalize();
+    _cup.crossVectors(_fwd, _right).normalize();
+    _back.copy(_fwd).negate();
+    _basis.makeBasis(_right, _cup, _back);
+    _basis.setPosition(_eye);
+    _basis.decompose(camera.position, camera.quaternion, camera.scale);
     camera.fov += ((68 + clamp(car.speed / 8, 0, 12) + (car.boosting ? 7 : 0)) - camera.fov) * Math.min(1, dt * 4);
     camera.updateProjectionMatrix();
   }
@@ -1207,7 +1292,7 @@ export async function boot(canvas) {
     m.rotation.set(pitch * 0.9, car.yaw, -car.steerV * 0.09 - car.slip * 0.012);
     const spin = car.speed / 0.36 * dt;
     m.userData.spins.forEach((w) => { w.rotation.x += spin; });
-    m.userData.pivots.forEach((p) => { p.rotation.y = -car.steerV * 0.32; });
+    m.userData.pivots.forEach((p) => { p.rotation.y = car.steerV * 0.32; });
     const flame = car.boosting ? 0.85 : 0;
     m.userData.flames.forEach((f) => {
       f.material.opacity = flame * (0.55 + Math.random() * 0.45);
@@ -1378,6 +1463,7 @@ export async function boot(canvas) {
   }
 
   function frame(dt, input, paused) {
+    if (glLost) return snapshot();
     const step = paused ? 0 : Math.min(0.05, Math.max(0, dt));
     if (step > 0) {
       if (mode === 'attract') stepAttract(step);
