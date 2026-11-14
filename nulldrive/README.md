@@ -58,3 +58,9 @@ Slipstream sources (tokens, type, HUD components) live next to `build.py`:
 `game-ui/race.js` is the three.js circuit, arcade physics, and rival AI. It is loaded as an ES module from a CDN import map and is not passed through `build.py`, so edits to it show up on refresh. The race HUD is the same Slipstream components as the library.
 
 The track is a closed street circuit (long front straight, esses, a chicane, and a tighter corner). Walls stop you. The runoff slows you down. Hitting a wall or a rival costs speed and marks the damage diagram.
+
+## Warp gates (v0.2)
+
+On the inside of the east straight a violet WARP arch opens the Glitch Zone, an infield ribbon about 100 m shorter than the northeast corner it cuts. Stay in the right-hand lane and you skip the gate and remain in Neon City. The return arch at the end of the ribbon drops you back on the street circuit.
+
+The Glitch Zone is a different drive, not just a different sky: lower gravity, two launch ramps and a dip you can jump, looser grip, and a little more steering. The sky, road, and a scanline veil shift to violet and lime while the HUD stays Slipstream. Two of the three rivals try the gate. Cars in the other dimension are ghosts and do not collide with you. The HUD chip reads NEON CITY or GLITCH ZONE. A flash and a field-of-view kick mark the warp.

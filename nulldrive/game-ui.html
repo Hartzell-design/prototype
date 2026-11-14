@@ -129,6 +129,13 @@ body{overflow:hidden}
 .bestline b{color:var(--apex);font-weight:500}
 #wrongway{display:none;position:absolute;top:18%;left:50%;transform:translateX(-50%);z-index:6;font-family:var(--f-display);font-weight:900;letter-spacing:.32em;font-size:clamp(28px,4vw,48px);color:var(--redline);text-shadow:0 0 18px var(--redline);animation:sdBlink .4s steps(2) infinite}
 #wrongway.on{display:block}
+#dimchip{position:absolute;top:58px;left:50%;transform:translateX(-50%);z-index:6;pointer-events:none;font-family:var(--f-display);font-weight:800;letter-spacing:.28em;font-size:12px;color:var(--volt);border:1px solid rgba(0,240,255,.55);padding:5px 14px;background:rgba(5,6,10,.62)}
+#dimchip.glitch{color:var(--apex);border-color:var(--flux);box-shadow:0 0 18px rgba(139,92,255,.55)}
+#warpflash{position:absolute;inset:0;pointer-events:none;z-index:5;opacity:0;background:radial-gradient(circle at 50% 42%, rgba(255,255,255,.96), rgba(182,255,59,.82) 16%, rgba(139,92,255,.5) 42%, transparent 70%);mix-blend-mode:screen}
+#warpflash.on{animation:warpKick .42s var(--e-launch) both}
+@keyframes warpKick{0%{opacity:1;filter:contrast(1.7) saturate(1.5)}45%{opacity:.55}100%{opacity:0;filter:none}}
+#glitchveil{position:absolute;inset:0;pointer-events:none;z-index:3;opacity:0;background:repeating-linear-gradient(180deg, transparent 0 3px, rgba(139,92,255,.14) 3px 4px), repeating-linear-gradient(90deg, transparent 0 7px, rgba(182,255,59,.05) 7px 8px);mix-blend-mode:screen;transition:opacity .25s var(--e-launch)}
+#glitchveil.on{opacity:1}
 #flash{position:absolute;inset:0;pointer-events:none;z-index:4;opacity:0;background:radial-gradient(ellipse at center,transparent 42%,rgba(255,59,78,.5));transition:opacity .12s linear}
 #flash.on{opacity:1}
 .gl-fail{position:absolute;inset:0;z-index:40;display:grid;place-items:center;padding:24px;background:rgba(5,6,10,.78);backdrop-filter:blur(8px)}
@@ -172,7 +179,7 @@ body{overflow:hidden}
 </div></section>
 <section class="scr" id="s-load"><div class="lg">${LOGO}<b>NULLDRIVE</b></div><div class="pb"><i id="lpb"></i></div><div class="st"><span>LOADING <b style="color:var(--text)">NEO-KYOTO · NIGHT</b></span><span id="lpc">0%</span></div><div class="tip">TIP · <em>Drafting</em> behind a rival charges nitro 2× faster.</div></section>
 <section class="scr" id="s-race"><div class="vignette"></div><div class="hudwrap"><div class="hud-frame" id="hudF"><div id="hudEl"></div></div></div>
- <div id="flash"></div><div id="wrongway">WRONG WAY</div>
+ <div id="flash"></div><div id="warpflash"></div><div id="glitchveil"></div><div id="dimchip">NEON CITY</div><div id="wrongway">WRONG WAY</div>
  <div class="rtop"><button class="btn sm ghost" id="pauseBtn">❚❚ Pause</button></div>
  <div class="ctrls hint"><b>WASD</b> / <b>ARROWS</b> DRIVE &nbsp; <b>SHIFT</b> OVERCLOCK &nbsp; <b>ESC</b> PAUSE</div>
  <div id="count"></div><div id="finish"><div><div class="flag"></div><b id="finP">P1</b><span id="finS">VICTORY</span></div></div>
@@ -261,7 +268,9 @@ function grid(){const player=CARS[sel];const ais=CARS.filter(c=>c!==player).slic
 const uOf=v=>{const t=((v%1)+1)%1;return api.map.flip?(1-t)%1:t};
 function updateHud(snap){const p=snap.player;if(!p||!hud)return;if(snap.mode==='count')hud.gauge.set(12+Math.random()*18,0.2+Math.random()*0.18,'N');else{const g=SD.gearFor(p.speed*3.6);hud.gauge.set(p.speed*3.6,g.rpm,g.gear)}
  hud.boost.set(p.boost,p.boosting);hud.lap.set({lap:p.lap,laps:p.laps,ms:p.lapMs,best:p.best,delta:p.delta});hud.pos.set(p.pos,p.total);hud.gap(p.gapPos,p.gapText);hud.dmg.set(p.damage);
- hud.map.set(uOf(p.u),snap.rivals.map(r=>uOf(r.u)));$('#wrongway').classList.toggle('on',!!p.wrong)}
+ hud.map.set(uOf(p.u),snap.rivals.map(r=>uOf(r.u)));$('#wrongway').classList.toggle('on',!!p.wrong);
+ const chip=$('#dimchip'); if(chip){const glitch=p.dimension==='glitch'; chip.textContent=glitch?'GLITCH ZONE':'NEON CITY'; chip.classList.toggle('glitch', glitch)}
+ const veil=$('#glitchveil'); if(veil) veil.classList.toggle('on', p.dimension==='glitch')}
 function showResults(results){const rows=results||[];const you=rows.find(r=>r.you)||rows[0];if(!you)return;const p=Math.max(1,rows.findIndex(r=>r.you)+1);const laps=you.laps||[];const best=laps.length?Math.min(...laps):0;const prev=loadBest(CARS[sel]);if(best)saveBest(CARS[sel],best);const record=best&&(!prev||best<prev);
  $('#resTitle').textContent=p===1?'VICTORY':p<=3?'PODIUM FINISH':'P'+p+' FINISH';
  $('#resSub').textContent=`${CARS[sel].n} · ${laps.length} laps · Total ${SD.fmt(you.finishMs)} · Best lap ${best?SD.fmt(best):'--:--.---'}${record?' · NEW RECORD':''}`;
@@ -280,6 +289,7 @@ function handle(ev,snap){if(!hud)return;if(ev.type==='toast')SD.toast(hud.toasts
  if(ev.type==='crash'){const f=$('#flash');f.classList.add('on');setTimeout(()=>f.classList.remove('on'),160)}
  if(ev.type==='count'){const c=$('#count');c.innerHTML=`<b class="anim ${ev.label==='GO'?'go':''}">${ev.label}</b>`;if(ev.label==='GO')setTimeout(()=>{c.innerHTML=''},720)}
  if(ev.type==='lap'){SD.toast(hud.toasts,{type:ev.isBest?'ok':'info',title:ev.isBest?'Personal best':'Lap '+ev.lap,msg:SD.fmt(ev.ms)});saveBest(CARS[sel],ev.ms)}
+ if(ev.type==='warp'){const f=$('#warpflash'); if(f){f.classList.remove('on'); void f.offsetWidth; f.classList.add('on')}}
  if(ev.type==='finish')onFinish(snap)}
 function startRace(){const token=++raceToken;finishShown=false;paused=false;$('#pause').classList.remove('on');$('#finish').classList.remove('on');$('#count').innerHTML='';$('#wrongway').classList.remove('on');show('load');
  const lpb=$('#lpb'),lpc=$('#lpc');const t0=performance.now();

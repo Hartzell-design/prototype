@@ -140,7 +140,96 @@ function buildTrack() {
   const gates = [];
   const gateCount = 8;
   for (let g = 0; g < gateCount; g++) gates.push((total * g) / gateCount);
-  return { samples, len: total, gates };
+  const glitch = buildGlitchRoute(samples, total);
+  return { samples, len: total, gates, glitch };
+}
+
+function nearestSample(samples, len, s) {
+  let best = 0, bd = Infinity;
+  for (let i = 0; i < samples.length; i++) {
+    let d = Math.abs(samples[i].s - s);
+    if (d > len / 2) d = len - d;
+    if (d < bd) { bd = d; best = i; }
+  }
+  return samples[best];
+}
+
+// A shorter ribbon through the infield. It leaves the inside of the east
+// straight and rejoins on the north straight, cutting the northeast corner.
+// It is only drivable after a car takes the entry warp gate.
+function buildGlitchRoute(samples, len) {
+  const A = nearestSample(samples, len, 690);
+  const B = nearestSample(samples, len, 1248);
+  const enter = [A.x - A.rx * 6.2, A.z - A.rz * 6.2];
+  const exit = [B.x - B.rx * 1.5, B.z - B.rz * 1.5];
+  const ctrl = [
+    enter,
+    [A.x - A.rx * 28, A.z - A.rz * 8 + A.tz * 36],
+    [A.x - 90, A.z + 130],
+    [B.x + 70, (A.z + B.z) * 0.55],
+    [B.x + 24, B.z - 48],
+    exit
+  ];
+  const pts = [];
+  for (let i = 0; i < ctrl.length - 1; i++) {
+    const [x0, z0] = ctrl[i], [x1, z1] = ctrl[i + 1];
+    const n = 8;
+    for (let k = 0; k < n; k++) {
+      const t = k / n;
+      pts.push([x0 + (x1 - x0) * t, z0 + (z1 - z0) * t]);
+    }
+  }
+  pts.push(exit);
+  const open = [];
+  let acc = 0, target = 0;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const ax = pts[i][0], az = pts[i][1], bx = pts[i + 1][0], bz = pts[i + 1][1];
+    const dx = bx - ax, dz = bz - az;
+    const seglen = Math.hypot(dx, dz) || 0.001;
+    while (target <= acc + seglen + 1e-4) {
+      const t = (target - acc) / seglen;
+      if (t >= -0.001 && t < 0.999) open.push([ax + dx * t, az + dz * t]);
+      target += 4;
+    }
+    acc += seglen;
+  }
+  open.push(exit);
+  const g = open.map((p, i) => ({ x: p[0], z: p[1], i, s: 0, seglen: 0, y: 0 }));
+  const N = g.length;
+  for (let i = 0; i < N - 1; i++) g[i].seglen = Math.hypot(g[i + 1].x - g[i].x, g[i + 1].z - g[i].z) || 0.001;
+  g[N - 1].seglen = 4;
+  let gs = 0;
+  for (let i = 0; i < N; i++) { g[i].s = gs; gs += g[i].seglen; }
+  const gLen = g[N - 1].s;
+  const y0 = A.y || 0, y1 = B.y || 0;
+  const tri = (u, c, w, h) => {
+    const k = Math.abs(u - c) / w;
+    return k >= 1 ? 0 : h * (1 - k);
+  };
+  for (let i = 0; i < N; i++) {
+    const a = g[i], b = g[Math.min(N - 1, i + 1)];
+    const d = a.seglen || 1;
+    a.tx = (b.x - a.x) / d; a.tz = (b.z - a.z) / d;
+    const hlen = Math.hypot(a.tx, a.tz) || 1;
+    a.tx /= hlen; a.tz /= hlen;
+    a.yaw = Math.atan2(a.tx, a.tz);
+    a.rx = a.tz; a.rz = -a.tx;
+    const prev = g[Math.max(0, i - 1)];
+    a.curv = wrap(a.yaw - prev.yaw) / ((prev.seglen + a.seglen) * 0.5 || 1);
+    const u = gLen > 0 ? a.s / gLen : 0;
+    const base = y0 + (y1 - y0) * u;
+    // Two launch ramps and a dip between them. Low gravity carries a fast car over the dip.
+    a.y = base + tri(u, 0.30, 0.07, 6.4) + tri(u, 0.68, 0.08, 7.6) - tri(u, 0.48, 0.07, 5.2);
+  }
+  return {
+    samples: g,
+    len: gLen,
+    sEnter: A.s,
+    sExit: B.s,
+    // Inside-lane window on the main road. Missing it keeps you in Neon City.
+    latMin: -11.2,
+    latMax: -2.4
+  };
 }
 
 function sampleAt(track, s) {
@@ -342,15 +431,18 @@ function buildCar(hex) {
 }
 
 function skyMaterial() {
-  return new THREE.ShaderMaterial({
+  const uniforms = { uG: { value: 0 }, uTime: { value: 0 } };
+  const mat = new THREE.ShaderMaterial({
     side: THREE.BackSide,
     depthWrite: false,
     fog: false,
     toneMapped: false,
-    uniforms: {},
+    uniforms,
     vertexShader: `varying vec3 vP; void main(){ vP = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
     fragmentShader: `
       varying vec3 vP;
+      uniform float uG;
+      uniform float uTime;
       void main(){
         vec3 n = normalize(vP);
         float h = n.y;
@@ -359,17 +451,27 @@ function skyMaterial() {
         vec3 hor = vec3(0.72, 0.18, 0.42);
         vec3 c = mix(hor, mid, smoothstep(0.0, 0.28, h));
         c = mix(c, top, smoothstep(0.18, 0.85, h));
+        vec3 gTop = vec3(0.01, 0.02, 0.05);
+        vec3 gMid = vec3(0.36, 0.12, 0.85);
+        vec3 gHor = vec3(0.55, 1.0, 0.25);
+        vec3 g = mix(gHor, gMid, smoothstep(0.0, 0.3, h));
+        g = mix(g, gTop, smoothstep(0.2, 0.85, h));
+        float tear = step(0.82, fract(n.y * 22.0 + uTime * 0.35));
+        g = mix(g, g.gbr, tear * 0.8);
+        c = mix(c, g, clamp(uG, 0.0, 1.0));
         vec3 sunDir = normalize(vec3(-0.55, 0.16, 0.25));
         float d = max(dot(n, sunDir), 0.0);
         float disc = smoothstep(0.972, 0.985, d);
         float bands = step(0.55, fract((n.y + 0.02) * 38.0));
-        vec3 sunCol = vec3(1.0, 0.55, 0.22);
+        vec3 sunCol = mix(vec3(1.0, 0.55, 0.22), vec3(0.65, 1.0, 0.35), uG);
         c += sunCol * pow(d, 6.0) * 0.55;
         c = mix(c, sunCol * 1.15, disc * (1.0 - bands * 0.82));
         c += vec3(0.55, 0.75, 1.0) * pow(max(n.y, 0.0), 0.35) * 0.04;
         gl_FragColor = vec4(c, 1.0);
       }`
   });
+  mat.userData.uniforms = uniforms;
+  return mat;
 }
 
 /* ---------- world ---------- */
@@ -638,7 +740,88 @@ function buildWorld(track) {
   moon.position.set(-180, 140, 60);
   scene.add(hemi, moon, new THREE.AmbientLight(0x3a2458, 0.85));
 
+  const scRoad = new THREE.MeshStandardMaterial({ color: 0x140818, emissive: 0x3a1480, emissiveIntensity: 0.35, roughness: 0.4, transparent: true, opacity: 0.22, side: THREE.DoubleSide });
+  const scEdge = new THREE.MeshStandardMaterial({ color: 0xb6ff3b, emissive: 0xb6ff3b, emissiveIntensity: 3.6, transparent: true, opacity: 0.45, side: THREE.DoubleSide });
+  const g = track.glitch;
+  if (g) {
+    const roadP = [], roadI = [];
+    addStrip(roadP, roadI, g.samples, -7.4, 7.4, 0.1, false);
+    scene.add(meshFrom(roadP, roadI, scRoad));
+    const edgeP = [], edgeI = [];
+    addStrip(edgeP, edgeI, g.samples, -7.4, -6.85, 0.16, false);
+    addStrip(edgeP, edgeI, g.samples, 6.85, 7.4, 0.16, false);
+    scene.add(meshFrom(edgeP, edgeI, scEdge));
+    const wallMatG = new THREE.MeshStandardMaterial({ color: 0x16081f, emissive: 0x8b5cff, emissiveIntensity: 0.35, side: THREE.DoubleSide, transparent: true, opacity: 0.35 });
+    scene.add(wallOpen(g.samples, -8.4, 1.15, wallMatG));
+    scene.add(wallOpen(g.samples, 8.4, 1.15, wallMatG));
+    const entry = nearestSample(samples, track.len, g.sEnter);
+    scene.add(warpArch(entry, (g.latMin + g.latMax) * 0.5, 0x8b5cff, 'WARP'));
+    scene.add(warpArch(g.samples[g.samples.length - 1], 0, 0x00f0ff, 'RETURN'));
+  }
+  track.look = { edgeMat, scRoad, scEdge, sky: sky.material, fog: scene.fog };
+
   return scene;
+}
+
+function wallOpen(samples, lat, height, material) {
+  const pos = [], idx = [];
+  const N = samples.length;
+  for (let i = 0; i < N; i++) {
+    const s = samples[i];
+    pos.push(s.x + s.rx * lat, s.y, s.z + s.rz * lat, s.x + s.rx * lat, s.y + height, s.z + s.rz * lat);
+  }
+  for (let i = 0; i < N - 1; i++) {
+    const i0 = i * 2, i1 = (i + 1) * 2;
+    idx.push(i0, i1, i1 + 1, i0, i1 + 1, i0 + 1);
+  }
+  return meshFrom(pos, idx, material);
+}
+
+function warpArch(sample, lat, color, label) {
+  const group = new THREE.Group();
+  const mat = new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 2.8, roughness: 0.32 });
+  const span = 7.4, h = 6.2;
+  const cx = sample.x + sample.rx * lat;
+  const cz = sample.z + sample.rz * lat;
+  const y = sample.y || 0;
+  for (const side of [-1, 1]) {
+    const post = new THREE.Mesh(new THREE.BoxGeometry(0.38, h, 0.38), mat);
+    post.position.set(cx + sample.rx * side * span * 0.5, y + h / 2, cz + sample.rz * side * span * 0.5);
+    group.add(post);
+  }
+  const bar = new THREE.Mesh(new THREE.BoxGeometry(span, 0.32, 0.32), mat);
+  bar.position.set(cx, y + h, cz);
+  bar.rotation.y = sample.yaw || 0;
+  group.add(bar);
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(3.15, 0.14, 8, 28), mat);
+  ring.position.set(cx, y + 3.3, cz);
+  ring.rotation.y = sample.yaw || 0;
+  group.add(ring);
+  const sign = new THREE.Mesh(new THREE.PlaneGeometry(8.5, 2.1), new THREE.MeshBasicMaterial({ map: signTexture(label, '#b6ff3b'), transparent: true, depthWrite: false, toneMapped: false }));
+  sign.position.set(cx - (sample.tx || 0) * 0.4, y + h + 1.5, cz - (sample.tz || 0) * 0.4);
+  sign.lookAt(cx - (sample.tx || 0) * 12, sign.position.y, cz - (sample.tz || 0) * 12);
+  group.add(sign);
+  return group;
+}
+
+function applyWorldLook(track, dim, time) {
+  const look = track.look;
+  if (!look) return;
+  const g = dim === 'glitch' ? 1 : 0;
+  const u = look.sky.userData && look.sky.userData.uniforms;
+  if (u) {
+    u.uG.value += (g - u.uG.value) * 0.14;
+    u.uTime.value = time;
+  }
+  const edge = g ? 0xb6ff3b : 0xff2e88;
+  look.edgeMat.color.set(edge);
+  look.edgeMat.emissive.set(edge);
+  look.fog.color.set(g ? 0x14061c : 0x1a0a24);
+  const roadOp = g ? 0.98 : 0.2;
+  const edgeOp = g ? 1 : 0.42;
+  look.scRoad.opacity += (roadOp - look.scRoad.opacity) * 0.16;
+  look.scEdge.opacity += (edgeOp - look.scEdge.opacity) * 0.16;
+  look.scRoad.emissiveIntensity = g ? 1.1 : 0.22;
 }
 
 function mapData(track) {
@@ -661,6 +844,10 @@ function mapData(track) {
   return {
     path: d,
     len,
+    glitchLen: track.glitch ? track.glitch.len : 0,
+    glitchSpan: track.glitch ? track.glitch.sExit - track.glitch.sEnter : 0,
+    sEnter: track.glitch ? track.glitch.sEnter : 0,
+    sExit: track.glitch ? track.glitch.sExit : 0,
     // SD.minimap samples the path backwards (1 - t). Callers pass raw 0-1;
     // the page flips so the blip travels with the cars.
     flip: true,
@@ -693,7 +880,9 @@ function makeCarState(def, pose) {
     dmg: { front: 0, left: 0, right: 0, rear: 0 },
     hitCd: 0, off: false, wrongT: 0, wrong: false,
     topKmh: 0, overtakes: 0, lastPos: 0, band: 1,
-    finishMs: null, mesh: null
+    finishMs: null, mesh: null,
+    dim: 'neon', gi: 0, gs: 0, hop: 0, vy: 0, warp: 0, warpLock: 0,
+    gateBias: !!def.gateBias, _lat: 0, _surf: 0
   };
 }
 
@@ -723,6 +912,125 @@ function queryTrack(track, car) {
   const s = (a.s + span * t) % len;
   car.i = best;
   return { a, b, t, px, pz, lat, s, y: a.y + (b.y - a.y) * t };
+}
+
+function queryGlitch(track, car) {
+  const g = track.glitch;
+  const samples = g.samples;
+  const N = samples.length;
+  const center = car.gi || 0;
+  let best = center, bestD = Infinity;
+  for (let k = -18; k <= 28; k++) {
+    const i = Math.max(0, Math.min(N - 1, center + k));
+    const s = samples[i];
+    const dx = car.x - s.x, dz = car.z - s.z;
+    const d = dx * dx + dz * dz;
+    if (d < bestD) { bestD = d; best = i; }
+  }
+  const a = samples[best];
+  const b = samples[Math.min(N - 1, best + 1)];
+  const abx = b.x - a.x, abz = b.z - a.z;
+  const ab2 = abx * abx + abz * abz || 1;
+  let t = ((car.x - a.x) * abx + (car.z - a.z) * abz) / ab2;
+  t = clamp(t, 0, 1);
+  const px = a.x + abx * t, pz = a.z + abz * t;
+  const lat = (car.x - px) * a.rx + (car.z - pz) * a.rz;
+  car.gi = best;
+  car.gs = Math.min(g.len, a.s + Math.max(0, b.s - a.s) * t);
+  return { a, b, t, px, pz, lat, s: car.gs, y: a.y + (b.y - a.y) * t };
+}
+
+function stepGlitchFlight(car, surf, dt, events, shakeRef, racing) {
+  const prev = car._surf == null ? surf : car._surf;
+  const dist = Math.max(0.45, car.speed * dt);
+  const slope = (surf - prev) / dist;
+  car._surf = surf;
+  if (car.hop <= 0.08 && car.vy <= 0.35) {
+    car.hop = 0;
+    car.vy = 0;
+    if (slope > 0.11 && car.speed > 18) {
+      car.vy = car.speed * Math.min(0.4, slope) * 1.15;
+      car.hop = 0.25;
+    }
+  } else {
+    car.vy -= 11.5 * dt;
+    car.hop += car.vy * dt;
+    if (car.hop <= 0) {
+      const hard = car.vy < -10;
+      car.hop = 0;
+      car.vy = 0;
+      if (hard) {
+        car.speed *= 0.78;
+        if (car.you && racing) {
+          events.push({ type: 'crash' });
+          events.push({ type: 'toast', toast: { type: 'warn', title: 'Heavy landing', msg: 'The Glitch Zone floats. Carry more speed off the ramp.' } });
+          shakeRef.v = Math.min(1, shakeRef.v + 0.22);
+        }
+      }
+    }
+  }
+  car.y = surf + Math.max(0, car.hop);
+}
+
+function enterGlitch(track, car, events) {
+  const g = track.glitch;
+  const p = g.samples[0];
+  car.dim = 'glitch';
+  car.gi = 0;
+  car.gs = 0;
+  car.hop = 0;
+  car.vy = 0;
+  car._surf = p.y;
+  car.warp = 0.5;
+  car.warpLock = 0.7;
+  car.x = p.x;
+  car.z = p.z;
+  car.y = p.y;
+  car.yaw = p.yaw;
+  car.slip *= 0.35;
+  car.s = g.sEnter;
+  car.camCut = true;
+  if (car.you) {
+    events.push({ type: 'warp', dim: 'glitch' });
+    events.push({ type: 'toast', toast: { type: 'ai', title: 'Glitch Zone', msg: 'Low gravity. Jump the dip, then take the return gate.' } });
+  }
+}
+
+function exitGlitch(track, car, events, racing) {
+  const g = track.glitch;
+  const pose = poseAt(track, g.sExit, 0);
+  car.dim = 'neon';
+  car.hop = 0;
+  car.vy = 0;
+  car.gs = 0;
+  car.warp = 0.5;
+  car.warpLock = 1.2;
+  car.x = pose.x;
+  car.z = pose.z;
+  car.y = pose.y;
+  car.yaw = pose.yaw;
+  car.s = g.sExit;
+  car.i = pose.i;
+  car.slip *= 0.35;
+  car.camCut = true;
+  if (car.you && racing) {
+    events.push({ type: 'warp', dim: 'neon' });
+    events.push({ type: 'toast', toast: { type: 'info', title: 'Neon City', msg: 'Back on the street circuit.' } });
+  }
+}
+
+function maybeEnterGlitch(track, car, prevS, lat, events) {
+  const g = track.glitch;
+  if (!g || car.dim === 'glitch' || car.warpLock > 0) return;
+  let ds = car.s - prevS;
+  if (ds > track.len * 0.5) ds -= track.len;
+  if (ds < -track.len * 0.5) ds += track.len;
+  if (ds <= 0) return;
+  let toGate = g.sEnter - prevS;
+  if (toGate < 0) toGate += track.len;
+  if (toGate > ds + 0.4 || toGate > 50) return;
+  if (lat < g.latMin || lat > g.latMax) return;
+  enterGlitch(track, car, events);
 }
 
 function stepCar(track, car, input, dt, events, shakeRef, racing) {
@@ -768,11 +1076,13 @@ function stepCar(track, car, input, dt, events, shakeRef, racing) {
   if (car.speed > top) car.speed += (top - car.speed) * Math.min(1, dt * 2);
 
   const speedFactor = 1 / (1 + car.speed * 0.016);
-  const turn = steer * st.turn * (st.twitch || 1) * (0.42 + 0.58 * speedFactor) * (drifting ? 1.28 : 1);
+  const glitch = car.dim === 'glitch';
+  const airborne = glitch && car.hop > 0.35;
+  const turn = steer * st.turn * (st.twitch || 1) * (0.42 + 0.58 * speedFactor) * (drifting ? 1.28 : 1) * (glitch ? 1.16 : 1) * (airborne ? 0.62 : 1);
   car.yaw += turn * dt;
 
   const dmgGrip = 1 - 0.12 * (car.dmg.left + car.dmg.right);
-  let grip = st.grip * dmgGrip * (drifting ? 0.26 : 1) * (car.off ? 0.62 : 1);
+  let grip = st.grip * dmgGrip * (drifting ? 0.26 : 1) * (car.off ? 0.62 : 1) * (glitch ? 0.72 : 1) * (airborne ? 0.45 : 1);
   const induced = steer * car.speed * st.slip * (drifting ? 1.35 : 0.55);
   car.slip += (induced - car.slip) * Math.min(1, grip * dt);
   if (drifting && brake > 0.4) {
@@ -787,10 +1097,29 @@ function stepCar(track, car, input, dt, events, shakeRef, racing) {
   car.x += (fx * car.speed + rx * car.slip) * dt;
   car.z += (fz * car.speed + rz * car.slip) * dt;
 
-  const q = queryTrack(track, car);
+  if (car.warp > 0) car.warp = Math.max(0, car.warp - dt);
+  if (car.warpLock > 0) car.warpLock = Math.max(0, car.warpLock - dt);
+  let q = car.dim === 'glitch' && track.glitch ? queryGlitch(track, car) : queryTrack(track, car);
   const prevS = car.s;
-  car.s = q.s;
-  car.y = q.y;
+  if (car.dim === 'glitch' && track.glitch) {
+    const u = clamp(car.gs / Math.max(1, track.glitch.len), 0, 1);
+    car.s = track.glitch.sEnter + (track.glitch.sExit - track.glitch.sEnter) * u;
+    stepGlitchFlight(car, q.y, dt, events, shakeRef, racing);
+    if (car.gs > track.glitch.len - 10) {
+      exitGlitch(track, car, events, racing);
+      q = queryTrack(track, car);
+      car.s = q.s;
+      car.y = q.y;
+    }
+  } else {
+    car.s = q.s;
+    car.hop = 0;
+    car.vy = 0;
+    car.y = q.y;
+    if (racing && car.warpLock <= 0) maybeEnterGlitch(track, car, prevS, q.lat, events);
+    if (car.dim === 'glitch') q = queryGlitch(track, car);
+  }
+  car._lat = q.lat;
   const absL = Math.abs(q.lat);
 
   if (absL > WALL) {
@@ -900,7 +1229,34 @@ function progressOf(track, car) {
   return car.completed * track.len + dist;
 }
 
+function sampleOpen(samples, len, s) {
+  const capped = clamp(s, 0, Math.max(0.05, len - 0.05));
+  let best = 0;
+  for (let i = 0; i < samples.length; i++) if (samples[i].s <= capped) best = i;
+  const a = samples[best];
+  const b = samples[Math.min(samples.length - 1, best + 1)];
+  return { a, b, t: 0 };
+}
+function followRibbon(samples, len, car, raceT, gs) {
+  const look = 14 + car.speed * 0.42;
+  const ahead = sampleOpen(samples, len, (gs || 0) + look);
+  const sm = sampleOpen(samples, len, (gs || 0) + 8);
+  let lane = clamp(-sm.a.curv * 180, -2.6, 2.6);
+  lane += Math.sin(raceT * 0.5 + car.phase) * 0.35;
+  const tx = ahead.a.x + ahead.a.rx * lane;
+  const tz = ahead.a.z + ahead.a.rz * lane;
+  const desired = Math.atan2(tx - car.x, tz - car.z);
+  const steer = clamp(wrap(desired - car.yaw) / 0.38, -1, 1);
+  const u = len > 0 ? (gs || 0) / len : 0;
+  const crest = Math.abs(u - 0.3) < 0.035 || Math.abs(u - 0.68) < 0.04;
+  let throttle = 1, brake = 0;
+  if (crest && car.speed > 46) throttle = 0.35;
+  else if (car.speed > car.stats.top * (car.band || 1) * 0.95) throttle = 0.55;
+  return { steer, throttle, brake, boost: false };
+}
+
 function aiInput(track, cars, car, raceT) {
+  if (car.dim === 'glitch' && track.glitch) return followRibbon(track.glitch.samples, track.glitch.len, car, raceT, car.gs);
   const look = 16 + car.speed * 0.5;
   const ahead = sampleAt(track, car.s + look);
   const sm = sampleAt(track, car.s + 10);
@@ -920,6 +1276,16 @@ function aiInput(track, cars, car, raceT) {
         if (ds < 8 && o.speed <= car.speed + 2) brake = Math.max(brake, 0.35);
       }
     }
+  }
+  if (car.gateBias && track.glitch && car.dim !== 'glitch') {
+    let ahead = track.glitch.sEnter - car.s;
+    if (ahead < -track.len * 0.5) ahead += track.len;
+    if (ahead > 8 && ahead < 150) lane = -6.4;
+  }
+  if (car.gateSkip && track.glitch && car.dim !== 'glitch') {
+    let ahead = track.glitch.sEnter - car.s;
+    if (ahead < -track.len * 0.5) ahead += track.len;
+    if (ahead > 8 && ahead < 160) lane = 6.2;
   }
   lane = clamp(lane, -(ROAD - 1.6), ROAD - 1.6);
   const tx = ahead.a.x + ahead.a.rx * lane;
@@ -950,6 +1316,7 @@ function collide(track, cars, events, shakeRef, racing) {
   for (let i = 0; i < cars.length; i++) {
     for (let j = i + 1; j < cars.length; j++) {
       const a = cars[i], b = cars[j];
+      if ((a.dim || 'neon') !== (b.dim || 'neon')) continue;
       const dx = b.x - a.x, dz = b.z - a.z;
       const d2 = dx * dx + dz * dz;
       if (d2 >= min * min || d2 < 1e-8) continue;
@@ -1251,8 +1618,8 @@ export async function boot(canvas) {
       car.y + 0.85,
       car.z + fz * 11
     );
-    const damp = 1 - Math.pow(0.0016, Math.max(0.001, dt));
-    if (!camReady) { camPos.copy(desired); look.copy(lookAt); camReady = true; }
+    const damp = car.camCut ? 1 : (1 - Math.pow(0.0016, Math.max(0.001, dt)));
+    if (!camReady || car.camCut) { camPos.copy(desired); look.copy(lookAt); camReady = true; car.camCut = false; }
     camPos.lerp(desired, damp);
     look.lerp(lookAt, damp);
     const boost = car.boosting ? 0.07 : 0;
@@ -1277,11 +1644,27 @@ export async function boot(canvas) {
     _basis.makeBasis(_right, _cup, _back);
     _basis.setPosition(_eye);
     _basis.decompose(camera.position, camera.quaternion, camera.scale);
-    camera.fov += ((68 + clamp(car.speed / 8, 0, 12) + (car.boosting ? 7 : 0)) - camera.fov) * Math.min(1, dt * 4);
+    const kick = Math.max(0, car.warp || 0) / 0.5 * 18;
+    camera.fov += ((68 + clamp(car.speed / 8, 0, 12) + (car.boosting ? 7 : 0) + kick) - camera.fov) * Math.min(1, dt * 4);
     camera.updateProjectionMatrix();
   }
 
-  function syncMesh(car, dt) {
+  function setGhost(mesh, ghost) {
+  if (!mesh || mesh.userData.ghost === ghost) return;
+  mesh.userData.ghost = ghost;
+  mesh.traverse((o) => {
+    if (!o.material) return;
+    const mats = Array.isArray(o.material) ? o.material : [o.material];
+    for (const m of mats) {
+      if (m.userData._op == null) m.userData._op = m.opacity;
+      m.transparent = ghost || m.userData._op < 0.999;
+      m.opacity = ghost ? 0.3 : m.userData._op;
+      m.depthWrite = !ghost;
+    }
+  });
+}
+
+function syncMesh(car, dt) {
     const m = car.mesh;
     if (!m) return;
     m.visible = true;
@@ -1299,6 +1682,7 @@ export async function boot(canvas) {
       f.scale.set(1, 0.7 + Math.random() * 0.8 + (car.boosting ? 0.6 : 0), 1);
     });
     m.userData.tail.emissiveIntensity = car.boosting ? 4 : 2.2;
+    setGhost(m, m.userData._ghost === true);
     if (m.children) {
       const spot = m.children.find((c) => c.isSpotLight);
       if (spot) spot.intensity = 30 + (car.boosting ? 18 : 0);
@@ -1347,6 +1731,11 @@ export async function boot(canvas) {
         lapMs: player.lapMs,
         best: player.best || 0,
         delta,
+        dimension: player.dim || 'neon',
+        warp: player.warp || 0,
+        s: player.s,
+        y: player.y || 0,
+        lat: player._lat || 0,
         pos: player.lastPos || rankOf(track, cars, player),
         total: cars.length,
         gapText, gapPos,
@@ -1365,7 +1754,7 @@ export async function boot(canvas) {
     return {
       mode,
       player: playerSnap,
-      rivals: cars.filter((c) => !c.you).map((c) => ({ u: (c.s / track.len) % 1, color: c.color, name: c.name })),
+      rivals: cars.filter((c) => !c.you).map((c) => ({ u: (c.s / track.len) % 1, color: c.color, name: c.name, dimension: c.dim || 'neon' })),
       events: ev,
       results: frozen
     };
@@ -1412,6 +1801,10 @@ export async function boot(canvas) {
         car.band = 1 + clamp(gap / 260, -1, 1) * 0.08;
       } else car.band = 1;
       car.draft = drafting(track, cars, car);
+      if (car.you && input) {
+        if (input.gate === 'take') { car.gateBias = true; car.gateSkip = false; }
+        else if (input.gate === 'skip') { car.gateBias = false; car.gateSkip = true; }
+      }
       const inp = (car.you && !BOT) ? input : aiInput(track, cars, car, raceT);
       stepCar(track, car, inp || {}, dt, events, shakeRef, true);
     }
@@ -1472,10 +1865,15 @@ export async function boot(canvas) {
     }
     const focus = (mode === 'attract') ? cars[0] : (cars.find((c) => c.you) || cars[0]);
     const visualDt = Math.min(0.05, Math.max(0.001, dt));
-    cars.forEach((c) => syncMesh(c, visualDt));
+    const focusDim = (focus && focus.dim) || 'neon';
+    cars.forEach((c) => {
+      if (c.mesh) c.mesh.userData._ghost = mode !== 'attract' && (c.dim || 'neon') !== focusDim;
+      syncMesh(c, visualDt);
+    });
     updateCamera(visualDt, focus);
     updateFx(focus);
-    renderer.render(scene, camera);
+    applyWorldLook(track, focusDim, raceT);
+    if (!input || !input.norender) renderer.render(scene, camera);
     return snapshot();
   }
 
@@ -1494,7 +1892,7 @@ export async function boot(canvas) {
       const s = base - slot * 8;
       const lane = (slot % 2 === 0 ? -1 : 1) * 2.5;
       const pose = poseAt(track, s, lane);
-      const car = makeCarState({ ...def, phase: slot * 1.3 + 0.4 }, pose);
+      const car = makeCarState({ ...def, phase: slot * 1.3 + 0.4, gateBias: !def.you && slot !== 1 }, pose);
       car.mesh = meshes[slot];
       paint(meshes[slot], def.color);
       meshes[slot].visible = true;
