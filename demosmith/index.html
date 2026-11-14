@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Demosmith · Tailored product demos for every prospect — Prototype by Hartzell Design</title>
 <meta name="description" content="Clickable prototype of Demosmith, an AI sales demo platform. Fictional brands and sample data. Prototype by Hartzell Design.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230B0D12'/%3E%3Cpath d='M9 8h7a8 8 0 0 1 0 16H9z' fill='none' stroke='%23A78BFA' stroke-width='3'/%3E%3Ccircle cx='22.5' cy='9.5' r='2.5' fill='%2367E8F9'/%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Cdefs%3E%3ClinearGradient id=%22f%22 gradientUnits=%22userSpaceOnUse%22 x1=%228%22 y1=%226%22 x2=%2256%22 y2=%2258%22%3E%3Cstop offset=%220%22 stop-color=%22%23A78BFA%22/%3E%3Cstop offset=%22.5%22 stop-color=%22%23818CF8%22/%3E%3Cstop offset=%221%22 stop-color=%22%2322D3EE%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%2264%22 height=%2264%22 rx=%2215%22 fill=%22url(%23f)%22/%3E%3Cpath d=%22M8 41H54a2 2 0 0 1 2 2v3a2.5 2.5 0 0 1-2.5 2.5H44l-3.5 3.5v1H45a2 2 0 0 1 2 2v2H19v-2a2 2 0 0 1 2-2h4.5v-1L22 48.5h-2C14 48.5 10 46 8 41z%22 fill=%22%2314172A%22/%3E%3Crect fill=%22%2314172A%22 x=%220%22 y=%22-4.0%22 width=%2228.50%22 height=%228%22 rx=%224.0%22 transform=%22translate(26.00 22.30) rotate(-13.00)%22/%3E%3Cpath d=%22M28.61 33.47Q26.00 38.60 23.39 33.47L16.49 19.93Q13.88 14.80 19.64 14.80L32.36 14.80Q38.12 14.80 35.51 19.93Z%22 fill=%22%23FFFFFF%22/%3E%3Cg fill=%22none%22 stroke=%22%23FFFFFF%22 stroke-width=%223%22 stroke-linecap=%22round%22%3E%3Cpath d=%22M16.5 39.8l-3.6-2.2%22/%3E%3Cpath d=%22M35.5 39.8l3.6-2.2%22/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
@@ -298,6 +298,10 @@ input[type=range]{width:100%;accent-color:var(--ink);height:4px}
   .k-hero{grid-template-columns:1fr;gap:6px}
   .k-hero svg{height:80px}
 }
+@container (min-width:580px) and (max-width:760px){
+  .k-nav{display:flex;margin-left:8px}
+  .k-pw,.k-brand .pl{display:none}
+}
 
 /* ---------- Email ---------- */
 #v-email{grid-template-columns:440px 1fr;height:100%;overflow:hidden}
@@ -402,7 +406,7 @@ input[type=range]{width:100%;accent-color:var(--ink);height:4px}
 .tour-pop .status{font-size:12px;color:#6D28D9;display:flex;align-items:center;gap:7px;font-weight:550}
 .modal-bg{position:fixed;inset:0;z-index:95;background:rgba(7,8,12,.6);backdrop-filter:blur(4px);display:none;place-items:center;padding:20px}
 .modal-bg.on{display:grid;animation:pop .3s var(--ease)}
-.modal{width:560px;max-width:100%;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 40px 100px -20px rgba(0,0,0,.5)}
+.modal{width:min(560px,calc(100vw - 24px));background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 40px 100px -20px rgba(0,0,0,.5)}
 .modal .hero{padding:30px 32px 22px;background:radial-gradient(500px 220px at 85% -20%,#E8E2FF,transparent 70%),radial-gradient(400px 200px at 0% 120%,#D9F6FB,transparent 70%),#fff}
 .modal h2{margin:12px 0 8px;font-size:28px;letter-spacing:-.03em;line-height:1.15;font-weight:650}
 .modal h2 .serif{font-size:32px;color:#4B4FD6}
@@ -419,6 +423,135 @@ input[type=range]{width:100%;accent-color:var(--ink);height:4px}
 .credit b{color:var(--ink);font-weight:600}
 .present.on~.credit{z-index:41;background:rgba(14,16,23,.9);border-color:#262A36;color:#8890A0;right:356px}
 .present.on~.credit b{color:#fff}
+
+/* ---------- Phone: the participant app redrawn as a native iOS screen ---------- */
+.phone{width:300px;height:624px;flex:none;border-radius:50px;background:#0B0D12;padding:11px;position:relative;box-shadow:0 0 0 1.5px #343A4A,0 0 0 4px #0B0D12,0 0 0 5px #2A2F3D,0 44px 90px -28px rgba(16,24,40,.6)}
+.phone::before,.phone::after{content:"";position:absolute;width:4px;border-radius:3px;background:#2A2F3D}
+.phone::before{left:-7px;top:118px;height:56px;box-shadow:0 70px 0 #2A2F3D}
+.phone::after{right:-7px;top:150px;height:78px}
+.mapp{--pl:color-mix(in srgb,var(--p) 11%,#fff);--pm:color-mix(in srgb,var(--p) 55%,#fff);--pd:color-mix(in srgb,var(--p) 80%,#000);position:relative;width:100%;height:100%;border-radius:39px;overflow:hidden;background:#F2F3F7;display:flex;flex-direction:column;color:#101828;font-size:13px;line-height:1.4;text-align:left}
+.mapp *{transition:background-color .35s var(--ease),color .35s,border-color .35s,box-shadow .3s}
+.ph-island{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:94px;height:28px;border-radius:20px;background:#000;z-index:4}
+.ph-status{height:46px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:6px 24px 0 32px;font-size:14px;font-weight:600;letter-spacing:-.01em;color:#0B0D12}
+.ph-status .ic{display:flex;gap:5px;align-items:center}
+.ph-home{position:absolute;bottom:7px;left:50%;transform:translateX(-50%);width:112px;height:5px;border-radius:3px;background:#0B0D12;z-index:4}
+.ph-head{flex:none;display:flex;align-items:center;gap:9px;padding:2px 16px 8px}
+.ph-head .nm{font-weight:700;font-size:13.5px;letter-spacing:-.015em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ph-head .pl{font-size:10.5px;color:#667085;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ph-head>div{min-width:0;flex:1}
+.ph-av{width:30px;height:30px;border-radius:50%;color:#fff;display:grid;place-items:center;font-size:11px;font-weight:650;flex:none}
+.ph-bell{width:30px;height:30px;border-radius:50%;background:#fff;display:grid;place-items:center;color:#475467;flex:none}
+.ph-body{position:relative;flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:0 12px 14px;scrollbar-width:none;scroll-behavior:smooth}
+.ph-body::-webkit-scrollbar{display:none}
+.ph-title{font-size:25px;font-weight:700;letter-spacing:-.03em;margin:2px 4px 2px}
+.ph-sub{font-size:12px;color:#667085;margin:0 4px 12px}
+.m-card{background:#fff;border-radius:calc(var(--rad) + 4px);padding:14px;margin-bottom:10px;box-shadow:0 1px 2px rgba(16,24,40,.05)}
+.m-card h4{margin:0 0 8px;font-size:12.5px;font-weight:650;color:#344054;display:flex;align-items:center;gap:6px}
+.m-card h4 .sp{flex:1}
+.m-card h4 small{font-weight:500;color:#98A2B3;font-size:10.5px}
+.m-hero{background:linear-gradient(150deg,var(--p),var(--pd));color:#fff;padding:16px 16px 10px;overflow:hidden}
+.m-hero .lb{font-size:11.5px;opacity:.8;font-weight:500}
+.m-hero .big{font-size:31px;font-weight:700;letter-spacing:-.035em;line-height:1.1;margin:3px 0 7px;font-variant-numeric:tabular-nums}
+.m-hero .chg{display:inline-flex;font-size:11px;font-weight:600;background:rgba(255,255,255,.17);padding:2px 8px;border-radius:999px}
+.m-hero svg{display:block;width:calc(100% + 32px);height:52px;margin:8px -16px -10px}
+.m-hero .sub{display:flex;gap:14px;margin-top:10px;font-size:10.5px;opacity:.9}
+.m-hero .sub b{display:block;font-size:12.5px}
+.m-acts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.m-acts span{background:#fff;border-radius:16px;padding:10px 4px 9px;display:flex;flex-direction:column;align-items:center;gap:5px;font-size:10.5px;font-weight:600;color:#344054;box-shadow:0 1px 2px rgba(16,24,40,.05)}
+.m-acts i{width:32px;height:32px;border-radius:50%;background:var(--pl);color:var(--p);display:grid;place-items:center}
+.m-nudge{background:var(--pl);box-shadow:none}
+.m-nudge{display:grid;grid-template-columns:30px 1fr;gap:4px 10px;align-items:start}
+.m-nudge .sp{display:none}
+.m-nudge .ic svg{width:15px;height:15px}
+.m-nudge .ic{width:30px;height:30px;border-radius:10px;background:#fff;color:var(--p);display:grid;place-items:center;flex:none}
+.m-nudge b{display:block;font-size:13px;color:var(--pd);margin-bottom:2px}
+.m-nudge small{display:block;color:#475467;font-size:11.5px;line-height:1.45}
+.m-nudge .k-btn{grid-column:1/-1;width:100%;justify-content:center;margin-top:10px;padding:9px 12px;border-radius:calc(var(--rad) - 2px)}
+.m-list{background:#fff;border-radius:calc(var(--rad) + 4px);margin-bottom:10px;overflow:hidden;box-shadow:0 1px 2px rgba(16,24,40,.05)}
+.m-cell{display:flex;align-items:center;gap:10px;padding:11px 14px;font-size:12.5px;border-bottom:1px solid #F2F4F7}
+.m-cell:last-child{border-bottom:0}
+.m-cell .t{flex:1;min-width:0}
+.m-cell .t small{display:block;color:#667085;font-size:11px}
+.m-cell .chev{color:#C3C8D1}
+.m-cell i.dot{width:10px;height:10px;border-radius:3px;flex:none}
+.m-cell b{font-variant-numeric:tabular-nums}
+.m-rate{text-align:center;padding:6px 0 2px}
+.m-rate .n{display:block;font-size:46px;font-weight:700;letter-spacing:-.04em;line-height:1;color:var(--pd);font-variant-numeric:tabular-nums}
+.m-rate small{color:#667085;font-size:11.5px}
+.mapp input[type=range]{accent-color:var(--p);margin:12px 0 4px}
+.mapp .k-match{font-size:11.5px;margin-top:10px;padding:9px 10px}
+.mapp .k-split{font-size:10.5px}
+.mapp .k-split b{font-size:12px}
+.mapp .k-proj .big{font-size:20px}
+.mapp .k-proj svg{height:72px}
+.m-donut{display:grid;place-items:center;padding:4px 0 6px}
+.ph-tabs{flex:none;display:flex;justify-content:space-around;padding:7px 6px 24px;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-top:1px solid #E4E7EC}
+.ph-tabs button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;font-weight:600;color:#98A2B3;width:58px;padding:0}
+.ph-tabs button.on{color:var(--p)}
+.m-hl{box-shadow:0 0 0 2.5px var(--p),0 10px 26px -10px color-mix(in srgb,var(--p) 55%,transparent)!important}
+.phone-stage{display:none;flex:1;min-height:0;overflow:auto;padding:8px 20px 30px;gap:30px;justify-content:center;align-items:flex-start}
+.stagewrap.is-phone .frame-wrap{display:none}
+.stagewrap.is-phone .phone-stage{display:flex}
+.ph-info{width:230px;padding-top:24px;display:grid;gap:12px;font-size:12.5px;color:var(--ink2)}
+.ph-info h4{margin:0;font-size:14px;font-weight:650;letter-spacing:-.01em}
+.ph-info p{margin:0;color:var(--muted)}
+.ph-info .row{display:flex;gap:8px;align-items:flex-start}
+.ph-info .row i{width:20px;height:20px;border-radius:6px;background:var(--ai-soft);color:#6D28D9;display:grid;place-items:center;font-style:normal;font-size:11px;flex:none;margin-top:1px}
+.conn{display:none;align-items:center;gap:7px;font-size:12px;font-weight:600;color:#067647;background:#ECFDF3;border:1px solid #ABEFC6;padding:3px 10px;border-radius:999px;white-space:nowrap}
+.conn.on{display:inline-flex}
+.pbar .conn{background:#0D2A1E;border-color:#1B5E3F;color:#6CE9A6}
+/* present side by side */
+.p-phone{display:none}
+.present.sbs .pstage{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:26px;align-items:start}
+.present.sbs .p-phone{display:flex;flex-direction:column;align-items:center;gap:12px;position:sticky;top:0}
+.p-cap{display:flex;align-items:center;gap:7px;font-size:12px;color:#9AA2B2;font-weight:500}
+.pbar .seg{background:#151821;border-color:#262A36}
+.pbar .seg button{color:#9AA2B2}
+.pbar .seg button.on{background:#2A3044;color:#fff;box-shadow:none}
+.pn-m{margin:0 0 16px;border:1px solid #173847;background:linear-gradient(180deg,#0E2029,#0C161D);border-radius:12px;padding:12px 14px;font-size:13px;line-height:1.5}
+.pn-m .mt{display:flex;align-items:center;gap:6px;font-size:10.5px;font-weight:650;letter-spacing:.02em;color:#67E8F9;margin-bottom:6px}
+.pn-m .btn{margin-top:10px;background:#12303B;border-color:#1E4B5A;color:#CFFAFE;box-shadow:none}
+.k-nav span{cursor:default}
+#stage .k-nav span,#stage .k-card[data-sec]{cursor:pointer}
+/* open on your phone */
+#qrModal{z-index:85}
+.qr-modal{width:min(760px,calc(100vw - 24px));background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 40px 100px -20px rgba(0,0,0,.5);display:grid;grid-template-columns:1fr 250px}
+.qr-l{padding:26px 28px 24px;background:radial-gradient(500px 220px at 85% -20%,#E8E2FF,transparent 70%),radial-gradient(400px 200px at 0% 120%,#D9F6FB,transparent 70%),#fff;display:flex;flex-direction:column;gap:14px}
+.qr-l h2{margin:6px 0 0;font-size:24px;letter-spacing:-.025em;font-weight:650;line-height:1.2}
+.qr-l h2 .serif{font-size:27px;color:#4B4FD6}
+.qr-l p{margin:0;color:var(--ink2);font-size:13.5px;line-height:1.55}
+.qr-row{display:flex;gap:18px;align-items:center}
+.qr-box{flex:none;width:156px;height:156px;padding:10px;background:#fff;border-radius:16px;box-shadow:0 0 0 1px var(--line),0 14px 30px -14px rgba(16,24,40,.35);position:relative}
+.qr-box svg{display:block;width:100%;height:100%}
+.qr-box .qlogo{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:30px;height:30px;border-radius:8px;background:#fff;padding:3px}
+.qr-side{display:grid;gap:10px;min-width:0;flex:1}
+.qr-status{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:600;padding:10px 12px;border-radius:11px;background:var(--bg);border:1px solid var(--line);color:var(--muted)}
+.qr-status.ok{background:#ECFDF3;border-color:#ABEFC6;color:#05603A}
+.qr-status small{display:block;font-weight:500;font-size:11.5px;color:inherit;opacity:.8}
+.qr-r{background:#0B0D12;display:grid;place-items:center;padding:18px 0;position:relative}
+.qr-r .phone{zoom:.66}
+.qr-r .cap{position:absolute;bottom:10px;left:0;right:0;text-align:center;font-size:11px;color:#8890A0}
+.qr-f{display:flex;gap:10px;align-items:center}
+.qr-f .sp{flex:1}
+.qr-f small{color:var(--muted);font-size:11.5px}
+.ptool .lbl{white-space:nowrap}
+@media (max-width:1500px){ .ptool .hide-lg{display:none} }
+@media (max-width:1280px){ .ptool .bl2{display:none} }
+/* scanned link: phone-only view */
+.solo{display:none}
+body.solo-on .shell,body.solo-on .credit{display:none!important}
+body.solo-on .solo .ph-head{padding-top:12px}
+body.solo-on .solo{display:flex;flex-direction:column;position:fixed;inset:0}
+body.solo-on .solo .mapp{border-radius:0}
+.solo-bar{flex:none;display:flex;align-items:center;gap:8px;padding:9px 14px;background:#0B0D12;color:#C9CED8;font-size:12px}
+.solo-bar b{color:#fff;font-weight:600}
+.solo-bar .sp{flex:1}
+.solo-bar a{color:#C4B5FD;text-decoration:none;font-weight:600}
+.solo .ph-tabs{padding-bottom:calc(10px + env(safe-area-inset-bottom))}
+.txs{display:none}
+.mapp .k-proj h3{margin:0 0 8px;font-size:12.5px;font-weight:650;color:#344054;display:flex;align-items:center;gap:6px}
+.mapp .k-proj h3 .sp{flex:1}
+.solo .mapp{flex:1;height:auto;min-height:0}
 
 /* ---------- Responsive ---------- */
 @media (max-width:1280px){
@@ -442,21 +575,90 @@ input[type=range]{width:100%;accent-color:var(--ink);height:4px}
   .hide-md{display:none!important}
   .top .pill{display:none}
 }
+@media (max-width:1280px){
+  .present.sbs .phone{zoom:.9}
+}
+@media (max-width:1120px){
+  .ph-info{display:none}
+}
+/* ---------- Phone-sized viewport ---------- */
+@media (max-width:760px){
+  .shell{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) auto}
+  .main{order:1}
+  .side{order:2;flex-direction:row;align-items:stretch;justify-content:space-around;gap:0;padding:6px 4px calc(6px + env(safe-area-inset-bottom));border-top:1px solid var(--side-line)}
+  .side .logo,.side .navlab,.side .prod,.side .grow,.side .sidecard,.side .me{display:none!important}
+  .nav{flex:1;flex-direction:column;gap:3px;padding:6px 2px;justify-content:center;width:auto;font-size:10.5px}
+  .nav .tx,.nav .ct{display:none!important}
+  .nav .txs{display:block;white-space:nowrap}
+  .main{grid-template-rows:52px minmax(0,1fr)}
+  .top{padding:0 12px;gap:8px}
+  .top .pill,.top .bl{display:none}
+  .crumbs{font-size:13px}
+  .crumbs span{display:none}
+  .page{padding:16px 14px 40px}
+  .ph{flex-wrap:wrap;gap:10px}
+  .ph h1{font-size:21px}.ph h1 .serif{font-size:23px}
+  .kpis{grid-template-columns:1fr 1fr;gap:10px}
+  .kpi{padding:12px 14px}.kpi .v{font-size:20px;flex-wrap:wrap}
+  .connect{flex-wrap:wrap}
+  #demoTable{overflow-x:auto}
+  #demoTable table{min-width:600px}
+  #v-builder.on,#v-email.on{display:block;overflow-y:auto;height:100%}
+  .ctrl{border-right:0;border-bottom:1px solid var(--line)}
+  .ctrl-b{overflow:visible;padding:14px 14px 22px}
+  .ctrl-h{padding:14px 14px 0}
+  .tabs{margin:0 -14px;padding:0 8px}
+  .stagewrap{min-height:640px}
+  .ptool{flex-wrap:wrap;padding:10px 12px;gap:8px}
+  .frame-wrap{padding:0 10px 18px;overflow:visible}
+  .phone-stage{padding:6px 10px 24px;overflow:visible}
+  .mail-b{padding:12px}
+  .share-grid,.an-grid{grid-template-columns:1fr}
+  .an-grid>div{border-left:0!important}
+  .akpis{grid-template-columns:1fr 1fr}
+  .attn div{grid-template-columns:110px 1fr 50px}
+  .present{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr) auto}
+  .pbar{flex-wrap:wrap;padding:8px 10px;gap:8px;row-gap:6px}
+  .pbar .pname,.pbar .pdot{display:none}
+  .pstage{padding:12px}
+  .present.sbs .pstage{display:flex;flex-direction:column;align-items:center;gap:18px}
+  .present.sbs .pstage .frame{flex:none;align-self:stretch}
+  .present.sbs .p-phone{position:static}
+  .present.sbs .phone{zoom:1}
+  .pnotes{border-left:0;border-top:1px solid #1A1D27;max-height:44vh}
+  .present.on~.credit{display:none}
+  .credit{display:none;bottom:74px;right:10px;font-size:10.5px;padding:3px 9px}
+  body[data-view=dashboard] .credit{display:block}
+  .tour-pop{width:calc(100vw - 24px)}
+  .modal .hero{padding:22px 20px 16px}
+  .modal h2{font-size:22px}.modal h2 .serif{font-size:25px}
+  .modal .mf2{flex-wrap:wrap;padding:14px 20px 20px}
+  .modal .mf2 small{width:100%}
+  #qrModal{padding:12px}
+  .qr-modal{grid-template-columns:1fr;max-height:calc(100dvh - 24px);overflow:auto}
+  .qr-f{flex-wrap:wrap}
+  .qr-f small{width:100%}
+  .qr-r{display:none}
+  .qr-l{padding:22px 20px 20px}
+  .qr-row{flex-direction:column;align-items:stretch}
+  .qr-box{align-self:center}
+  .toast{bottom:80px;max-width:calc(100vw - 24px)}
+}
 </style>
 </head>
 <body>
 <div class="shell">
   <aside class="side" aria-label="Demosmith navigation">
     <div class="logo">
-      <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#A78BFA"/><stop offset="1" stop-color="#22D3EE"/></linearGradient></defs><rect width="32" height="32" rx="8" fill="#1C2030"/><path d="M9 8h7a8 8 0 0 1 0 16H9z" fill="none" stroke="url(#lg)" stroke-width="3"/><circle cx="22.5" cy="9.5" r="2.5" fill="#67E8F9"/></svg>
+      <svg width="26" height="26" viewBox="0 0 64 64" role="img" aria-label="Demosmith logo"><defs><linearGradient id="dsLogoG" gradientUnits="userSpaceOnUse" x1="8" y1="6" x2="56" y2="58"><stop offset="0" stop-color="#A78BFA"/><stop offset=".5" stop-color="#818CF8"/><stop offset="1" stop-color="#22D3EE"/></linearGradient></defs><rect width="64" height="64" rx="15" fill="url(#dsLogoG)"/><path d="M8 41H54a2 2 0 0 1 2 2v3a2.5 2.5 0 0 1-2.5 2.5H44l-3.5 3.5v1H45a2 2 0 0 1 2 2v2H19v-2a2 2 0 0 1 2-2h4.5v-1L22 48.5h-2C14 48.5 10 46 8 41z" fill="#14172A"/><rect fill="#14172A" x="0" y="-4.0" width="28.50" height="8" rx="4.0" transform="translate(26.00 22.30) rotate(-13.00)"/><path d="M28.61 33.47Q26.00 38.60 23.39 33.47L16.49 19.93Q13.88 14.80 19.64 14.80L32.36 14.80Q38.12 14.80 35.51 19.93Z" fill="#FFFFFF"/><g fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"><path d="M16.5 39.8l-3.6-2.2"/><path d="M35.5 39.8l3.6-2.2"/></g></svg><svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#A78BFA"/><stop offset="1" stop-color="#22D3EE"/></linearGradient></defs></svg>
       <span class="t">Demosmith</span><span class="ws">Keystone</span>
     </div>
-    <button class="nav" data-go="dashboard"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg><span class="tx">Demos</span><span class="ct">12</span></button>
+    <button class="nav" data-go="dashboard"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg><span class="tx">Demos</span><span class="txs">Demos</span><span class="ct">12</span></button>
     <div class="navlab">Lumen Biotech</div>
-    <button class="nav" data-go="builder"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg><span class="tx">Demo builder</span></button>
-    <button class="nav" data-go="email"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/></svg><span class="tx">Email content</span></button>
-    <button class="nav" data-go="present"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M10 8l4 2-4 2z" fill="currentColor"/><path d="M8 20h8M12 16v4"/></svg><span class="tx">Present</span></button>
-    <button class="nav" data-go="share"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span class="tx">Share &amp; analytics</span></button>
+    <button class="nav" data-go="builder"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg><span class="tx">Demo builder</span><span class="txs">Build</span></button>
+    <button class="nav" data-go="email"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/></svg><span class="tx">Email content</span><span class="txs">Email</span></button>
+    <button class="nav" data-go="present"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M10 8l4 2-4 2z" fill="currentColor"/><path d="M8 20h8M12 16v4"/></svg><span class="tx">Present</span><span class="txs">Present</span></button>
+    <button class="nav" data-go="share"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span class="tx">Share &amp; analytics</span><span class="txs">Share</span></button>
     <div class="navlab">Connected products</div>
     <div class="prod" title="Keystone Participant Web"><span class="pi" style="background:#0E2347">K</span><span class="lbl">Participant Web<small>Keystone · SDK v3</small></span><span class="live"></span></div>
     <div class="prod" title="Keystone Plan Sponsor Portal"><span class="pi" style="background:#475467">S</span><span class="lbl">Sponsor Portal<small>Keystone · snapshot</small></span><span class="live"></span></div>
@@ -470,7 +672,7 @@ input[type=range]{width:100%;accent-color:var(--ink);height:4px}
       <div class="crumbs" id="crumbs"></div>
       <div class="sp"></div>
       <span class="pill"><span class="dot"></span>Prototype · fictional data</span>
-      <button class="btn" id="tourBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l5 3.5-5 3.5z" fill="currentColor"/></svg>Take the tour</button>
+      <button class="btn" id="tourBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l5 3.5-5 3.5z" fill="currentColor"/></svg><span class="bl">Take the tour</span></button>
       <button class="btn pri hide-dash" id="presentBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5l12 7-12 7z"/></svg>Present</button>
     </header>
 
@@ -564,19 +766,29 @@ input[type=range]{width:100%;accent-color:var(--ink);height:4px}
           </div>
         </div>
       </div>
-      <div class="stagewrap">
+      <div class="stagewrap" id="bStage">
         <div class="ptool">
           <span class="lbl"><span class="live"></span>Live preview</span>
           <span class="tag" id="viewingAs">Viewing as —</span>
           <div class="sp"></div>
-          <div class="seg" id="device"><button class="on" data-d="desktop">Desktop</button><button data-d="tablet">Tablet</button></div>
-          <button class="btn" data-go="email">Email</button>
-          <button class="btn" data-go="share">Share</button>
+          <span class="conn"><span class="live"></span>Dana's iPhone · live</span>
+          <div class="seg" id="device"><button class="on" data-d="desktop">Desktop</button><button data-d="tablet">Tablet</button><button data-d="phone">Phone</button></div>
+          <button class="btn" data-qr="1" id="bQR" title="Open on your phone" aria-label="Open on your phone"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10.5 18.5h3"/></svg><span class="bl2">Open on your phone</span></button>
+          <button class="btn hide-lg" data-go="email">Email</button>
+          <button class="btn hide-lg" data-go="share">Share</button>
         </div>
         <div class="frame-wrap"><div class="frame" id="bFrame">
           <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="url"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span id="bUrl"></span></div><div style="width:48px"></div></div>
           <div id="preview"></div>
         </div></div>
+        <div class="phone-stage"><div id="bPhone"></div>
+          <div class="ph-info"><span class="aitag" style="justify-self:start">Mobile preview</span><h4>Keystone's iOS app, themed for <span class="pnm">Lumen Biotech</span></h4>
+            <p>The same live demo, redrawn as the native participant app. Brand, persona, data and module changes show up here too.</p>
+            <div class="row"><i>◐</i><span>Their logo and color on iOS components</span></div>
+            <div class="row"><i>✦</i><span>Same personas, balances and funds as desktop</span></div>
+            <div class="row"><i>▶</i><span>Present it side by side, or put it on their phone</span></div>
+            <button class="btn ai" data-qr="1" style="justify-self:start"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10.5 18.5h3"/></svg> Open on your phone</button></div>
+        </div>
       </div>
     </section>
 
@@ -657,15 +869,19 @@ input[type=range]{width:100%;accent-color:var(--ink);height:4px}
 <div class="present" id="present" aria-label="Present mode">
   <div class="pbar">
     <span class="rec"><i></i>Presenting</span><span class="tm" id="ptime">00:00</span>
-    <span style="color:#5D6574">·</span><span>Lumen Biotech · Keystone Participant Web</span>
+    <span class="pdot" style="color:#5D6574">·</span><span class="pname">Lumen Biotech · Keystone Participant Web</span>
     <div class="sp"></div>
     <div class="seg hide-md" id="pPersona" style="background:#151821;border-color:#262A36"></div>
+    <div class="seg" id="pView"><button class="on" data-pv="desk">Desktop</button><button data-pv="sbs">Desktop + phone</button></div>
+    <span class="conn"><span class="live"></span>Dana's iPhone · live</span>
+    <button class="btn sm" data-qr="1" id="pQR"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10.5 18.5h3"/></svg> Open on phone</button>
     <button class="btn sm" id="exitPresent">Exit <span class="mono" style="opacity:.6">Esc</span></button>
   </div>
-  <div class="pstage"><div class="frame">
+  <div class="pstage" id="pstage"><div class="frame">
     <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="url"><span id="pUrl"></span></div><div style="width:48px"></div></div>
     <div id="stage"></div>
-  </div></div>
+  </div>
+  <div class="p-phone" id="pPhoneCol"><div id="pPhone"></div><div class="p-cap" id="pCap"></div></div></div>
   <aside class="pnotes" id="pnotes">
     <div class="pn-steps" id="pSteps"></div>
     <div class="pn-b" id="pBody"></div>
@@ -702,6 +918,24 @@ input[type=range]{width:100%;accent-color:var(--ink);height:4px}
   </div>
   <div class="mf2"><span class="sp"></span><button class="btn" id="fExplore">Keep exploring</button><a class="btn pri" href="https://hartzell.design" target="_blank" rel="noopener" style="text-decoration:none">Work with Hartzell Design →</a></div>
 </div></div>
+<div class="modal-bg" id="qrModal"><div class="qr-modal" role="dialog" aria-label="Open on your phone">
+  <div class="qr-l">
+    <span class="aitag" style="align-self:flex-start"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10.5 18.5h3"/></svg> Mobile · live sync</span>
+    <h2>Open this demo <span class="serif"><i>on their phone.</i></span></h2>
+    <p>Anyone in the room can scan the code. They get <b id="qrCo">Lumen Biotech</b>'s mobile app in their own brand, and their phone follows your screen live as you present.</p>
+    <div class="qr-row">
+      <div class="qr-box" id="qrCode"></div>
+      <div class="qr-side">
+        <div class="lab" style="margin:0">Or send the short link</div>
+        <div class="linkbox"><span class="mono" id="qrLink">demosmith.app/m/lumen-7kq2</span><button class="btn sm" id="qrCopy">Copy</button></div>
+        <div class="qr-status" id="qrStatus"></div>
+      </div>
+    </div>
+    <div class="qr-f"><small>Prototype: the live connection is simulated. Scanning the code opens this demo's phone view.</small><span class="sp"></span><button class="btn ghost sm" id="qrDisc" hidden>Disconnect</button><button class="btn pri" id="qrClose">Done</button></div>
+  </div>
+  <div class="qr-r"><div id="qrPhone"></div><div class="cap">What their phone shows right now</div></div>
+</div></div>
+<div class="solo" id="solo"></div>
 <div class="toast" id="toast"></div>
 <script>
 (() => {
@@ -760,7 +994,7 @@ const S = {
   personas: DEFAULT_P.map(p => ({...p, funds:{...p.funds}})), active:0, generated:false, branded:false,
   mods:{overview:true,nudge:true,contrib:true,roth:false,alloc:true,proj:true,loans:true},
   device:"desktop", tone:"standard", subject:"Enroll in your {{plan_name}}", body:EMAIL.standard, recip:0,
-  pStep:0, presenting:false
+  pStep:0, presenting:false, mTab:"home", sbs:false
 };
 const cur = () => S.personas[S.active] || S.personas[0];
 const ini = p => (p.first[0] + (p.last[0]||"")).toUpperCase();
@@ -844,7 +1078,7 @@ function appHTML(){
   const fundRows = Object.entries(p.funds).filter(([,v]) => v).map(([k,v]) => `<div><i style="background:${FUNDS[k].c}"></i><span>${FUNDS[k].n}</span><b>${v}%</b></div>`).join("");
   return `<div class="kapp">
   <div class="k-top"><div class="k-brand">${logo(S.logo,30)}<div><div class="nm">${esc(S.name)}</div><div class="pl">${esc(S.plan)}</div></div></div>
-    <div class="k-nav"><span class="on">Overview</span><span>Investments</span><span>Contributions</span><span>Planner</span></div><span class="sp"></span>
+    <div class="k-nav"><span class="on" data-kn="overview">Overview</span><span data-kn="alloc">Investments</span><span data-kn="contrib">Contributions</span><span data-kn="proj">Planner</span></div><span class="sp"></span>
     <div class="k-pw">Administered by<br><b>Keystone Retirement</b></div><div class="k-av" style="background:${p.color}">${ini(p)}</div></div>
   <div class="k-body">
     <div class="k-hello"><div><h2>Good morning, ${esc(p.first)}</h2><p>${esc(p.role)} · ${esc(S.plan)}</p></div><span class="sp"></span><button class="k-btn lt">Statements</button><button class="k-btn">Manage account</button></div>
@@ -873,8 +1107,9 @@ function appHTML(){
 }
 function patchApps(){
   const p = cur();
-  $$(".kapp").forEach(root => {
+  $$(".kapp,.mapp").forEach(root => {
     const set = (sel, html) => { const el = root.querySelector(sel); if (el) el.innerHTML = html; };
+    set("[data-part=mrate]", mRate(p));
     set("[data-part=rate]", partRate(p)); set("[data-part=match]", partMatch(p)); set("[data-part=split]", partSplit(p));
     set("[data-part=proj]", partProj(p)); set("[data-part=nudge]", partNudge(p));
     const sl = root.querySelector(".k-slider"); if (sl && document.activeElement !== sl) sl.value = p.c;
@@ -892,6 +1127,7 @@ function applyTheme(){ document.documentElement.style.setProperty("--p", S.color
 function renderPreview(){
   $("#preview").innerHTML = appHTML();
   $("#bUrl").textContent = `${slug()}.keystone-retirement.example/participant`;
+  renderPhones();
   if (S.presenting) renderStage();
 }
 function renderBrandControls(){
@@ -957,7 +1193,7 @@ function renderAll(){
 const CRUMB = {dashboard:["Demos"], builder:["Demos","Lumen Biotech","Builder"], email:["Demos","Lumen Biotech","Email content"], share:["Demos","Lumen Biotech","Share & analytics"]};
 function go(v){
   if (v === "present"){ openPresent(); return; }
-  S.view = v;
+  S.view = v; document.body.dataset.view = v;
   $$(".view").forEach(el => el.classList.toggle("on", el.id === "v-" + v));
   $$(".side .nav").forEach(b => b.classList.toggle("on", b.dataset.go === v));
   const c = CRUMB[v].map(x => x === "Lumen Biotech" ? S.name : x);
@@ -1041,7 +1277,7 @@ let timer, t0;
 function renderStage(){
   $("#stage").innerHTML = appHTML();
   $("#pUrl").textContent = `${slug()}.keystone-retirement.example/participant`;
-  highlight(false);
+  highlight(false, true);
 }
 function renderNotes(){
   const steps = pSteps(); S.pStep = Math.min(S.pStep, steps.length-1);
@@ -1049,15 +1285,17 @@ function renderNotes(){
   $("#pSteps").innerHTML = steps.map((s,i) => `<button class="${i===S.pStep?"on":i<S.pStep?"done":""}" data-ps="${i}" aria-label="Step ${i+1}"></button>`).join("");
   $("#pBody").innerHTML = `<div class="k">Step ${S.pStep+1} of ${steps.length}<span class="sp" style="flex:1"></span><span class="aitag" style="background:#241C45;border-color:#3B2F70;color:#C4B5FD">✦ Tailored to ${esc(S.name)}</span></div>
     <h3>${T.t}</h3><ul>${T.pts(p).map((x,i) => `<li><i>${i+1}</i><span>${esc(x)}</span></li>`).join("")}</ul>
+    <div class="pn-m" id="pnMobile"><div class="mt">${PHONE_IC} MOBILE MOMENT</div><span>${esc(MOB[k](p))}</span>${S.sbs ? "" : `<div><button class="btn sm" data-pv="sbs">Show desktop + phone</button></div>`}</div>
     <div class="pn-q"><span class="aitag">✦ Likely question</span><b>${esc(T.q[0])}</b><span>${esc(T.q[1])}</span></div>
     <div class="pn-ctx"><span>Prospect<b>${esc(S.name)} · ~500 employees</b></span><span>In the room<b>Head of People, CFO</b></span><span>Their goal<b>Raise match capture</b></span></div>`;
   $("#pPrev").disabled = S.pStep === 0;
   $("#pNext").textContent = S.pStep === steps.length-1 ? "Finish" : "Next →";
   $("#pPersona").innerHTML = S.personas.map((q,i) => `<button data-pp="${i}" class="${i===S.active?"on":""}" style="${i===S.active?"background:#2A3044;color:#fff":"color:#9AA2B2"}">${esc(q.first)}</button>`).join("");
 }
-function highlight(scroll = true){
+function highlight(scroll = true, force = false){
   const k = pSteps()[S.pStep];
   $$("#stage .k-card").forEach(c => c.classList.toggle("k-hl", c.dataset.sec === k));
+  syncPhone(force);
   const el = $(`#stage [data-sec="${k}"]`);
   if (el && scroll){ const st = $(".pstage"), r = el.getBoundingClientRect(), sr = st.getBoundingClientRect(); st.scrollTo({top: st.scrollTop + r.top - sr.top - (sr.height - r.height)/2, behavior:"smooth"}); }
 }
@@ -1067,7 +1305,7 @@ function openPresent(){
   t0 = Date.now(); clearInterval(timer);
   timer = setInterval(() => { const s = Math.floor((Date.now()-t0)/1000); $("#ptime").textContent = String(Math.floor(s/60)).padStart(2,"0") + ":" + String(s%60).padStart(2,"0"); }, 1000);
 }
-function closePresent(){ S.presenting = false; $("#present").classList.remove("on"); clearInterval(timer); $("#stage").innerHTML = ""; renderPreview(); }
+function closePresent(){ lastTab = null; closeQR(); S.presenting = false; $("#present").classList.remove("on"); clearInterval(timer); $("#stage").innerHTML = ""; renderPreview(); }
 function pGo(i){ const n = pSteps().length; if (i >= n){ closePresent(); go("share"); toast("Demo complete. Share a link while it's fresh."); return; } S.pStep = Math.max(0, i); renderNotes(); highlight(); }
 
 /* ---------- Share ---------- */
@@ -1082,9 +1320,239 @@ function renderShare(){
   $("#viewers").innerHTML = vw.map(r => `<tr><td><div class="pros"><span class="pav" style="background:${r[4]};width:28px;height:28px;font-size:11px">${initials(r[0])}</span><div><b>${r[0]}</b><small>${r[1]}</small></div></div></td><td style="text-align:right"><b>${r[2]}</b> <span style="color:var(--muted);font-size:12px">views · ${r[3]}</span></td></tr>`).join("");
 }
 
+/* ---------- Mobile: the participant app redrawn as a native phone screen ---------- */
+const TAB_OF = {overview:"home", nudge:"home", loans:"home", contrib:"save", alloc:"invest", proj:"plan"};
+const NAV_OF = {overview:"overview", nudge:"overview", loans:"overview", contrib:"contrib", alloc:"alloc", proj:"proj"};
+const PHONE_IC = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10.5 18.5h3"/></svg>';
+const MTABS = [
+  {k:"home", n:"Home", mod:"overview", ic:'<path d="M3.5 10.5L12 4l8.5 6.5V20a1 1 0 0 1-1 1H15v-6H9v6H4.5a1 1 0 0 1-1-1z"/>'},
+  {k:"save", n:"Save", mod:"contrib", ic:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v9M9.5 9.8c0-1.2 1.1-1.9 2.5-1.9s2.5.7 2.5 1.8c0 2.7-5 1.4-5 4.2 0 1.1 1.1 1.9 2.5 1.9s2.5-.7 2.5-1.9"/>'},
+  {k:"invest", n:"Invest", mod:"alloc", ic:'<path d="M12 3.5a8.5 8.5 0 1 0 8.5 8.5H12z"/><path d="M15 3.8A8.5 8.5 0 0 1 20.2 9H15z"/>'},
+  {k:"plan", n:"Plan", mod:"proj", ic:'<path d="M4 19l5-6 4 3 7-9"/><path d="M15 7h5v5"/>'}
+];
+const mTabs = () => MTABS.filter(t => S.mods[t.mod]);
+const STATUS_BAR = `<div class="ph-island"></div><div class="ph-status"><span>9:41</span><span class="ic"><svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg><svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><path d="M7.5 2.2c2.1 0 4 .8 5.5 2.2l1.1-1.1A9.3 9.3 0 0 0 7.5.6 9.3 9.3 0 0 0 .9 3.3L2 4.4a7.7 7.7 0 0 1 5.5-2.2zm0 3.2c1.2 0 2.3.5 3.2 1.3l1.1-1.1a6.1 6.1 0 0 0-8.6 0l1.1 1.1c.9-.8 2-1.3 3.2-1.3zm0 3.2c-.4 0-.8.2-1.1.5l1.1 1.3 1.1-1.3c-.3-.3-.7-.5-1.1-.5z"/></svg><svg width="25" height="12" viewBox="0 0 25 12"><rect x=".5" y=".5" width="21" height="11" rx="3.2" fill="none" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="16" height="8" rx="2" fill="currentColor"/><rect x="22.6" y="4" width="1.6" height="4" rx=".8" fill="currentColor" opacity=".45"/></svg></span></div>`;
+const CHEV = '<svg class="chev" width="8" height="13" viewBox="0 0 8 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 1.5l5 5-5 5"/></svg>';
+function mRate(p){ return `<span class="n">${p.c}%</span><small>of pay · ${money(p.salary*p.c/100/26)} per paycheck</small>`; }
+function screenHTML(tab, device){
+  const p = cur(), m = S.mods, tabs = mTabs(), co = esc(S.name.split(" ")[0]);
+  if (!tabs.some(t => t.k === tab)) tab = "home";
+  let body = "";
+  if (tab === "home"){
+    const a = area(balSeries(p.balance), 300, 52), ytd = p.balance - p.balance/1.112;
+    const yourY = p.salary*p.c/100*.87, empY = p.salary*Math.min(p.c,S.match)/100*.87;
+    const act = (k, n, ic) => `<span ${k && tabs.some(t => t.k === k) ? `data-mtab="${k}"` : ""}><i><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ic}</svg></i>${n}</span>`;
+    body = `<div class="ph-title">Hi, ${esc(p.first)}</div><div class="ph-sub">${esc(S.plan)}</div>
+    <div class="m-card m-hero" data-sec="overview"><div class="lb">Total balance</div><div class="big">${money(p.balance)}</div><span class="chg">▲ ${money(ytd)} (11.2%) this year</span>
+      <div class="sub"><div>You, YTD<b>${money(yourY)}</b></div><div>${co} match<b>${money(empY)}</b></div><div>Vested<b>100%</b></div></div>
+      <svg viewBox="0 0 300 52" preserveAspectRatio="none" aria-hidden="true"><path d="${a.fill}" fill="rgba(255,255,255,.16)"/><path d="${a.line}" fill="none" stroke="#fff" stroke-width="2" vector-effect="non-scaling-stroke"/></svg></div>
+    <div class="m-acts">${act("save","Contribute",'<path d="M12 5v14M5 12h14"/>')}${act("invest","Invest",'<path d="M4 19l5-6 4 3 7-9"/>')}${act(null,"Statements",'<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/>')}</div>
+    ${m.nudge ? `<div class="m-card m-nudge" data-sec="nudge" data-part="nudge">${partNudge(p)}</div>` : ""}
+    <div class="m-list">
+      ${m.loans ? `<div class="m-cell" data-sec="loans"><span class="t">Loans &amp; withdrawals<small>Borrow up to ${money(Math.min(50000,p.balance*.5))}</small></span>${CHEV}</div>` : ""}
+      <div class="m-cell"><span class="t">Beneficiaries<small>2 on file</small></span>${CHEV}</div>
+      <div class="m-cell"><span class="t">Documents<small>Q3 statement is ready</small></span>${CHEV}</div>
+    </div>`;
+  } else if (tab === "save"){
+    body = `<div class="ph-title">Contributions</div><div class="ph-sub">Changes apply next paycheck</div>
+    <div class="m-card" data-sec="contrib"><div class="m-rate" data-part="mrate">${mRate(p)}</div>
+      <input type="range" class="k-slider" min="0" max="20" step="1" value="${p.c}" aria-label="Contribution rate">
+      <div class="k-scale"><span>0%</span><span>Full match at ${S.match}%</span><span>20%</span></div>
+      <div data-part="match">${partMatch(p)}</div>
+      ${m.roth ? `<div class="k-split" data-part="split">${partSplit(p)}</div>` : ""}</div>
+    <div class="m-list"><div class="m-cell"><span class="t">Auto-increase<small>+1% every January, up to 15%</small></span><span style="color:#667085">Off</span>${CHEV}</div>
+      <div class="m-cell"><span class="t">Annual salary<small>From ${esc(S.name)} payroll</small></span><b>${money(p.salary)}</b></div></div>`;
+  } else if (tab === "invest"){
+    const rows = Object.entries(p.funds).filter(([,v]) => v);
+    body = `<div class="ph-title">Investments</div><div class="ph-sub">${rows.length} ${rows.length === 1 ? "fund" : "funds"} · ${er(p.funds).toFixed(3)}% weighted expense ratio</div>
+    <div class="m-card" data-sec="alloc"><div class="m-donut">${donut(p.funds,150)}</div>
+      ${rows.map(([k,v]) => `<div class="m-cell" style="padding:9px 2px"><i class="dot" style="background:${FUNDS[k].c}"></i><span class="t">${FUNDS[k].n}</span><b>${v}%</b></div>`).join("")}
+      <div style="font-size:11.5px;color:#667085;display:flex;justify-content:space-between;margin-top:6px"><span>Annual fees</span><b style="color:#101828">${money(p.balance*er(p.funds)/100)}/yr</b></div></div>
+    <div class="m-list"><div class="m-cell"><span class="t">Change investments<small>Takes about 3 minutes</small></span>${CHEV}</div></div>`;
+  } else {
+    body = `<div class="ph-title">Planner</div><div class="ph-sub">Retiring at ${p.retire} · illustrative</div>
+    <div class="m-card k-proj" data-sec="proj" data-part="proj">${partProj(p)}</div>
+    <div class="m-list"><div class="m-cell"><span class="t">Retirement age<small>Drag to see the effect</small></span><b>${p.retire}</b>${CHEV}</div>
+      <div class="m-cell"><span class="t">Add Social Security estimate</span>${CHEV}</div></div>`;
+  }
+  return `<div class="mapp" data-tab="${tab}">${device ? STATUS_BAR : ""}
+    <div class="ph-head">${logo(S.logo,28)}<div><div class="nm">${esc(S.name)}</div><div class="pl">Retirement · powered by Keystone</div></div>
+      <span class="ph-bell"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg></span><span class="ph-av" style="background:${p.color}">${ini(p)}</span></div>
+    <div class="ph-body">${body}</div>
+    <nav class="ph-tabs" aria-label="App tabs">${tabs.map(t => `<button data-mtab="${t.k}" class="${t.k === tab ? "on" : ""}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${t.ic}</svg>${t.n}</button>`).join("")}</nav>
+    ${device ? '<div class="ph-home"></div>' : ""}</div>`;
+}
+const deviceHTML = tab => `<div class="phone">${screenHTML(tab, true)}</div>`;
+function paintPhone(host, tab, hl){
+  if (!host) return;
+  host.innerHTML = deviceHTML(tab);
+  markPhone(host, hl);
+}
+function markPhone(host, hl){
+  if (!host) return;
+  host.querySelectorAll("[data-sec]").forEach(c => c.classList.toggle("m-hl", !!hl && c.dataset.sec === hl));
+  const el = hl && host.querySelector(`[data-sec="${hl}"]`), body = host.querySelector(".ph-body");
+  if (el && body) body.scrollTop = Math.max(0, el.offsetTop - 70);
+}
+function renderPhones(){
+  paintPhone($("#bPhone"), S.mTab);
+  $$(".pnm").forEach(e => e.textContent = S.name);
+  renderMirror();
+  if ($("#solo") && document.body.classList.contains("solo-on")) renderSolo();
+}
+let lastTab = null;
+const presentKey = () => pSteps()[S.pStep] || "overview";
+function syncPhone(force){
+  const k = presentKey(), tab = TAB_OF[k] || "home", host = $("#pPhone");
+  $$("#stage .k-nav span").forEach(s => s.classList.toggle("on", s.dataset.kn === (NAV_OF[k] || "overview")));
+  if (S.sbs){
+    if (force || tab !== lastTab || !host.firstChild){ paintPhone(host, tab, k); lastTab = tab; }
+    else markPhone(host, k);
+  }
+  renderMirror();
+}
+function setSbs(on){
+  S.sbs = !!on; $("#present").classList.toggle("sbs", S.sbs);
+  $$("#pView button").forEach(b => b.classList.toggle("on", (b.dataset.pv === "sbs") === S.sbs));
+  if (S.presenting){ syncPhone(true); renderNotes(); }
+}
+function setDevice(d){
+  S.device = d;
+  $$("#device button").forEach(x => x.classList.toggle("on", x.dataset.d === d));
+  $("#bFrame").classList.toggle("tablet", d === "tablet");
+  $("#bStage").classList.toggle("is-phone", d === "phone");
+  if (d === "phone") renderPhones();
+}
+
+/* ---------- Open on your phone (connection is simulated) ---------- */
+const PH = {connected:false, wait:null};
+const PUB_URL = "https://hartzell-design.github.io/prototype/demosmith/";
+function qrURL(){
+  const base = /^https?:$/.test(location.protocol) ? location.origin + location.pathname : PUB_URL;
+  const q = new URLSearchParams({phone:"", n:S.name.slice(0,40), c:S.color.replace("#",""), l:S.logo, p:S.active, t:S.presenting ? (TAB_OF[presentKey()] || "home") : S.mTab});
+  if (S.generated) q.set("g","1");
+  if (S.mods.roth) q.set("r","1");
+  return base + "?" + q.toString();
+}
+const QR = (() => {
+  const VER = [null,[26,7,1],[44,10,1],[70,15,1],[100,20,1],[134,26,1],[172,18,2],[196,20,2],[242,24,2],[292,30,2],[346,18,4]];
+  const ALIGN = [null,[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50]];
+  const mul = (x, y) => { let z = 0; for (let i = 7; i >= 0; i--){ z = (z << 1) ^ ((z >>> 7) * 0x11D); z ^= ((y >>> i) & 1) * x; } return z; };
+  function divisor(deg){ const r = new Array(deg).fill(0); r[deg-1] = 1; let root = 1;
+    for (let i = 0; i < deg; i++){ for (let j = 0; j < deg; j++){ r[j] = mul(r[j], root); if (j + 1 < deg) r[j] ^= r[j+1]; } root = mul(root, 2); }
+    return r; }
+  function remainder(data, div){ const r = div.map(() => 0); for (const b of data){ const f = b ^ r.shift(); r.push(0); div.forEach((c, i) => { r[i] ^= mul(c, f); }); } return r; }
+  return text => {
+    const bytes = [...new TextEncoder().encode(text)];
+    let v = 1;
+    for (; v <= 10; v++){ const [raw, ec, nb] = VER[v]; if (4 + (v < 10 ? 8 : 16) + bytes.length*8 <= (raw - ec*nb)*8) break; }
+    if (v > 10) return null;
+    const [raw, ec, nb] = VER[v], dataLen = raw - ec*nb, size = v*4 + 17, bb = [];
+    const put = (val, n) => { for (let i = n - 1; i >= 0; i--) bb.push((val >>> i) & 1); };
+    put(4, 4); put(bytes.length, v < 10 ? 8 : 16); bytes.forEach(b => put(b, 8));
+    put(0, Math.min(4, dataLen*8 - bb.length)); put(0, (8 - bb.length % 8) % 8);
+    for (let pad = 0xEC; bb.length < dataLen*8; pad ^= 0xEC ^ 0x11) put(pad, 8);
+    const data = []; for (let i = 0; i < bb.length; i += 8) data.push(bb.slice(i, i + 8).reduce((a, b) => a*2 + b, 0));
+    const nShort = nb - raw % nb, shortLen = Math.floor(raw / nb), div = divisor(ec), blocks = [];
+    for (let i = 0, k = 0; i < nb; i++){ const d = data.slice(k, k + shortLen - ec + (i < nShort ? 0 : 1)); k += d.length; const e = remainder(d, div); if (i < nShort) d.push(0); blocks.push(d.concat(e)); }
+    const cw = []; for (let i = 0; i < blocks[0].length; i++) blocks.forEach((b, j) => { if (i !== shortLen - ec || j >= nShort) cw.push(b[i]); });
+    const M = Array.from({length:size}, () => new Array(size).fill(false)), F = Array.from({length:size}, () => new Array(size).fill(false));
+    const set = (x, y, d) => { M[y][x] = d; F[y][x] = true; };
+    for (let i = 0; i < size; i++){ set(6, i, i % 2 === 0); set(i, 6, i % 2 === 0); }
+    [[3,3],[size-4,3],[3,size-4]].forEach(([cx, cy]) => { for (let dy = -4; dy <= 4; dy++) for (let dx = -4; dx <= 4; dx++){ const x = cx + dx, y = cy + dy;
+      if (x >= 0 && x < size && y >= 0 && y < size){ const d = Math.max(Math.abs(dx), Math.abs(dy)); set(x, y, d !== 2 && d !== 4); } } });
+    const al = ALIGN[v], n = al.length;
+    for (let i = 0; i < n; i++) for (let j = 0; j < n; j++){
+      if ((i === 0 && j === 0) || (i === 0 && j === n-1) || (i === n-1 && j === 0)) continue;
+      for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) set(al[i] + dx, al[j] + dy, Math.max(Math.abs(dx), Math.abs(dy)) !== 1);
+    }
+    const drawFormat = mask => { const d = (1 << 3) | mask; let r = d; for (let i = 0; i < 10; i++) r = (r << 1) ^ ((r >>> 9) * 0x537);
+      const bits = ((d << 10) | r) ^ 0x5412, g = i => ((bits >>> i) & 1) === 1;
+      for (let i = 0; i <= 5; i++) set(8, i, g(i)); set(8, 7, g(6)); set(8, 8, g(7)); set(7, 8, g(8)); for (let i = 9; i < 15; i++) set(14 - i, 8, g(i));
+      for (let i = 0; i < 8; i++) set(size - 1 - i, 8, g(i)); for (let i = 8; i < 15; i++) set(8, size - 15 + i, g(i)); set(8, size - 8, true); };
+    drawFormat(0);
+    if (v >= 7){ let r = v; for (let i = 0; i < 12; i++) r = (r << 1) ^ ((r >>> 11) * 0x1F25); const bits = (v << 12) | r;
+      for (let i = 0; i < 18; i++){ const d = ((bits >>> i) & 1) === 1, a = size - 11 + i % 3, b = Math.floor(i / 3); set(a, b, d); set(b, a, d); } }
+    let bi = 0;
+    for (let right = size - 1; right >= 1; right -= 2){ if (right === 6) right = 5;
+      for (let vert = 0; vert < size; vert++) for (let j = 0; j < 2; j++){ const x = right - j, up = ((right + 1) & 2) === 0, y = up ? size - 1 - vert : vert;
+        if (!F[y][x] && bi < cw.length*8){ M[y][x] = ((cw[bi >>> 3] >>> (7 - (bi & 7))) & 1) === 1; bi++; } } }
+    // Choose the mask with the lowest penalty score (simplified: runs + 2x2 blocks + balance)
+    const base = M.map(r => r.slice()); let best = null, bestScore = Infinity;
+    const MASKS = [(x,y)=>(x+y)%2===0,(x,y)=>y%2===0,(x,y)=>x%3===0,(x,y)=>(x+y)%3===0,(x,y)=>(Math.floor(x/3)+Math.floor(y/2))%2===0,(x,y)=>x*y%2+x*y%3===0,(x,y)=>(x*y%2+x*y%3)%2===0,(x,y)=>((x+y)%2+x*y%3)%2===0];
+    for (let mk = 0; mk < 8; mk++){
+      for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) M[y][x] = F[y][x] ? M[y][x] : base[y][x] !== MASKS[mk](x, y);
+      drawFormat(mk);
+      let s = 0, dark = 0;
+      for (let y = 0; y < size; y++){ let rx = 1, ry = 1;
+        for (let x = 0; x < size; x++){ if (M[y][x]) dark++;
+          if (x){ if (M[y][x] === M[y][x-1]){ rx++; if (rx === 5) s += 3; else if (rx > 5) s++; } else rx = 1;
+                  if (M[x][y] === M[x-1][y]){ ry++; if (ry === 5) s += 3; else if (ry > 5) s++; } else ry = 1; }
+          if (x && y && M[y][x] === M[y][x-1] && M[y][x] === M[y-1][x] && M[y][x] === M[y-1][x-1]) s += 3; } }
+      s += Math.floor(Math.abs(dark*20 - size*size*10) / (size*size)) * 10;
+      if (s < bestScore){ bestScore = s; best = mk; }
+    }
+    for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) M[y][x] = F[y][x] ? M[y][x] : base[y][x] !== MASKS[best](x, y);
+    drawFormat(best);
+    return M;
+  };
+})();
+function qrSVG(text){
+  const M = QR(text); if (!M) return "";
+  const n = M.length, q = 2; let d = "";
+  M.forEach((row, y) => row.forEach((on, x) => { if (on) d += `M${x+q} ${y+q}h1v1h-1z`; }));
+  return `<svg viewBox="0 0 ${n + q*2} ${n + q*2}" shape-rendering="crispEdges" role="img" aria-label="QR code that opens this demo on a phone"><rect width="100%" height="100%" fill="#fff"/><path d="${d}" fill="#0B0D12"/></svg>`;
+}
+function renderQRStatus(){
+  const st = $("#qrStatus"); $("#qrDisc").hidden = !PH.connected;
+  if (PH.connected){
+    st.className = "qr-status ok";
+    st.innerHTML = `<span class="live"></span><span>Dana's iPhone is connected<small>Dana Whitfield, Head of People · following your screen live</small></span>`;
+  } else {
+    st.className = "qr-status";
+    st.innerHTML = `<span class="spin dk"></span><span>Waiting for a phone…<small>The code works for 30 minutes</small></span>`;
+  }
+}
+function renderConn(){
+  $$(".conn").forEach(c => c.classList.toggle("on", PH.connected));
+  $("#pCap").innerHTML = PH.connected ? `<span class="live"></span>Mirrored live on Dana's iPhone` : `<span class="live"></span>In sync · tap either screen`;
+}
+function renderMirror(){
+  const host = $("#qrPhone"); if (!host || !$("#qrModal").classList.contains("on")) return;
+  if (S.presenting){ const k = presentKey(); paintPhone(host, TAB_OF[k] || "home", k); }
+  else paintPhone(host, S.mTab);
+}
+function openQR(){
+  $("#toast").classList.remove("on");
+  $("#qrModal").classList.add("on");
+  $("#qrCo").textContent = S.name;
+  const url = qrURL(); $("#qrCode").innerHTML = qrSVG(url); $("#qrCode").dataset.url = url;
+  renderQRStatus(); renderMirror();
+  if (!PH.connected && !PH.wait){
+    PH.wait = new Promise(res => setTimeout(() => {
+      PH.wait = null; PH.connected = true; renderQRStatus(); renderConn(); renderMirror();
+      toast(PHONE_IC + " Dana's iPhone connected. It follows your screen."); res();
+    }, 2600 * SP));
+  }
+  return PH.wait || Promise.resolve();
+}
+function closeQR(){ $("#qrModal").classList.remove("on"); }
+function renderSolo(){
+  $("#solo").innerHTML = `<div class="solo-bar"><span class="live"></span><span><b>${esc(S.name)} demo</b> · from Jordan Reyes</span><span class="sp"></span><a href="https://hartzell.design" target="_blank" rel="noopener">Hartzell Design</a></div>` + screenHTML(S.mTab, false);
+}
+const MOB = {
+  overview:p => `Point at the phone: same account, same ${S.name} branding. Most of ${p.first}'s check-ins will happen here, on a break, not at a desk.`,
+  nudge:() => "On mobile the nudge is the first card and one thumb-tap from done. Ask how many of their people work away from a desk.",
+  contrib:p => `Drag the slider on the phone and the desktop follows. "This is ${p.first} fixing the match from the break room in under 30 seconds."`,
+  alloc:() => "Same funds and fees, sized for a thumb. Nothing was redrawn for this demo: it's Keystone's iOS app in their brand.",
+  proj:() => "Hand them a phone, or the QR code. Let the CFO change the rate and watch the projection move.",
+  loans:() => "Loan modeling sits one tap down on mobile, so it never leads the story."
+};
+
 /* ---------- Events ---------- */
 document.addEventListener("click", e => {
   const g = e.target.closest("[data-go]"); if (g){ go(g.dataset.go); return; }
+  const q = e.target.closest("[data-qr]"); if (q){ openQR(); return; }
 });
 $$(".tabs button").forEach(b => b.addEventListener("click", () => tab(b.dataset.tab)));
 $("#demoRows").addEventListener("click", e => { const tr = e.target.closest("tr"); if (!tr) return; const r = ROWS[+tr.dataset.row]; if (r.lumen) go("builder"); else toast(`Opens the ${esc(r.n)} demo. This prototype focuses on Lumen Biotech.`); });
@@ -1104,7 +1572,25 @@ $("#dC").addEventListener("input", e => { cur().c = +e.target.value; patchApps()
 $("#dSal").addEventListener("change", e => { const v = +e.target.value.replace(/[^0-9]/g,""); if (v) cur().salary = v; renderPreview(); renderDataFields(); });
 $("#dMatch").addEventListener("change", e => { S.match = +e.target.value; renderPreview(); renderMail(); });
 $("#mods").addEventListener("click", e => { const b = e.target.closest("[data-mod]"); if (!b || b.disabled) return; S.mods[b.dataset.mod] = !S.mods[b.dataset.mod]; renderMods(); renderPreview(); });
-$("#device").addEventListener("click", e => { const b = e.target.closest("[data-d]"); if (!b) return; $$("#device button").forEach(x => x.classList.toggle("on", x === b)); $("#bFrame").classList.toggle("tablet", b.dataset.d === "tablet"); });
+$("#device").addEventListener("click", e => { const b = e.target.closest("[data-d]"); if (b) setDevice(b.dataset.d); });
+$("#bPhone").addEventListener("click", e => { const t = e.target.closest("[data-mtab]"); if (t){ S.mTab = t.dataset.mtab; renderPhones(); } });
+$("#solo").addEventListener("click", e => { const t = e.target.closest("[data-mtab]"); if (t){ S.mTab = t.dataset.mtab; renderSolo(); } });
+$("#present").addEventListener("click", e => { const b = e.target.closest("[data-pv]"); if (b) setSbs(b.dataset.pv === "sbs"); });
+$("#stage").addEventListener("click", e => {
+  if (!S.presenting || e.target.closest("button,input")) return;
+  const n = e.target.closest("[data-kn]"), c = e.target.closest(".k-card[data-sec]");
+  const key = n ? n.dataset.kn : c ? c.dataset.sec : null; if (!key) return;
+  const i = pSteps().indexOf(key); if (i >= 0 && i !== S.pStep) pGo(i);
+});
+$("#pPhone").addEventListener("click", e => {
+  const t = e.target.closest("[data-mtab]");
+  if (t){ const i = pSteps().findIndex(k => TAB_OF[k] === t.dataset.mtab); if (i >= 0 && i !== S.pStep) pGo(i); return; }
+  if (e.target.closest("button,input")) return;
+  const c = e.target.closest("[data-sec]"); if (c){ const i = pSteps().indexOf(c.dataset.sec); if (i >= 0 && i !== S.pStep) pGo(i); }
+});
+$("#qrClose").addEventListener("click", closeQR);
+$("#qrModal").addEventListener("click", e => { if (e.target.id === "qrModal") closeQR(); if (e.target.closest("#qrDisc")){ PH.connected = false; renderConn(); closeQR(); toast("Phone disconnected"); } });
+$("#qrCopy").addEventListener("click", () => { try { navigator.clipboard.writeText("https://demosmith.app/m/lumen-7kq2").catch(() => {}); } catch(_){} toast("Short link copied. It opens the phone view."); });
 ["#eBody","#eSubj","#eFrom","#eCta"].forEach(id => $(id).addEventListener("input", renderMail));
 $("#mfields").innerHTML = ["first_name","company","plan_name","match","enroll_by"].map(k => `<button data-mf="${k}">{{${k}}}</button>`).join("");
 $("#mfields").addEventListener("click", e => { const b = e.target.closest("[data-mf]"); if (!b) return; const ta = $("#eBody"), s = ta.selectionStart ?? ta.value.length, ins = `{{${b.dataset.mf}}}`; ta.value = ta.value.slice(0,s) + ins + ta.value.slice(ta.selectionEnd ?? s); ta.focus(); ta.selectionStart = ta.selectionEnd = s + ins.length; renderMail(); });
@@ -1124,33 +1610,38 @@ $("#draftFU").addEventListener("click", () => toast(SPARK + " Follow-up drafted 
 $$(".setrow .sw-t").forEach(b => b.addEventListener("click", () => b.classList.toggle("on")));
 document.addEventListener("keydown", e => {
   if (tour.on){ if (e.key === "Escape") endTour(); return; }
+  if ($("#qrModal").classList.contains("on")){ if (e.key === "Escape") closeQR(); return; }
   if (!S.presenting) return;
   if (e.target.matches("input,textarea,select")) return;
   if (e.key === "Escape") closePresent();
   if (e.key === "ArrowRight") pGo(S.pStep + 1);
   if (e.key === "ArrowLeft") pGo(S.pStep - 1);
 });
-bindApp($("#preview")); bindApp($("#stage"));
+bindApp($("#preview")); bindApp($("#stage")); bindApp($("#bPhone")); bindApp($("#pPhone")); bindApp($("#solo"));
 
 /* ---------- Guided tour ---------- */
 const tour = {on:false, i:0, running:false, done:new Set(), follow:null, target:null};
 const STEPS = [
   {pre:() => go("dashboard"), target:"#demoTable", title:"A tailored demo for every prospect",
    body:"Reps used to rebuild static click-through prototypes for every deal. Demosmith connects to the real product, so each prospect gets their own live demo in minutes."},
-  {pre:() => { go("builder"); tab("brand"); }, target:"#brandCard", title:"Brand it from their website",
+  {pre:() => { go("builder"); tab("brand"); setDevice("desktop"); }, target:"#brandCard", title:"Brand it from their website",
    body:"Paste the prospect's site. Demosmith pulls their logo, palette and voice…", status:"Reading lumenbio.example",
    run:async () => { if (!S.branded){ await typeInto($("#site"), "lumenbio.example", 28); await pullBrand(); } },
    then:"#bFrame", thenBody:"…and applies them to the real Keystone product through its design tokens. This is the live product, not a mockup."},
-  {pre:() => { go("builder"); tab("data"); }, target:"#aiCard", title:"Generate their people with AI",
+  {pre:() => { go("builder"); tab("data"); setDevice("desktop"); }, target:"#aiCard", title:"Generate their people with AI",
    body:"Describe the prospect in one sentence. AI creates realistic personas, salaries, balances and fund mixes. Every value is fictional.", status:"Generating personas",
    run:async () => { if (!S.generated){ await typeInto($("#prompt"), "500-person biotech in the Boston area, young workforce, lots of first-time savers", 60); await generate(); } },
    then:"#personaGrp", thenBody:"Four personas, each with a story to tell. Maya is Lumen's median employee, and the preview already shows her account."},
-  {pre:() => { go("builder"); tab("data"); }, target:"#bFrame", title:"Demo as anyone, edit anything",
+  {pre:() => { go("builder"); tab("data"); setDevice("desktop"); }, target:"#bFrame", title:"Demo as anyone, edit anything",
    body:"Switching to Sam, who contributes only 3%. The product surfaces the missed match, which is the exact story Lumen's HR team wants to tell.", status:"Switching persona",
    run:async () => { await sleep(700); S.active = 3; S.recip = 3; renderPreview(); renderDataFields(); renderMail(); flash("#bFrame"); }},
   {pre:() => { go("builder"); tab("modules"); }, target:"#mods", title:"Match their actual plan",
    body:"Lumen offers Roth and doesn't allow loans. Toggle modules and the demo matches the prospect's plan design exactly.", status:"Updating modules",
    run:async () => { await sleep(600); S.mods.roth = true; renderMods(); renderPreview(); await sleep(600); S.mods.loans = false; renderMods(); renderPreview(); }},
+  {pre:() => { go("builder"); tab("modules"); }, target:"#bStage", title:"See it on their phone",
+   body:"Most employees check their 401(k) on a phone. One toggle shows the same demo as Keystone's iOS app, with Lumen's brand and Sam's numbers.", status:"Switching to phone",
+   run:async () => { await sleep(500); S.mTab = "home"; setDevice("phone"); await sleep(1400); if (S.mods.contrib){ S.mTab = "save"; renderPhones(); } await sleep(900); },
+   then:"#bPhone .phone", thenBody:"Live, not a mockup. Change the brand, persona, data or modules and the phone updates along with the desktop. Tap the tabs to move around the app."},
   {pre:() => go("email"), target:"#bodyGrp", title:"Rewrite content in their voice",
    body:"The enrollment email employees would get. AI rewrites it in the tone found on Lumen's website, with merge fields filled from the persona.", status:"Rewriting",
    run:async () => { if (S.tone !== "lumen") await rewrite("lumen"); },
@@ -1160,6 +1651,10 @@ const STEPS = [
    run:async () => { await sleep(1400); pGo(pSteps().indexOf("contrib")); await sleep(900);
      for (let c = cur().c; c <= S.match; c++){ cur().c = c; patchApps(); await sleep(260); } },
    then:'#stage [data-sec="contrib"]', thenBody:"The rep drags the slider live. Missed match turns into full match. That's the moment that closes deals."},
+  {pre:() => { if (!S.presenting) openPresent(); setSbs(true); if (PH.connected) openQR(); }, target:"#pstage", title:"Desktop and phone, side by side",
+   body:"Show both at once. They stay in sync: tap a tab on the phone or a section on the desktop and the other follows. The talk track adds a line for the mobile moment.", status:"Syncing the two screens",
+   run:async () => { await sleep(900); const t = $("#pPhone [data-mtab=invest]"); if (t) t.click(); await sleep(1400); const n = $('#stage .k-nav [data-kn="proj"]'); if (n) n.click(); await sleep(1300); await openQR(); await sleep(400); },
+   then:"#qrModal .qr-modal", thenBody:"Then put it in their hands. Anyone in the room scans the code and their phone follows your screen live. (The connection is simulated in this prototype.)"},
   {pre:() => { if (S.presenting) closePresent(); go("share"); }, target:"#analytics", title:"Share it, and see what lands",
    body:"Send a tracked link after the meeting. See who viewed, what they lingered on, and who they forwarded it to. (Sample data.)",
    then:"#insight", thenBody:"AI turns engagement into a next step. The CFO lingered on fees, so follow up with a fee comparison."}
@@ -1172,8 +1667,15 @@ function place(sel){
   const pad = 6, vw = innerWidth, vh = innerHeight;
   const R = {l:Math.max(4,r.left-pad), t:Math.max(4,r.top-pad), r:Math.min(vw-4,r.right+pad), b:Math.min(vh-4,r.bottom+pad)};
   Object.assign(spot.style, {left:R.l+"px", top:R.t+"px", width:(R.r-R.l)+"px", height:(R.b-R.t)+"px"});
-  const pw = 340, ph = pop.offsetHeight || 220, gap = 14;
+  const pw = pop.offsetWidth || 340, ph = pop.offsetHeight || 220, gap = 14;
   let x, y;
+  if (vw < 760){
+    x = 12;
+    if (vh - R.b >= ph + gap + 8) y = R.b + gap;
+    else if (R.t >= ph + gap + 8) y = R.t - gap - ph;
+    else y = vh - ph - 76;
+    pop.style.left = x + "px"; pop.style.top = Math.max(12, y) + "px"; return;
+  }
   if (vw - R.r >= pw + gap + 8){ x = R.r + gap; y = R.t; }
   else if (R.l >= pw + gap + 8){ x = R.l - gap - pw; y = R.t; }
   else if (vh - R.b >= ph + gap + 8){ x = R.l; y = R.b + gap; }
@@ -1184,6 +1686,7 @@ function place(sel){
 }
 async function showStep(i){
   tour.i = i; const s = STEPS[i];
+  closeQR();
   if (!s){ endTour(); $("#finale").classList.add("on"); return; }
   s.pre && s.pre();
   await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
@@ -1229,9 +1732,21 @@ addEventListener("resize", () => { if (tour.on && tour.target) place(tour.target
 
 /* ---------- Boot ---------- */
 $("#eSubj").value = S.subject; $("#eBody").value = S.body;
-renderPersonas(); renderAll(); go("dashboard");
-if (!/[?&]notour/.test(location.search)) $("#welcome").classList.add("on");
-window.__demo = {S, go, startTour, showStep, openPresent, closePresent, tour, pGo};
+const SOLO = /[?&]phone/.test(location.search);
+if (SOLO){
+  const q = new URLSearchParams(location.search);
+  if (q.get("n")){ S.name = q.get("n").slice(0,40); S.plan = S.name + " 401(k) Plan"; }
+  if (/^[0-9a-f]{6}$/i.test(q.get("c") || "")) S.color = "#" + q.get("c");
+  if (["mono","lumen","hex"].includes(q.get("l"))) S.logo = q.get("l");
+  if (q.get("g") === "1"){ S.personas = GEN_P.map(p => ({...p, funds:{...p.funds}})); S.generated = true; S.active = Math.min(3, Math.max(0, +q.get("p") || 0)); }
+  if (q.get("r") === "1") S.mods.roth = true;
+  if (["home","save","invest","plan"].includes(q.get("t"))) S.mTab = q.get("t");
+  document.body.classList.add("solo-on");
+}
+renderPersonas(); renderAll(); renderConn(); go("dashboard");
+if (SOLO) renderSolo();
+else if (!/[?&]notour/.test(location.search)) $("#welcome").classList.add("on");
+window.__demo = {S, go, startTour, showStep, openPresent, closePresent, tour, pGo, setDevice, setSbs, openQR, closeQR, PH, QR, qrSVG, qrURL, STEPS};
 })();
 </script>
 </body>
