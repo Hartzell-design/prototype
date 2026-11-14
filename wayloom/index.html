@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wayloom · Journey intelligence for process owners — Prototype by Hartzell Design</title>
+<meta name="description" content="Clickable prototype of Wayloom, an AI journey-mapping app for Journey Owners. Fictional brand and data. Prototype by Hartzell Design.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23111733'/%3E%3Cpath d='M6 20c4 0 4-8 8-8s4 8 8 8 3-5 4-6' stroke='%235EEAD4' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F4F5F8; --panel:#fff; --ink:#0E1424; --ink2:#2B3345; --muted:#5D6678; --faint:#8C95A6;
+  --line:#E4E7EC; --line2:#EEF0F4; --brand:#3346D3; --brand-soft:#EEF0FF; --night:#111733; --teal:#0D9488; --teal-soft:#E6F7F5; --teal-line:#B5E6DF;
+  --ai:#6E45E2; --ai-soft:#F4F0FF; --ai-line:#DDD3FF;
+  --ok:#067647; --ok-bg:#ECFDF3; --ok-line:#ABEFC6;
+  --warn:#B54708; --warn-bg:#FFFAEB; --warn-line:#FEDF89;
+  --bad:#C0352B; --bad-bg:#FEF3F2; --bad-line:#FDD3CF;
+  --r:12px; --shadow:0 1px 2px rgba(16,24,40,.04),0 1px 3px rgba(16,24,40,.06);
+  --shadow-md:0 6px 16px -6px rgba(16,24,40,.14),0 2px 4px rgba(16,24,40,.04);
+  --shadow-lg:0 24px 48px -12px rgba(16,24,40,.22);
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --lw:164px; --cw:186px;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;font-size:13.5px;line-height:1.5;font-feature-settings:"cv11","ss01";overflow:hidden}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-radius:6px}
+svg.i{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+svg.i.s{width:13px;height:13px}
+svg.i.xs{width:11px;height:11px;stroke-width:2.2}
+.app{display:grid;grid-template-columns:60px 1fr;grid-template-rows:58px 1fr;height:100vh;height:100dvh}
+
+/* rail */
+.rail{grid-row:1/3;background:var(--night);display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:6px}
+.logo{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(135deg,#1E2A5E,#0B1026);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);margin-bottom:14px}
+.rail button{width:40px;height:40px;border:0;background:none;border-radius:10px;display:grid;place-items:center;color:#8E98C2;transition:all .15s}
+.rail button:hover{background:rgba(255,255,255,.07);color:#fff}
+.rail button.on{background:rgba(94,234,212,.12);color:#5EEAD4}
+.rail .sp{flex:1}
+.rail .me{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#F9A8D4,#C084FC);display:grid;place-items:center;font-size:11px;font-weight:700;color:#3B0764}
+
+/* top */
+.top{display:flex;align-items:center;gap:14px;padding:0 18px;background:var(--panel);border-bottom:1px solid var(--line);min-width:0}
+.wordmark{font-weight:700;letter-spacing:-.02em;font-size:16px;display:flex;align-items:center;gap:8px}
+.crumbs{display:flex;align-items:center;gap:7px;color:var(--muted);font-weight:500;white-space:nowrap;overflow:hidden;min-width:0}
+.crumbs b{color:var(--ink);font-weight:600;overflow:hidden;text-overflow:ellipsis}
+.crumbs .slash{color:#C4C9D3}
+.org{display:inline-flex;align-items:center;gap:6px}
+.org i{width:18px;height:18px;border-radius:5px;background:#0B3B5C;display:grid;place-items:center;color:#7DD3FC;font-style:normal;font-size:10px;font-weight:800}
+.top .spacer{flex:1}
+.status{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:550;color:var(--muted);background:var(--bg);border:1px solid var(--line);padding:3px 10px;border-radius:999px;white-space:nowrap}
+.status .dot{width:6px;height:6px;border-radius:50%;background:#17B26A;box-shadow:0 0 0 3px rgba(23,178,106,.15)}
+.status.draft{color:var(--ai);background:var(--ai-soft);border-color:var(--ai-line)}
+.status.draft .dot{background:var(--ai);box-shadow:0 0 0 3px rgba(110,69,226,.18)}
+.faces{display:flex}
+.faces span{width:26px;height:26px;border-radius:50%;border:2px solid #fff;margin-left:-7px;display:grid;place-items:center;font-size:10px;font-weight:700;color:#fff}
+.btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--panel);padding:7px 12px;border-radius:9px;font-weight:550;font-size:13px;box-shadow:var(--shadow);transition:all .15s var(--ease);white-space:nowrap}
+.btn:hover{border-color:#CDD2DA;background:#FAFBFC}
+.btn-primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn-primary:hover{background:#1E2638;border-color:#1E2638}
+.btn-ai{background:var(--ai-soft);color:var(--ai);border-color:var(--ai-line)}
+.btn-ai:hover{background:#ECE5FF;border-color:#CBBDFF}
+.btn-ghost{border-color:transparent;box-shadow:none;background:none}
+.btn-ghost:hover{background:var(--bg);border-color:transparent}
+.btn .badge{background:var(--ai);color:#fff;border-radius:999px;font-size:10.5px;padding:0 6px;line-height:17px;font-weight:650}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* workspace */
+.work{display:flex;flex-direction:column;min-width:0;min-height:0;position:relative}
+.head{background:var(--panel);border-bottom:1px solid var(--line);padding:14px 20px 0}
+.h1row{display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.h1row h1{font-size:20px;letter-spacing:-.02em;margin:0;font-weight:650;line-height:1.25}
+.meta{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:12.5px;margin-top:4px;flex-wrap:wrap}
+.jo{display:inline-flex;align-items:center;gap:7px;color:var(--ink2);font-weight:550}
+.av{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:9.5px;font-weight:700;flex:none}
+.meta .dotsep{width:3px;height:3px;border-radius:50%;background:#C4C9D3}
+.kpi{font-variant-numeric:tabular-nums}
+.kpi b{color:var(--ink);font-weight:650}
+.seg{display:inline-flex;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:3px;gap:2px}
+.seg button{border:0;background:none;padding:5px 12px;border-radius:7px;font-weight:550;font-size:12.5px;color:var(--muted);display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.seg button[aria-pressed="true"]{background:#fff;color:var(--ink);box-shadow:var(--shadow)}
+.seg button.fut[aria-pressed="true"]{color:var(--teal)}
+.h1row .right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.tools{display:flex;align-items:center;gap:10px;padding:12px 0;flex-wrap:wrap}
+.fgroup{display:flex;align-items:center;gap:6px}
+.flabel{font-size:11.5px;font-weight:600;color:var(--faint);text-transform:uppercase;letter-spacing:.06em;margin-right:2px}
+.chip{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:4px 10px;font-size:12.5px;font-weight:550;color:var(--ink2);transition:all .15s;white-space:nowrap}
+.chip:hover{border-color:#C9CED8}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.chip .pa{width:16px;height:16px;font-size:8.5px}
+.vdiv{width:1px;height:22px;background:var(--line);margin:0 4px}
+.tools .spacer{flex:1}
+
+/* banner */
+.banner{display:none;align-items:center;gap:12px;margin:12px 20px 0;padding:10px 14px;border-radius:12px;background:linear-gradient(135deg,#F7F4FF,#EEF1FF);border:1px solid var(--ai-line);font-size:13px;animation:in .4s var(--ease)}
+.banner.show{display:flex}
+.banner .orb{width:28px;height:28px;border-radius:9px}
+.banner p{margin:0;flex:1;color:var(--ink2)}
+.banner b{color:var(--ink)}
+.orb{flex:none;display:grid;place-items:center;color:#fff;background:radial-gradient(120% 120% at 20% 10%,#A78BFA 0%,#6E45E2 45%,#1F2A6B 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.2),0 4px 12px -2px rgba(110,69,226,.45)}
+.hlbar{display:none;align-items:center;gap:8px;margin:12px 20px 0;font-size:12.5px;color:var(--ink2)}
+.hlbar.show{display:flex}
+.hlbar .chip{background:var(--ai-soft);border-color:var(--ai-line);color:var(--ai)}
+
+/* map */
+.scroll{flex:1;overflow:auto;min-height:0;padding:14px 20px 70px;position:relative}
+.map{display:grid;grid-template-columns:var(--lw) repeat(6,minmax(var(--cw),1fr));background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);min-width:calc(var(--lw) + 6*var(--cw));position:relative}
+.cell{border-right:1px solid var(--line2);border-bottom:1px solid var(--line2);padding:10px;min-width:0;display:flex;flex-direction:column;gap:7px}
+.cell:nth-child(7n){border-right:0}
+.lab{position:sticky;left:0;z-index:3;background:#FBFBFD;padding:12px 14px;border-right:1px solid var(--line);border-bottom:1px solid var(--line2);display:flex;flex-direction:column;gap:3px}
+.lab .t{display:flex;align-items:center;gap:7px;font-weight:650;font-size:12.5px}
+.lab .d{font-size:11.5px;color:var(--faint);line-height:1.35}
+.lab .ic{width:24px;height:24px;border-radius:7px;display:grid;place-items:center;flex:none}
+.sh{position:sticky;top:-14px;z-index:4;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:12px 12px 10px;border-right:1px solid var(--line2)}
+.corner{position:sticky;top:-14px;left:0;z-index:6;background:#FBFBFD;border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding:12px 14px;display:flex;flex-direction:column;justify-content:flex-end;border-top-left-radius:14px}
+.corner .t{font-size:11px;font-weight:650;color:var(--faint);text-transform:uppercase;letter-spacing:.07em}
+.corner .v{font-size:12px;color:var(--muted)}
+.sh:last-child{border-top-right-radius:14px}
+.sh .n{font-size:11px;font-weight:650;color:var(--faint);letter-spacing:.06em;display:flex;align-items:center;gap:6px}
+.sh .nm{font-weight:650;font-size:14px;letter-spacing:-.01em;margin:2px 0 8px;line-height:1.3}
+.dur{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.dur .bar{flex:1;height:5px;border-radius:9px;background:var(--line2);overflow:hidden}
+.dur .bar i{display:block;height:100%;border-radius:9px;background:#94A3B8;transition:width .6s var(--ease)}
+.dur.hot .bar i{background:linear-gradient(90deg,#F97066,#C0352B)}
+.dur.hot b{color:var(--bad)}
+.dur b{color:var(--ink);font-weight:650}
+.delta{font-size:11px;font-weight:650;color:var(--teal);background:var(--teal-soft);border-radius:999px;padding:0 6px}
+.conf{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:650;border-radius:999px;padding:1px 7px;white-space:nowrap}
+.conf.hi{background:var(--ok-bg);color:var(--ok)}
+.conf.md{background:var(--warn-bg);color:var(--warn)}
+.conf.lo{background:var(--bad-bg);color:var(--bad)}
+.conf.ai{background:var(--ai-soft);color:var(--ai)}
+
+/* steps */
+.step{all:unset;box-sizing:border-box;display:block;cursor:pointer;background:#fff;border:1px solid var(--line);border-radius:11px;padding:9px 10px;box-shadow:var(--shadow);transition:all .18s var(--ease);position:relative}
+.step:hover{border-color:#B8C0FF;box-shadow:var(--shadow-md);transform:translateY(-1px)}
+.step:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.step.sel{border-color:var(--brand);box-shadow:0 0 0 3px rgba(51,70,211,.14),var(--shadow-md)}
+.step .tt{font-weight:600;font-size:12.5px;line-height:1.35;margin-bottom:6px}
+.step .ft{display:flex;align-items:center;gap:5px;color:var(--faint)}
+.step .ft .pp{margin-left:auto;display:inline-flex;align-items:center;gap:3px;font-size:10.5px;font-weight:650;color:var(--bad);background:var(--bad-bg);border-radius:999px;padding:0 6px}
+.step .ft .pp.ok{color:var(--teal);background:var(--teal-soft)}
+.step .chg{position:absolute;top:-8px;right:8px;font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;background:var(--teal);color:#fff;border-radius:999px;padding:1px 7px}
+.flag{display:flex;align-items:center;gap:6px;margin-top:7px;padding:5px 6px 5px 8px;border-radius:8px;background:var(--warn-bg);border:1px dashed #F5C065;font-size:11px;color:var(--warn);font-weight:600}
+.flag button{all:unset;cursor:pointer;margin-left:auto;display:inline-flex;align-items:center;gap:3px;background:#fff;border:1px solid var(--warn-line);border-radius:6px;padding:1px 6px;color:var(--ink2);font-size:10.5px}
+.flag button:hover{border-color:var(--warn)}
+.flagged{border-style:dashed!important;border-color:#F5C065!important}
+.quote{font-size:11.5px;color:var(--ink2);font-style:italic;background:#F8F9FB;border-left:2px solid var(--pc,#94A3B8);padding:5px 8px;border-radius:0 7px 7px 0;line-height:1.4;animation:in .3s var(--ease)}
+.quote b{font-style:normal;font-weight:650;font-size:10.5px;color:var(--muted);display:block}
+
+/* chips in lanes */
+.tag{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:550;border-radius:8px;padding:5px 8px;border:1px solid;line-height:1.25;transition:opacity .2s}
+.tags{display:flex;flex-wrap:wrap;gap:5px}
+.tag.ch{background:#F1F5FF;border-color:#D9E2FF;color:#2F3FA8}
+.tag.fr{background:var(--teal-soft);border-color:var(--teal-line);color:#0B6B63}
+.tag.bk{background:#F2F4F7;border-color:#E1E5EB;color:#3A4354}
+.tag.sy{background:#fff;border-color:var(--line);color:var(--ink2);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;font-weight:500}
+.tag.new{box-shadow:0 0 0 2px rgba(13,148,136,.18)}
+.tag.new::after{content:"new";font-family:Inter,sans-serif;font-size:9px;font-weight:700;text-transform:uppercase;color:#fff;background:var(--teal);border-radius:999px;padding:0 5px}
+.tag.ai-made::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ai)}
+.tag .tconf{all:unset;cursor:pointer;display:inline-grid;place-items:center;width:16px;height:16px;border-radius:5px;background:#fff;border:1px solid var(--warn-line);color:var(--warn)}
+.tag .tconf:hover{border-color:var(--warn)}
+.tag.flagged{background:var(--warn-bg)!important;color:var(--warn)!important}
+.lov{grid-column:1/-1;height:0;border-top:1.5px dashed #AAB3C2;position:relative;z-index:5}
+.lov span{position:sticky;left:calc(var(--lw) + 10px);display:inline-block;transform:translateY(-50%);background:#fff;padding:0 8px;font-size:10px;font-weight:650;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin-left:calc(var(--lw) + 10px);border:1px solid var(--line);border-radius:999px;line-height:16px}
+
+.card{all:unset;box-sizing:border-box;display:block;cursor:pointer;border-radius:10px;padding:8px 9px;font-size:11.8px;line-height:1.38;border:1px solid;transition:all .18s var(--ease);position:relative}
+.card .k{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-bottom:3px}
+.card .k .sev{margin-left:auto;letter-spacing:0;text-transform:none;font-weight:650;font-size:10px}
+.pain{background:var(--bad-bg);border-color:var(--bad-line);color:#5A1A15}
+.pain .k{color:var(--bad)}
+.pain:hover,.opp:hover{transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.pain.res{background:#F6FBF9;border-color:#CDEBE4;color:#4B5565}
+.pain.res .txt{text-decoration:line-through;text-decoration-color:rgba(13,148,136,.5)}
+.pain.res .k{color:var(--teal)}
+.opp{background:#F3FBF7;border-color:#C6EBD8;color:#0F3D2A}
+.opp .k{color:var(--ok)}
+.opp.aiopp{background:linear-gradient(135deg,#F7F4FF,#F2FBF7);border-color:var(--ai-line)}
+.opp.aiopp .k{color:var(--ai)}
+.opp.live{background:var(--teal-soft);border-color:var(--teal-line)}
+.opp.live .k{color:var(--teal)}
+.sel-card{box-shadow:0 0 0 3px rgba(51,70,211,.18)!important}
+
+/* emotion */
+.emo{grid-column:2/-1;position:relative;height:132px;padding:0;border-bottom:1px solid var(--line2);background:linear-gradient(180deg,rgba(23,178,106,.035),transparent 45%,transparent 55%,rgba(240,68,56,.04))}
+.emo svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.emo .zl{position:absolute;left:0;right:0;top:50%;border-top:1px dashed #E1E5EB}
+.emo .lg{position:absolute;right:10px;top:8px;display:flex;gap:10px;font-size:10.5px;color:var(--faint);background:rgba(255,255,255,.85);padding:2px 6px;border-radius:6px}
+.emo .lg span{display:inline-flex;align-items:center;gap:5px}
+.emo .lg i{display:inline-block;width:14px;border-top:2px solid var(--brand)}
+.emo .lg i.g{border-top:2px dashed #AAB3C2}
+.emo .face{position:absolute;left:8px;font-size:10px;font-weight:650;color:var(--faint)}
+
+.dim{opacity:.28;filter:saturate(.4)}
+.hlx{box-shadow:0 0 0 3px rgba(110,69,226,.28),var(--shadow-md)!important;border-color:var(--ai)!important}
+.map.build .cell,.map.build .sh{animation:build .5s var(--ease) both;animation-delay:calc(var(--c,0) * 110ms * var(--sp,1) + var(--r,0) * 40ms * var(--sp,1))}
+@keyframes build{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* drawer */
+.drawer{position:absolute;top:0;right:0;bottom:0;width:420px;max-width:92%;background:var(--panel);border-left:1px solid var(--line);box-shadow:var(--shadow-lg);z-index:30;display:flex;flex-direction:column;transform:translateX(105%);transition:transform .32s var(--ease)}
+.drawer.open{transform:none}
+.dh{padding:16px 18px 14px;border-bottom:1px solid var(--line2);display:flex;gap:12px;align-items:flex-start}
+.dh .kk{font-size:11px;font-weight:650;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.dh h3{margin:2px 0 0;font-size:17px;letter-spacing:-.015em;line-height:1.3}
+.x{all:unset;cursor:pointer;margin-left:auto;width:30px;height:30px;border-radius:8px;display:grid;place-items:center;color:var(--muted);flex:none}
+.x:hover{background:var(--bg);color:var(--ink)}
+.db{flex:1;overflow:auto;padding:4px 18px 24px}
+.sec{padding:14px 0;border-bottom:1px solid var(--line2)}
+.sec:last-child{border-bottom:0}
+.sec h4{margin:0 0 9px;font-size:11px;font-weight:650;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);display:flex;align-items:center;gap:8px}
+.sec h4 .sample{margin-left:auto;text-transform:none;letter-spacing:0;font-size:10.5px;font-weight:600;color:var(--warn);background:var(--warn-bg);border:1px solid var(--warn-line);border-radius:999px;padding:0 7px}
+.sec p{margin:0;color:var(--ink2)}
+.owner{display:flex;align-items:center;gap:10px}
+.owner .av{width:34px;height:34px;font-size:12px}
+.owner b{display:block;font-weight:650}
+.owner div span{font-size:12px;color:var(--muted)}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.metric{border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#FCFCFD}
+.metric .l{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px}
+.metric .v{font-size:16px;font-weight:650;letter-spacing:-.02em;margin-top:2px;font-variant-numeric:tabular-nums}
+.metric .was{font-size:11px;color:var(--faint);text-decoration:line-through;margin-left:6px;font-weight:500}
+.lst{display:grid;gap:7px}
+.ainote{display:flex;gap:10px;padding:11px 12px;border-radius:11px;background:var(--ai-soft);border:1px solid var(--ai-line);color:var(--ink2);font-size:12.5px}
+.ainote .orb{width:24px;height:24px;border-radius:8px}
+.fut{display:flex;gap:10px;padding:11px 12px;border-radius:11px;background:var(--teal-soft);border:1px solid var(--teal-line);color:#0B4F49;font-size:12.5px}
+.emobar{display:flex;align-items:center;gap:10px}
+.emobar .track{flex:1;height:8px;border-radius:9px;background:linear-gradient(90deg,#F04438,#FDB022 50%,#17B26A);position:relative}
+.emobar .track i{position:absolute;top:50%;width:14px;height:14px;border-radius:50%;background:#fff;border:3px solid var(--ink);transform:translate(-50%,-50%);transition:left .5s var(--ease)}
+.emobar .lab2{font-size:12px;font-weight:600;min-width:76px;text-align:right}
+
+/* insights */
+.ins{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff;box-shadow:var(--shadow);animation:in .4s var(--ease) both}
+.ins .row1{display:flex;align-items:center;gap:7px;margin-bottom:5px}
+.ins .typ{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;display:inline-flex;align-items:center;gap:5px}
+.ins .typ.b{color:var(--bad)}.ins .typ.h{color:#B54708}.ins .typ.f{color:#2F3FA8}.ins .typ.d{color:#7A2E0E}
+.ins h5{margin:0 0 4px;font-size:13.5px;line-height:1.35}
+.ins p{margin:0;font-size:12.5px;color:var(--muted)}
+.ins .acts{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap}
+.ins .acts .btn{padding:4px 9px;font-size:12px}
+.ins .meter{display:flex;align-items:center;gap:6px;margin-left:auto}
+.ins .meter .m{width:46px;height:5px;border-radius:9px;background:var(--line2);overflow:hidden}
+.ins .meter .m i{display:block;height:100%;background:currentColor}
+.ins .ev{font-size:11px;color:var(--faint);margin-top:6px}
+.scanning{display:flex;align-items:center;gap:10px;padding:12px;border-radius:12px;background:var(--ai-soft);border:1px solid var(--ai-line);color:var(--ai);font-size:12.5px;font-weight:550}
+.spin{width:14px;height:14px;border-radius:50%;border:2px solid var(--ai-line);border-top-color:var(--ai);animation:spin .8s linear infinite;flex:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* modal */
+.modal{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:24px;background:rgba(14,20,36,.42);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .25s var(--ease)}
+.modal.open{opacity:1;pointer-events:auto}
+.mbox{width:min(1040px,100%);max-height:calc(100vh - 48px);background:var(--panel);border-radius:18px;box-shadow:var(--shadow-lg);display:flex;flex-direction:column;overflow:hidden;transform:translateY(10px) scale(.985);transition:transform .35s var(--ease)}
+.modal.open .mbox{transform:none}
+.mh{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line2)}
+.mh .orb{width:34px;height:34px;border-radius:11px}
+.mh h3{margin:0;font-size:16px;letter-spacing:-.01em}
+.mh p{margin:0;font-size:12.5px;color:var(--muted)}
+.mf{display:flex;align-items:center;gap:10px;padding:12px 20px;border-top:1px solid var(--line2);background:#FAFBFC}
+.mf .fine{font-size:11.5px;color:var(--faint);flex:1}
+.dgrid{display:grid;grid-template-columns:1.05fr .95fr;min-height:0;flex:1}
+.notes{padding:16px 20px;border-right:1px solid var(--line2);display:flex;flex-direction:column;gap:10px;min-height:0;overflow:auto}
+.src{display:flex;gap:6px;flex-wrap:wrap}
+.src .chip[aria-pressed="true"]{background:var(--ink)}
+.ta,.notesview{width:100%;min-height:330px;flex:1;border:1px solid var(--line);border-radius:12px;padding:12px 14px;font:12.5px/1.65 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--ink2);background:#FCFCFD;resize:none;white-space:pre-wrap}
+.ta:focus{outline:2px solid var(--brand);outline-offset:-1px}
+.notesview mark{background:none;color:inherit;border-radius:4px;transition:all .3s;padding:0 1px}
+.notesview mark.on.st{background:#E0E7FF;color:#2F3FA8}
+.notesview mark.on.pn{background:#FEE4E2;color:#B42318}
+.notesview mark.on.tm{background:#CCFBF1;color:#0B6B63}
+.notesview mark.on.sy{background:#EAECF0;color:#1D2939}
+.notesview mark.on.op{background:#DCFAE6;color:#067647}
+.legend{display:flex;gap:10px;flex-wrap:wrap;font-size:11px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend i{width:9px;height:9px;border-radius:3px}
+.out{padding:16px 20px;overflow:auto;background:linear-gradient(180deg,#FBFAFF,#fff 40%)}
+.empty{height:100%;display:grid;place-items:center;text-align:center;color:var(--muted);padding:30px}
+.empty .orb{width:52px;height:52px;border-radius:16px;margin:0 auto 14px}
+.empty h4{margin:0 0 4px;color:var(--ink);font-size:15px}
+.prog{display:grid;gap:6px;margin-bottom:14px}
+.prog div{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);animation:in .3s var(--ease) both}
+.prog .ok{width:16px;height:16px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center}
+.counts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.counts div{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:#fff}
+.counts b{font-size:18px;display:block;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.counts span{font-size:11px;color:var(--muted)}
+.ostage{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--line2);animation:in .35s var(--ease) both}
+.ostage .num{width:22px;height:22px;border-radius:7px;background:var(--brand-soft);color:var(--brand);font-size:11px;font-weight:700;display:grid;place-items:center;flex:none}
+.ostage b{font-size:13px}
+.ostage .sub{font-size:11.5px;color:var(--muted)}
+.ostage .conf{margin-left:auto}
+
+/* summary */
+.sbox{width:min(720px,100%)}
+.sumbody{padding:22px 28px;overflow:auto}
+.sumbody h2{font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:30px;line-height:1.15;margin:0 0 12px;letter-spacing:-.01em}
+.sumbody h6{margin:16px 0 6px;font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--faint)}
+.sumbody p,.sumbody li{font-size:14.5px;line-height:1.6;color:var(--ink2);margin:0}
+.sumbody ol,.sumbody ul{margin:0;padding-left:20px;display:grid;gap:4px}
+.cursor::after{content:"";display:inline-block;width:7px;height:15px;background:var(--ai);margin-left:2px;vertical-align:-2px;animation:blinkc 1s steps(1) infinite}
+@keyframes blinkc{50%{opacity:0}}
+.ill{font-size:11.5px;color:var(--faint);margin-top:16px}
+
+/* share */
+.shbox{width:min(560px,100%)}
+.shbody{padding:18px 20px;display:grid;gap:16px}
+.linkrow{display:flex;gap:8px}
+.linkrow input{flex:1;border:1px solid var(--line);border-radius:9px;padding:8px 10px;font:12.5px ui-monospace,Menlo,monospace;color:var(--ink2);background:#FCFCFD}
+.exps{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.exp{all:unset;cursor:pointer;border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center;font-size:12px;font-weight:600;display:grid;gap:6px;justify-items:center;transition:all .15s}
+.exp:hover{border-color:var(--brand);background:var(--brand-soft)}
+.exp .ei{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--bg)}
+.exp small{font-weight:500;color:var(--muted);font-size:11px}
+.people{display:grid;gap:8px}
+.person{display:flex;align-items:center;gap:10px;font-size:13px}
+.person .r{margin-left:auto;color:var(--muted);font-size:12px}
+.sublab{font-size:11px;font-weight:650;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-bottom:8px}
+
+/* explain */
+.explain{position:fixed;inset:0;z-index:60;background:radial-gradient(120% 90% at 85% 0%,#1D2660 0%,#0B1026 55%,#070A18 100%);color:#E7EAF6;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .35s var(--ease)}
+.explain.open{opacity:1;pointer-events:auto}
+.exh{display:flex;align-items:center;gap:14px;padding:18px 28px}
+.exh .wordmark{color:#fff}
+.exh .t{color:#8E98C2;font-size:13px}
+.exh .t b{color:#fff;font-weight:600}
+.exh .seg{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)}
+.exh .seg button{color:#AEB6D8}
+.exh .seg button[aria-pressed="true"]{background:#fff;color:var(--ink)}
+.exh .seg button.fut[aria-pressed="true"]{color:var(--teal)}
+.exh .x{color:#AEB6D8}.exh .x:hover{background:rgba(255,255,255,.08);color:#fff}
+.exbody{flex:1;display:grid;grid-template-columns:1.1fr .9fr;gap:48px;padding:10px 64px 10px;align-items:center;min-height:0;overflow:auto}
+.exbody.full{grid-template-columns:1fr}
+.exk{font-size:12.5px;font-weight:650;letter-spacing:.1em;text-transform:uppercase;color:#5EEAD4;display:flex;align-items:center;gap:10px}
+.exk .pillx{letter-spacing:0;text-transform:none;font-weight:600;color:#C7CDEA;background:rgba(255,255,255,.08);border-radius:999px;padding:2px 10px;font-size:12px}
+.exl h2{font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:clamp(34px,4vw,56px);line-height:1.06;letter-spacing:-.015em;margin:14px 0 18px;color:#fff}
+.exl h2 em{color:#A5B4FC}
+.exl p{font-size:17px;line-height:1.6;color:#C3C9E4;margin:0;max-width:620px}
+.excards{display:grid;gap:12px}
+.exc{background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:16px 18px;backdrop-filter:blur(6px)}
+.exc .l{font-size:11px;font-weight:650;letter-spacing:.08em;text-transform:uppercase;color:#8E98C2;margin-bottom:8px;display:flex;align-items:center;gap:7px}
+.exc .big{font-size:34px;font-weight:650;letter-spacing:-.03em;color:#fff;font-variant-numeric:tabular-nums}
+.exc .big small{font-size:14px;color:#8E98C2;font-weight:500;margin-left:6px}
+.exc ul{margin:0;padding:0;list-style:none;display:grid;gap:6px}
+.exc li{display:flex;gap:8px;font-size:14px;color:#DDE1F2}
+.exc li::before{content:"";width:6px;height:6px;border-radius:50%;background:#5EEAD4;margin-top:8px;flex:none}
+.exc.pain{background:rgba(240,68,56,.1);border-color:rgba(240,68,56,.3);color:#FECDCA;font-size:14.5px}
+.exc.pain .l{color:#F97066}
+.exc.good{background:rgba(94,234,212,.08);border-color:rgba(94,234,212,.28);color:#CCFBF1;font-size:14.5px}
+.exc.good .l{color:#5EEAD4}
+.exteams{display:flex;flex-wrap:wrap;gap:6px}
+.exteams span{font-size:12.5px;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.08);color:#DDE1F2}
+.exteams span.b{background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.2);color:#AEB6D8}
+.feel{display:flex;align-items:center;gap:12px}
+.feel .track{flex:1;height:8px;border-radius:9px;background:linear-gradient(90deg,#F04438,#FDB022 50%,#17B26A);position:relative}
+.feel .track i{position:absolute;top:50%;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.2);transform:translate(-50%,-50%);transition:left .6s var(--ease)}
+.feel b{font-size:14px;color:#fff;min-width:90px;text-align:right}
+.strip{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:28px}
+.strip div{border-radius:12px;padding:10px 12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)}
+.strip b{display:block;color:#fff;font-size:13px;font-weight:600;line-height:1.3}
+.strip span{font-size:12px;color:#8E98C2}
+.strip i{display:block;height:4px;border-radius:9px;background:#5EEAD4;margin-top:8px}
+.strip i.hot{background:#F97066}
+.exnotes{margin:0 64px;padding:12px 16px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);font-size:13.5px;color:#C3C9E4;display:none}
+.exnotes.show{display:block;animation:in .3s var(--ease)}
+.exnotes b{color:#5EEAD4;font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin-right:8px}
+.exfoot{display:flex;align-items:center;gap:14px;padding:16px 28px 22px}
+.dots{flex:1;display:flex;gap:6px}
+.dots button{all:unset;cursor:pointer;flex:1;display:flex;flex-direction:column;gap:6px;font-size:11px;color:#6B76A6;min-width:0}
+.dots button i{height:4px;border-radius:9px;background:rgba(255,255,255,.12);display:block;transition:background .3s}
+.dots button.done i{background:rgba(94,234,212,.5)}
+.dots button.on i{background:#5EEAD4}
+.dots button.on{color:#fff}
+.dots button span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.exbtn{all:unset;cursor:pointer;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.08);color:#fff}
+.exbtn:hover{background:rgba(255,255,255,.15)}
+.exbtn.pri{background:#fff;color:var(--ink);width:auto;padding:0 16px;font-weight:600;gap:8px;display:inline-flex;align-items:center}
+.exbtn.ghost{width:auto;padding:0 14px;font-size:13px;font-weight:550;color:#AEB6D8;background:none;border:1px solid rgba(255,255,255,.14)}
+.slide{animation:slide .5s var(--ease) both}
+@keyframes slide{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+.explain .credit{position:static;background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1);color:#8E98C2}
+.explain .credit b{color:#fff}
+
+/* tour */
+.tour{position:fixed;inset:0;z-index:80;display:none}
+.tour.on{display:block}
+.hole{position:fixed;border-radius:14px;box-shadow:0 0 0 200vmax rgba(8,12,28,.55),0 0 0 2px rgba(255,255,255,.9),0 0 0 7px rgba(94,234,212,.35);transition:all .45s var(--ease);pointer-events:none}
+.hole.none{left:50%!important;top:50%!important;width:0!important;height:0!important;box-shadow:0 0 0 200vmax rgba(8,12,28,.55)}
+.tcard{position:fixed;width:340px;background:#fff;border-radius:16px;box-shadow:0 30px 60px -12px rgba(0,0,0,.45);padding:18px 18px 14px;transition:left .45s var(--ease),top .45s var(--ease)}
+.tcard .tk{font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--teal);display:flex;align-items:center;gap:8px}
+.tcard .tk span{margin-left:auto;color:var(--faint);letter-spacing:0;text-transform:none;font-weight:550}
+.tcard h4{margin:6px 0 6px;font-size:17px;letter-spacing:-.015em;line-height:1.3}
+.tcard p{margin:0;font-size:13.5px;color:var(--ink2);line-height:1.55}
+.tcard .tbar{height:3px;border-radius:9px;background:var(--line2);margin:14px 0 12px;overflow:hidden}
+.tcard .tbar i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--brand));transition:width .4s var(--ease)}
+.tcard .tf{display:flex;align-items:center;gap:8px}
+.tcard .tf .skip{all:unset;cursor:pointer;color:var(--muted);font-size:12.5px;margin-right:auto}
+.tcard .tf .skip:hover{color:var(--ink)}
+.tcard.wide{width:420px}
+
+.toast{position:fixed;left:50%;bottom:24px;z-index:90;transform:translate(-50%,20px);opacity:0;background:var(--ink);color:#fff;border-radius:12px;padding:10px 14px;font-size:13px;display:flex;align-items:center;gap:9px;box-shadow:var(--shadow-lg);transition:all .3s var(--ease);pointer-events:none;max-width:90vw}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.toast .ok{width:18px;height:18px;border-radius:50%;background:#17B26A;display:grid;place-items:center;flex:none}
+.credit{position:fixed;left:76px;bottom:14px;z-index:20;font-size:11.5px;color:var(--muted);background:rgba(255,255,255,.9);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:999px;padding:5px 11px;box-shadow:var(--shadow);text-decoration:none}
+.credit b{color:var(--ink);font-weight:600}
+.credit:hover{color:var(--ink)}
+.illus{position:fixed;right:16px;bottom:14px;z-index:20;font-size:11.5px;color:var(--warn);background:rgba(255,250,235,.95);border:1px solid var(--warn-line);border-radius:999px;padding:5px 11px}
+
+@media (max-width:1280px){
+  :root{--lw:146px;--cw:182px}
+  .faces,.top .status{display:none}
+  .crumbs .hide-md{display:none}
+}
+@media (max-width:1240px){
+  .chip .cl{display:none}
+  .chip[data-chan]{padding:5px 8px}
+  .tools .flabel{display:none}
+  .btn .lbl-long{display:none}
+}
+@media (min-width:1241px){ .btn .lbl-short{display:none} }
+@media (max-width:1100px){
+  .kpi.steps,.kpi.steps+.dotsep,#kpiPains,.dotsep.p{display:none}
+  .h1row{flex-wrap:nowrap}
+  .h1row .right{flex:none}
+  .exbody{padding:10px 36px;gap:28px}
+  .exnotes{margin:0 36px}
+  .dots button span{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <nav class="rail" aria-label="Main">
+    <div class="logo" title="Wayloom"><svg width="22" height="22" viewBox="0 0 32 32" aria-hidden="true"><path d="M5 20c4 0 4-8 8-8s4 8 8 8 4-6 6-7" stroke="#5EEAD4" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="13" cy="12" r="2.2" fill="#A5B4FC"/></svg></div>
+    <button class="on" title="Journey maps" aria-label="Journey maps" data-i="map"></button>
+    <button title="Insights" aria-label="Insights" data-i="spark" id="railIns"></button>
+    <button title="Personas" aria-label="Personas" data-i="users"></button>
+    <button title="Library" aria-label="Library" data-i="layers"></button>
+    <div class="sp"></div>
+    <button title="Settings" aria-label="Settings" data-i="sliders"></button>
+    <div class="me" title="Dana Whitaker">DW</div>
+  </nav>
+
+  <header class="top">
+    <div class="wordmark">Wayloom</div>
+    <div class="crumbs">
+      <span class="org"><i>H</i>Harborline Financial</span><span class="slash">/</span>
+      <span class="hide-md">Retirement journeys</span><span class="slash hide-md">/</span>
+      <b>401(k) rollover</b>
+    </div>
+    <span class="status" id="status"><span class="dot"></span><span id="statusTxt">v3 · Published</span></span>
+    <div class="spacer"></div>
+    <div class="faces" aria-label="Collaborators">
+      <span style="background:#7C3AED">DW</span><span style="background:#0D9488">PN</span><span style="background:#EA580C">KM</span><span style="background:#475467">+4</span>
+    </div>
+    <button class="btn btn-ghost" id="btnTour"><svg class="i" data-i="compass"></svg><span>Take the tour</span></button>
+    <button class="btn" id="btnShare" aria-label="Share"><svg class="i" data-i="share"></svg><span class="lbl-share">Share</span></button>
+    <button class="btn btn-primary" id="btnExplain"><svg class="i" data-i="play" style="fill:currentColor"></svg>Explain my process</button>
+  </header>
+
+  <main class="work" id="work">
+    <section class="head">
+      <div class="h1row">
+        <div>
+          <h1 id="title">Rolling over a 401(k) to Harborline</h1>
+          <div class="meta">
+            <span class="jo"><span class="av" style="background:#7C3AED">DW</span>Journey Owner: Dana Whitaker</span>
+            <span class="dotsep"></span>
+            <span class="kpi steps" id="kpiStages">6 stages · 10 steps</span><span class="dotsep"></span>
+            <span class="kpi" id="kpiDays">Median end-to-end <b>23 days</b>*</span>
+            <span class="dotsep p"></span>
+            <span class="kpi" id="kpiPains"><b>8</b> pain points</span>
+          </div>
+        </div>
+        <div class="right">
+          <div class="seg" id="stateToggle" role="group" aria-label="Map state">
+            <button aria-pressed="true" data-view="current"><svg class="i s" data-i="eye"></svg>Current state</button>
+            <button class="fut" aria-pressed="false" data-view="future"><svg class="i s" data-i="target"></svg>Future state</button>
+          </div>
+        </div>
+      </div>
+      <div class="tools">
+        <div class="fgroup" id="filters">
+          <span class="flabel">Persona</span>
+          <span id="personaChips" class="fgroup"></span>
+          <span class="vdiv"></span>
+          <span class="flabel">Channel</span>
+          <span id="channelChips" class="fgroup"></span>
+        </div>
+        <div class="spacer"></div>
+        <button class="btn btn-ai" id="btnDraft"><svg class="i" data-i="file"></svg><span class="lbl-long">Draft from notes</span><span class="lbl-short">From notes</span></button>
+        <button class="btn btn-ai" id="btnInsights"><svg class="i" data-i="spark"></svg><span class="lbl-long">AI insights</span><span class="lbl-short">Insights</span><span class="badge">4</span></button>
+        <button class="btn btn-ai" id="btnSummary"><svg class="i" data-i="doc"></svg><span class="lbl-long">Exec summary</span><span class="lbl-short">Summary</span></button>
+      </div>
+    </section>
+    <div class="banner" id="draftBanner">
+      <div class="orb"><svg class="i s" data-i="spark"></svg></div>
+      <p id="draftTxt"></p>
+      <button class="btn" id="btnReview">Jump to next</button>
+      <button class="btn btn-primary" id="btnPublish">Publish as v4</button>
+    </div>
+    <div class="hlbar" id="hlbar"><span>Showing on map:</span><span class="chip" id="hlName"></span><button class="btn btn-ghost" id="hlClear" style="padding:3px 8px">Clear</button></div>
+    <div class="scroll" id="scroll"><div class="map" id="map" aria-label="Journey map"></div></div>
+
+    <aside class="drawer" id="drawer" aria-label="Details" aria-hidden="true">
+      <div class="dh"><div><div class="kk" id="dKick"></div><h3 id="dTitle"></h3></div><button class="x" id="dClose" aria-label="Close"><svg class="i" data-i="x"></svg></button></div>
+      <div class="db" id="dBody"></div>
+    </aside>
+  </main>
+</div>
+
+<!-- Draft from notes -->
+<div class="modal" id="draftModal" aria-hidden="true">
+  <div class="mbox" id="draftCard" role="dialog" aria-modal="true" aria-labelledby="draftH">
+    <div class="mh"><div class="orb"><svg class="i" data-i="spark"></svg></div><div><h3 id="draftH">Draft a journey map from notes</h3><p>Paste workshop notes, call transcripts or an SOP. Wayloom drafts stages, steps, teams, systems and pain points.</p></div><button class="x" data-close aria-label="Close"><svg class="i" data-i="x"></svg></button></div>
+    <div class="dgrid">
+      <div class="notes">
+        <div class="src" id="srcChips"></div>
+        <textarea class="ta" id="notesTa" spellcheck="false" aria-label="Process notes"></textarea>
+        <div class="notesview" id="notesView" style="display:none"></div>
+        <div class="legend" id="legend" style="visibility:hidden"><span><i style="background:#C7D2FE"></i>Stages</span><span><i style="background:#FECDCA"></i>Pain points</span><span><i style="background:#99F6E4"></i>Teams</span><span><i style="background:#D0D5DD"></i>Systems</span><span><i style="background:#ABEFC6"></i>Ideas</span></div>
+      </div>
+      <div class="out" id="draftOut"></div>
+    </div>
+    <div class="mf"><span class="fine">Prototype: the AI is scripted and returns a sample draft. No data leaves your browser.</span><button class="btn" data-close>Cancel</button><button class="btn btn-primary" id="btnGen"><svg class="i s" data-i="spark"></svg>Draft my map</button></div>
+  </div>
+</div>
+
+<!-- Exec summary -->
+<div class="modal" id="sumModal" aria-hidden="true">
+  <div class="mbox sbox" id="sumCard" role="dialog" aria-modal="true" aria-labelledby="sumH">
+    <div class="mh"><div class="orb"><svg class="i" data-i="doc"></svg></div><div><h3 id="sumH">Executive summary</h3><p>Plain-language, drafted from this map. <span id="sumState"></span></p></div><button class="x" data-close aria-label="Close"><svg class="i" data-i="x"></svg></button></div>
+    <div class="sumbody" id="sumBody"></div>
+    <div class="mf"><div class="seg" id="sumLen"><button aria-pressed="true" data-len="full">One page</button><button aria-pressed="false" data-len="short">30-second version</button></div><span class="fine"></span><button class="btn" id="sumCopy"><svg class="i s" data-i="copy"></svg>Copy</button><button class="btn btn-primary" id="sumPresent"><svg class="i s" data-i="play" style="fill:currentColor"></svg>Present it</button></div>
+  </div>
+</div>
+
+<!-- Share -->
+<div class="modal" id="shareModal" aria-hidden="true">
+  <div class="mbox shbox" id="shareCard" role="dialog" aria-modal="true" aria-labelledby="shH">
+    <div class="mh"><div class="orb" style="background:var(--ink)"><svg class="i" data-i="share"></svg></div><div><h3 id="shH">Share “401(k) rollover”</h3><p>Viewers see the map, the explain mode and the summary.</p></div><button class="x" data-close aria-label="Close"><svg class="i" data-i="x"></svg></button></div>
+    <div class="shbody">
+      <div><div class="sublab">View-only link</div><div class="linkrow"><input readonly value="wayloom.app/harborline/j/401k-rollover-v3" aria-label="Share link"><button class="btn" id="copyLink"><svg class="i s" data-i="link"></svg>Copy link</button></div></div>
+      <div><div class="sublab">People with access</div><div class="people">
+        <div class="person"><span class="av" style="background:#7C3AED">DW</span>Dana Whitaker (you)<span class="r">Journey Owner</span></div>
+        <div class="person"><span class="av" style="background:#0D9488">PN</span>Priya Natarajan · Rollover Ops<span class="r">Can edit</span></div>
+        <div class="person"><span class="av" style="background:#EA580C">KM</span>Kofi Mensah · Customer Care<span class="r">Can edit</span></div>
+        <div class="person"><span class="av" style="background:#475467">RL</span>Retirement leadership group<span class="r">Can view</span></div>
+      </div></div>
+      <div><div class="sublab">Export</div><div class="exps" id="exps"></div></div>
+    </div>
+    <div class="mf"><span class="fine">Prototype: sharing and exports are visual only.</span><button class="btn btn-primary" data-close>Done</button></div>
+  </div>
+</div>
+
+<!-- Explain mode -->
+<div class="explain" id="explain" aria-hidden="true" role="dialog" aria-label="Explain my process">
+  <div class="exh">
+    <div class="wordmark"><svg width="20" height="20" viewBox="0 0 32 32" aria-hidden="true"><path d="M5 20c4 0 4-8 8-8s4 8 8 8 4-6 6-7" stroke="#5EEAD4" stroke-width="3" fill="none" stroke-linecap="round"/></svg>Wayloom</div>
+    <span class="t">Explaining <b>401(k) rollover</b> · Dana Whitaker, Journey Owner</span>
+    <div class="spacer" style="flex:1"></div>
+    <div class="seg" id="exToggle"><button aria-pressed="true" data-view="current">Today</button><button class="fut" aria-pressed="false" data-view="future">Where we're going</button></div>
+    <button class="x" id="exClose" aria-label="Exit explain mode"><svg class="i" data-i="x"></svg></button>
+  </div>
+  <div class="exbody" id="exBody"></div>
+  <div class="exnotes" id="exNotes"></div>
+  <div class="exfoot">
+    <button class="exbtn" id="exPrev" aria-label="Previous"><svg class="i" data-i="chevL"></svg></button>
+    <div class="dots" id="exDots"></div>
+    <button class="exbtn ghost" id="exNotesBtn">Speaker notes</button>
+    <button class="exbtn pri" id="exNext">Next<svg class="i" data-i="chevR"></svg></button>
+    <a class="credit" href="https://hartzell.design" target="_blank" rel="noopener">Prototype by <b>Hartzell Design</b></a>
+  </div>
+</div>
+
+<!-- Tour -->
+<div class="tour" id="tour" aria-live="polite">
+  <div class="hole none" id="hole"></div>
+  <div class="tcard" id="tcard" role="dialog" aria-label="Product tour">
+    <div class="tk"><svg class="i s" data-i="compass"></svg>Tour<span id="tCount"></span></div>
+    <h4 id="tH"></h4><p id="tP"></p>
+    <div class="tbar"><i id="tBar"></i></div>
+    <div class="tf"><button class="skip" id="tSkip">Skip tour</button><button class="btn" id="tBack">Back</button><button class="btn btn-primary" id="tNext">Next</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span class="ok"><svg class="i xs" data-i="check" style="color:#fff"></svg></span><span id="toastTxt"></span></div>
+<a class="credit" id="credit" href="https://hartzell.design" target="_blank" rel="noopener">Prototype by <b>Hartzell Design</b> · Wayloom is a concept product</a>
+<span class="illus">*All companies, people and figures are fictional and illustrative</span>
+<script>
+(() => {
+"use strict";
+const SPEED = /[?&]fast/.test(location.search) ? 0.12 : 1;
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let FF = false; // fast-forward for the tour
+const wait = ms => new Promise(r => setTimeout(r, FF ? 0 : ms * SPEED));
+
+const P = {
+  map:'<path d="M9 3 3 6v15l6-3 6 3 6-3V3l-6 3z"/><path d="M9 3v15M15 6v15"/>',
+  spark:'<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/>',
+  users:'<circle cx="9" cy="8" r="3.5"/><path d="M2 21a7 7 0 0 1 14 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M22 21a7 7 0 0 0-4-6.3"/>',
+  user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+  layers:'<path d="m12 2 10 5-10 5L2 7z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/>',
+  sliders:'<path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/>',
+  compass:'<circle cx="12" cy="12" r="10"/><path d="m16.2 7.8-2.1 6.3-6.3 2.1 2.1-6.3z"/>',
+  share:'<path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7M16 6l-4-4-4 4M12 2v13"/>',
+  play:'<path d="M7 4.5v15l12.5-7.5z"/>',
+  eye:'<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  target:'<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+  file:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/>',
+  doc:'<path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h5"/>',
+  x:'<path d="M18 6 6 18M6 6l12 12"/>',
+  check:'<path d="M20 6 9 17l-5-5"/>',
+  chevL:'<path d="m15 18-6-6 6-6"/>', chevR:'<path d="m9 18 6-6-6-6"/>',
+  copy:'<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
+  link:'<path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>',
+  web:'<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/>',
+  mobile:'<rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/>',
+  phone:'<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/>',
+  email:'<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/>',
+  mail:'<path d="M21 8v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8l9-5z"/><path d="m3 8 9 6 9-6"/>',
+  sms:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+  server:'<rect x="3" y="3" width="18" height="7" rx="2"/><rect x="3" y="14" width="18" height="7" rx="2"/><path d="M7 6.5h.01M7 17.5h.01"/>',
+  heart:'<path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"/>',
+  alert:'<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/>',
+  bulb:'<path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/>',
+  touch:'<path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V12M11 11.5v-2a1.5 1.5 0 0 1 3 0V12M14 10.5a1.5 1.5 0 0 1 3 0V12M17 11.5a1.5 1.5 0 0 1 3 0V16a6 6 0 0 1-6 6h-2a6 6 0 0 1-5-2.7L4.6 16a1.5 1.5 0 0 1 2.5-1.7L8 15"/>',
+  front:'<path d="M3 21h18M5 21V8l7-5 7 5v13"/><path d="M10 21v-6h4v6"/>',
+  back:'<path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
+  clock:'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+  handoff:'<path d="M17 2l4 4-4 4"/><path d="M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 0 1-3 3H3"/>',
+  trend:'<path d="m22 7-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/>',
+  download:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>',
+  image:'<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/>',
+  slides:'<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>',
+  table:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/>',
+  quote:'<path d="M3 21c3 0 7-1 7-8V5H3v8h4M14 21c3 0 7-1 7-8V5h-7v8h4"/>'
+};
+const ic = (n, cls = "") => `<svg class="i ${cls}" viewBox="0 0 24 24" aria-hidden="true">${P[n] || ""}</svg>`;
+function hydrateIcons(root = document) {
+  root.querySelectorAll("[data-i]").forEach(el => {
+    const n = el.getAttribute("data-i");
+    if (el.tagName.toLowerCase() === "svg") { el.setAttribute("viewBox", "0 0 24 24"); el.setAttribute("aria-hidden", "true"); el.innerHTML = P[n]; }
+    else if (!el.querySelector("svg")) el.innerHTML = ic(n) + el.innerHTML;
+  });
+}
+
+/* ---------------- DATA (all fictional) ---------------- */
+const CHANNELS = [["web","Web"],["mobile","App"],["phone","Phone"],["email","Email"],["mail","Mail"],["sms","SMS"]];
+const PERSONAS = [
+  {id:"all", name:"All customers"},
+  {id:"maya", name:"Maya", full:"Maya R. · job changer", meta:"34 · $48k balance · app-first", c:"#DB2777", off:[0,.4,.3,-.2,.2,0]},
+  {id:"glenn", name:"Glenn", full:"Glenn T. · pre-retiree", meta:"61 · $640k balance · prefers phone", c:"#0369A1", off:[-.3,-.3,-.3,-.45,-.1,-.4]}
+];
+const PEOPLE = {
+  dana:["Dana Whitaker","Journey Owner · Retirement Rollovers","#7C3AED"],
+  marcus:["Marcus Bell","Retirement Marketing","#2563EB"],
+  aisha:["Aisha Raman","Lead, Retirement Specialists","#DB2777"],
+  theo:["Theo Lindqvist","PM, Digital Onboarding","#0891B2"],
+  priya:["Priya Natarajan","Manager, Rollover Ops","#0D9488"],
+  kofi:["Kofi Mensah","Director, Customer Care","#EA580C"],
+  sam:["Sam Okafor","Lead, Cash Reconciliation","#4F46E5"]
+};
+const STAGES = [
+  {id:"s1", name:"Decide to roll over", days:3, fdays:2,
+   front:["Retirement Specialists"], back:["Content & Marketing"], sys:["HarborWeb","Beacon CRM"],
+   ffront:["Retirement Specialists"], fback:["Content & Marketing"], fsys:["HarborWeb","Beacon CRM","Decision Guide"],
+   q:{maya:"I'll deal with it later. It's not urgent, right?", glenn:"I want to get this right. It's my retirement."}},
+  {id:"s2", name:"Open a rollover IRA", days:2, fdays:1,
+   front:["Digital Onboarding"], back:["New Accounts Ops"], sys:["Keel Accounts","ID Verify"],
+   ffront:["Digital Onboarding"], fback:["New Accounts Ops"], fsys:["Keel Accounts","ID Verify","Plan Finder (AI)"],
+   q:{maya:"Opening the account took ten minutes. Easy.", glenn:"I'd rather do this with a person on the phone."}},
+  {id:"s3", name:"Request funds from old plan", days:8, fdays:1,
+   front:["Rollover Specialists"], back:["Rollover Ops"], sys:["Beacon CRM","DocuFlow e-sign"],
+   ffront:["Rollover Specialists"], fback:["Rollover Ops","Plan Network Ops"], fsys:["Beacon CRM","DocuFlow e-sign","Plan Transfer Network"],
+   q:{maya:"Why do I have to call them? It's my money.", glenn:"They wanted a medallion signature. Two trips to the bank."}},
+  {id:"s4", name:"Funds in transit", days:7, fdays:1,
+   front:["Customer Care"], back:["Mailroom"], sys:["Mailroom OCR"],
+   ffront:["Customer Care"], fback:["Mailroom (fallback)"], fsys:["Status Tracker","Mailroom OCR"],
+   q:{maya:"A paper check? Mailed to my apartment?", glenn:"I don't like a check this size sitting in my mailbox."}},
+  {id:"s5", name:"Receive & reconcile", days:2, fdays:.5,
+   front:["Customer Care"], back:["Rollover Ops","Cash Reconciliation","Tax Reporting"], sys:["Ledger Core","Exception Queue"],
+   ffront:["Customer Care"], fback:["Rollover Ops","Tax Reporting"], fsys:["Ledger Core","Auto-match"],
+   q:{maya:"Oh nice, it finally showed up.", glenn:"I called three times to make sure it landed."}},
+  {id:"s6", name:"Invest & settle in", days:1, fdays:.5,
+   front:["Retirement Specialists"], back:["Trading Ops"], sys:["Keel Accounts","Advice Engine"],
+   ffront:["Retirement Specialists"], fback:["Trading Ops"], fsys:["Keel Accounts","Advice Engine","Invest-like-before"],
+   q:{maya:"Wait, it's just been sitting in cash?", glenn:"I want someone to look over my allocation first."}}
+];
+// metrics: [time in step, monthly volume, drop-off / quality, handoffs]
+const STEPS = [
+  {id:"a1", s:"s1", t:"Gets a separation packet from old employer", ch:["mail","email"], owner:"marcus", pains:[], e:0,
+   d:"After leaving a job, the customer receives a dense benefits packet. Most set it aside; the rollover decision is often triggered weeks later.",
+   m:["~3 wks before contact","4,200 packets","31% never start","0"],
+   ai:["Customers who get a follow-up email within 7 days start 2.1× more often (from 3 interview notes).",71]},
+  {id:"a2", s:"s1", t:"Researches options, calls Harborline", ch:["web","phone"], owner:"aisha", pains:["P1"], e:-.6,
+   d:"Customer compares 'leave it / cash out / roll over' and calls a Retirement Specialist, usually to ask about direct vs. indirect rollovers.",
+   m:["1.6 days","2,900 calls","9%","1"], fm:["0.8 days","1,900 calls","5%","1"], fe:.6,
+   ai:["'Direct vs. indirect' appears in 34% of call summaries. A plain-language guide could deflect ~1/3 of these calls.",82]},
+  {id:"a3", s:"s2", t:"Opens a Rollover IRA online", ch:["web","mobile"], owner:"theo", pains:[], e:1.1, fe:1.3,
+   d:"Account opening is the bright spot: an 11-minute flow with instant ID verification.",
+   m:["11 min","2,600 opens","6%","0"],
+   ai:["Healthy step. Keep it as the benchmark for the rest of the journey.",90]},
+  {id:"a4", s:"s2", t:"Hunts for old-plan details", ch:["phone","web"], owner:"theo", pains:["P2"], e:-1,
+   ft:"Old plan auto-detected from employer name", fch:["web","mobile"], fe:.8,
+   d:"To move money, the customer needs the old plan's recordkeeper and account number, which are missing from about half of statements.",
+   fd:"The customer types their former employer; Plan Finder suggests the likely recordkeeper with a confidence score and asks them to confirm.",
+   m:["1.2 days","2,450","14%","1"], fm:["2 min","2,450","5%","0"],
+   ai:["Customers who can't identify their old plan may abandon at ~2× the rate. Low evidence; validate with funnel data.",63]},
+  {id:"a5", s:"s3", t:"Calls old plan to request distribution", ch:["phone"], owner:"priya", pains:["P3"], e:-1.5,
+   ft:"Authorizes Harborline to request the transfer", fch:["web","mobile"], fe:.6,
+   d:"Only the customer can start the request with the old plan. Harborline can join a three-way call, but has no visibility into status afterwards.",
+   fd:"For plans on the transfer network, the customer e-authorizes Harborline to initiate the request on their behalf, with status visible to both.",
+   m:["3.5 days","2,300 calls","8%","2"], fm:["Same day","2,300 e-auths","3%","0"],
+   ai:["The customer is the 'integration layer' between two institutions here. Classic hidden handoff.",88]},
+  {id:"a6", s:"s3", t:"Completes paper form, gets signature guaranteed", ch:["mail"], owner:"priya", pains:["P4"], e:-2,
+   ft:"E-signs a pre-filled distribution form", fch:["web"], fe:.9,
+   d:"Many old plans send a paper distribution form. Some require a medallion signature guarantee, which means a trip to a bank branch.",
+   fd:"Harborline pre-fills the old plan's form and routes it for e-signature where the plan accepts it. Paper only when a plan requires it.",
+   m:["4.5 days","2,100 forms","38% NIGO","2"], fm:["0.5 days","2,100 forms","9% NIGO","1"],
+   ai:["Forms from 3 recordkeepers drive ~62% of 'not in good order' returns. Pre-fill would address most of them.",78]},
+  {id:"a7", s:"s4", t:"Waits for a check mailed to home", ch:["mail","phone"], owner:"kofi", pains:["P5","P6"], e:-1.8,
+   ft:"Tracks the transfer live in the app", fch:["mobile","sms"], fe:.7,
+   d:"The old plan mails a check payable to Harborline FBO the customer, usually to the customer's home. Nobody can see where it is.",
+   fd:"Network transfers arrive electronically. Every milestone (requested, sent, received, invested) triggers an SMS, email and app update.",
+   m:["5.0 days","1,950 checks","—","1"], fm:["1 day","1,950","—","0"],
+   ai:["'Where's my money?' calls peak between days 7 and 15 of the journey.",81]},
+  {id:"a8", s:"s4", t:"Forwards the check to Harborline", ch:["mail"], owner:"priya", pains:["P6"], e:-1.2,
+   ft:"Any remaining checks go straight to Harborline", fch:["mail"], fe:1,
+   d:"The customer has to mail the check on to Harborline. Some forget, some lose it, and some deposit it by mistake.",
+   fd:"For non-network plans, the pre-filled form directs the check to Harborline's lockbox, so the customer never handles it.",
+   m:["2.0 days","1,950","4% stalled","2"], fm:["Fallback only","~780 checks","1%","1"],
+   ai:["Drafted from notes; volume assumes every check passes through the customer.",68]},
+  {id:"a9", s:"s5", t:"Gets a deposit confirmation", ch:["email"], owner:"sam", pains:["P7"], e:.7,
+   ft:"Gets an instant 'funds arrived' alert", fch:["sms","email"], fe:1.5,
+   d:"Once funds post, the customer gets a generic email. Checks that don't match an open request go to an exception queue first.",
+   fd:"Incoming funds auto-match to the open rollover request, so most deposits post the same day and trigger an instant alert.",
+   m:["2.0 days","1,900 deposits","—","4"], fm:["0.5 days","1,900","—","1"],
+   ai:["4 handoffs on unmatched checks: Mailroom → Rollover Ops → Cash Recon → Rollover Ops → Care.",88]},
+  {id:"a10", s:"s6", t:"Chooses investments (or doesn't)", ch:["web","mobile"], owner:"aisha", pains:["P8"], e:.2,
+   ft:"Confirms 'invest like before' in one tap", fch:["mobile","web"], fe:1.3,
+   d:"Rolled-over money lands in cash. The customer has to come back and pick investments, and many don't for weeks.",
+   fd:"Wayloom-flagged opportunity: offer to mirror the old plan's allocation, reviewed by advice rules, confirmed in one tap.",
+   m:["1 to 30+ days","1,900","28% stay in cash","1"], fm:["Same day","1,900","9% stay in cash","0"],
+   ai:["Biggest long-term value at stake: uninvested cash. Needs a compliance review before launch.",64]}
+];
+const PAINS = [
+  {id:"P1", s:"s1", t:"'Direct vs. indirect rollover' confuses ~1 in 3 callers", sev:"Med", fut:"Mitigated by the decision guide"},
+  {id:"P2", s:"s2", t:"Old-plan recordkeeper missing from ~half of statements", sev:"High", fut:"Resolved by Plan Finder"},
+  {id:"P3", s:"s3", t:"Customer must start the request; we can't see its status", sev:"High", type:"Handoff", fut:"Resolved by e-authorization"},
+  {id:"P4", s:"s3", t:"Paper forms: ~38% come back not in good order", sev:"High", fut:"Reduced to ~9% with pre-fill"},
+  {id:"P5", s:"s4", t:"'Where's my money?' is the #1 call driver in weeks 2–3", sev:"High", fut:"Resolved by the status tracker"},
+  {id:"P6", s:"s4", t:"Checks mailed to customers; ~12% delayed or mis-forwarded", sev:"High", fut:"Resolved: network or lockbox"},
+  {id:"P7", s:"s5", t:"Unmatched checks sit ~3.5 days across 4 handoffs", sev:"Med", type:"Handoff", fut:"Resolved by auto-match"},
+  {id:"P8", s:"s6", t:"~28% of balances sit in cash 30+ days", sev:"Med", fut:"Reduced to ~9% with one-tap invest"}
+];
+const OPPS = [
+  {id:"O1", s:"s1", t:"Plain-language rollover decision guide", imp:"Med"},
+  {id:"O2", s:"s2", t:"Plan Finder: detect old recordkeeper from employer name", imp:"Med", ai:72},
+  {id:"O3", s:"s3", t:"Harborline-initiated requests with e-authorization", imp:"High"},
+  {id:"O4", s:"s3", t:"Pre-filled forms + e-sign where the plan accepts it", imp:"High"},
+  {id:"O5", s:"s4", t:"Proactive milestone tracker (SMS, email, app)", imp:"High", ai:85},
+  {id:"O6", s:"s4", t:"Electronic plan-to-plan transfers via network", imp:"High", ai:90},
+  {id:"O7", s:"s5", t:"Auto-match incoming funds to open requests", imp:"Med"},
+  {id:"O8", s:"s6", t:"'Invest like before' with an advice review", imp:"Med", ai:64}
+];
+const INSIGHTS = [
+  {typ:"b", label:"Bottleneck", conf:94, h:"Two stages hold ~65% of the wait",
+   p:"15 of 23 median days* sit in 'Request funds' and 'Funds in transit', where Harborline depends on the old plan and the postal mail.",
+   ev:"Evidence: stage durations, 9 workshop notes, 40 call summaries", steps:["a5","a6","a7","a8"], name:"Bottleneck · stages 3–4"},
+  {typ:"h", label:"Handoffs", conf:88, h:"4 handoffs to reconcile one unmatched check",
+   p:"Mailroom → Rollover Ops → Cash Reconciliation → Rollover Ops → Customer Care. Each adds ~0.9 days*.",
+   ev:"Evidence: team lanes + ops notes", steps:["a8","a9"], name:"Handoffs · reconcile"},
+  {typ:"f", label:"Call driver", conf:81, h:"Status calls peak on days 7–15",
+   p:"'Where's my money?' is the top rollover contact reason while checks are in the mail. Customers can't see progress anywhere.",
+   ev:"Evidence: 40 call summaries", steps:["a7"], name:"Call driver · status"},
+  {typ:"d", label:"Possible drop-off", conf:63, h:"Customers who can't find their old plan may abandon at ~2×",
+   p:"Mentioned in 2 of 9 notes only. Treat as a hypothesis and validate with funnel data before acting.",
+   ev:"Low evidence: needs validation", steps:["a4"], name:"Drop-off · old-plan details"}
+];
+const SUGGEST = [
+  {o:"O6", conf:90, imp:"High", p:"Could cut ~10 days* for plans on the network (~60% of volume*).", steps:["a5","a7"]},
+  {o:"O5", conf:85, imp:"High", p:"Could deflect most status calls in weeks 2–3.", steps:["a7","a9"]},
+  {o:"O2", conf:72, imp:"Med", p:"Removes the #1 reason customers stall in stage 2.", steps:["a4"]},
+  {o:"O8", conf:64, imp:"Med", p:"Gets money invested sooner. Needs a compliance and advice review.", steps:["a10"]}
+];
+const EX = {
+  s1:{cur:["Most customers don't decide. <em>They drift.</em>","The trigger is a job change and a dense packet. People park it for weeks, and when they do call, the first question is usually jargon.","Open with the packet. Hold it up if you can, it lands better than any chart."],
+      fut:["A clear choice, <em>in plain language.</em>","A short decision guide answers 'direct or indirect?' before anyone has to call. Specialists spend time on real advice instead.","Point out this stage barely changes in time. The win is confidence."]},
+  s2:{cur:["Opening the account is <em>the easy part.</em>","Eleven minutes, instant ID check. Then we ask for old-plan details that half of customers can't find on their statement.","Celebrate this one. It's the benchmark for every other stage."],
+      fut:["We find the old plan <em>for them.</em>","Type a former employer, confirm the suggested recordkeeper, done. The stall that used to cost a day disappears.","Plan Finder confidence is shown to the customer, and they always confirm."]},
+  s3:{cur:["The customer becomes <em>our integration layer.</em>","Only they can start the request with the old plan. Paper forms, signature guarantees, and 38%* bounced back. We can't see any of it.","This is the slide execs remember. Pause on the 38%."],
+      fut:["We start the request, <em>with their OK.</em>","E-authorization for network plans, pre-filled e-sign forms for the rest. Status is visible to the customer and to us.","Needs partnership with Plan Network Ops. That's the ask."]},
+  s4:{cur:["A check for their retirement, <em>in the mail.</em>","Often sent to the customer's home, then forwarded to us. 'Where's my money?' becomes our #1 call driver.","Glenn's quote works well here."],
+      fut:["Money moves electronically, <em>and they can watch it.</em>","Network transfers skip the mail. Every milestone sends an update, so the status call never needs to happen.","Mailroom stays as a fallback for non-network plans."]},
+  s5:{cur:["Inside our walls, <em>four handoffs.</em>","Unmatched checks bounce between Mailroom, Rollover Ops and Cash Reconciliation before anyone tells the customer.","This one is ours to fix. No partner needed."],
+      fut:["Funds match themselves <em>to the request.</em>","Auto-match posts most deposits the same day and triggers an instant 'funds arrived' alert.","Sam's team moves from chasing exceptions to reviewing them."]},
+  s6:{cur:["The money arrives, <em>and then sits.</em>","It lands in cash. About 28%* of balances stay uninvested for a month or more.","Frame this as the long-term cost, not a UX nit."],
+      fut:["One tap to <em>invest like before.</em>","We suggest mirroring their old allocation, checked by advice rules, confirmed by the customer.","Flag the compliance review as a dependency."]}
+};
+const NOTES = `Rollover workshop — notes (Dana, Kofi, Priya, Sam) 3/12
+- ppl [[st|leave job, get packet from old employer]], usually ignore it for weeks
+- call us confused re [[pn|direct vs indirect rollover??]] ~1 in 3 calls
+- [[st|open rollover IRA online]] — that part's fine, ~10 min
+- they don't know who holds old plan... [[pn|recordkeeper name not on statement]] half the time
+- THEY have to [[st|call old plan]]. we can't initiate. [[tm|Rollover Specialists]] can do 3-way call
+- old plan sends [[pn|paper form]], some want medallion sig guarantee ugh
+- Priya: NIGO rate high, maybe ~38%? goes to [[tm|Rollover Ops]]
+- [[st|check gets mailed]] to customer home (!!) payable to Harborline FBO
+- customer has to forward check to us, some lose it / sit on it
+- [[tm|Mailroom]] scans ([[sy|Mailroom OCR]]) → ops → [[tm|Cash Recon]] if doesn't match ([[pn|handoffs everywhere]])
+- Kofi: [[pn|"where's my money"]] = top call driver weeks 2-3
+- recon in [[sy|Ledger Core]], exceptions in [[sy|Exception Queue]]
+- once in, [[st|money sits in cash]], lots don't invest for a month+
+- Kofi: could we use the [[op|plan-to-plan electronic network]] for big recordkeepers?
+- Sam: [[op|auto-match]] incoming checks to open requests??`;
+const SUMMARY = {
+  cur:{full:[
+    ["h2","401(k) rollovers take 23 days*, and most of that is waiting."],
+    ["h6","In plain terms"],
+    ["p","Moving an old 401(k) to Harborline takes a median of 23 days*. Customers spend most of it waiting on paperwork and mailed checks that neither they nor we can track."],
+    ["h6","Where it hurts"],
+    ["ul",["Two stages, requesting funds and funds in transit, make up about 65% of the wait*.","'Where's my money?' is our #1 rollover call driver in weeks 2–3.","About 28%* of rolled-over balances sit in cash for a month or more."]],
+    ["h6","What we recommend, in order"],
+    ["ol",["Use electronic plan-to-plan transfers where the old plan supports it. Biggest time saver.","Send proactive status updates at every milestone. Cuts status calls.","Offer 'invest like before' once funds land, after an advice review."]],
+    ["h6","What it could mean"],
+    ["p","Median time drops from 23 to about 6 days*, with fewer calls and more money invested sooner."]],
+   short:[
+    ["h2","23 days* to roll over a 401(k). It could be 6."],
+    ["p","Most of the wait is paper forms and mailed checks we can't see. Three moves fix most of it: electronic transfers, proactive status updates, and one-tap 'invest like before'."]]},
+  fut:{full:[
+    ["h2","The future-state rollover: about 6 days*, with no status calls."],
+    ["h6","What changes"],
+    ["p","Harborline starts the request with the customer's e-authorization, money moves electronically where possible, and the customer can watch every milestone."],
+    ["h6","What it takes"],
+    ["ul",["Partnership with Plan Network Ops for electronic transfers.","Status Tracker and auto-match in Rollover Ops and Cash Reconciliation.","Compliance review for 'invest like before'."]],
+    ["h6","Expected impact"],
+    ["p","~17 fewer days* end-to-end, 7 of 8 pain points resolved or reduced, and handoffs on a typical rollover cut from 14 to 4*."]],
+   short:[
+    ["h2","From 23 days* to about 6."],
+    ["p","We start the request, money moves electronically, and customers watch it happen. We need a network partnership and a compliance review to get there."]]}
+};
+
+/* ---------------- STATE ---------------- */
+const st = {view:"current", persona:"all", ch:new Set(), sel:null, hl:null, hlName:"", draft:false, flags:new Set(), drawer:null, insSeen:false, draftState:"idle", ex:0, exOpen:false, notesOn:false};
+const FUT = () => st.view === "future";
+const stageOf = id => STAGES.find(g => g.id === id);
+const stepById = id => STEPS.find(s => s.id === id);
+const sIdx = id => STAGES.findIndex(g => g.id === id);
+const sTitle = s => FUT() && s.ft ? s.ft : s.t;
+const sCh = s => FUT() && s.fch ? s.fch : s.ch;
+const sM = s => FUT() && s.fm ? s.fm : s.m;
+const gDays = g => FUT() ? g.fdays : g.days;
+const gList = (g, k) => FUT() ? g["f" + k] : g[k];
+const total = () => STAGES.reduce((a, g) => a + gDays(g), 0);
+const fmtD = d => (d < 1 ? "<1" : (Math.round(d * 10) / 10)) + (d === 1 ? " day" : " days");
+const persona = () => PERSONAS.find(p => p.id === st.persona);
+function emoOf(s, view = st.view, per = st.persona) {
+  let v = view === "future" ? (s.fe ?? s.e) : s.e;
+  const p = PERSONAS.find(x => x.id === per);
+  if (p && p.off) v += p.off[sIdx(s.s)] * (view === "future" ? .5 : 1);
+  return Math.max(-2, Math.min(2, v));
+}
+const emoLabel = v => v <= -1.4 ? "Frustrated" : v <= -.5 ? "Anxious" : v < .5 ? "Neutral" : v < 1.2 ? "Satisfied" : "Confident";
+const confCls = c => c >= 85 ? ["hi","High"] : c >= 70 ? ["md","Medium"] : ["lo","Low"];
+const confTag = (c, pre = "") => { const [k, l] = confCls(c); return `<span class="conf ${k}" title="AI confidence">${pre}${l} · ${c}%</span>`; };
+const av = (k, cls = "") => { const p = PEOPLE[k]; return `<span class="av ${cls}" style="background:${p[2]}">${p[0].split(" ").map(w => w[0]).join("")}</span>`; };
+const DRAFT_CONF = {s1:92, s2:95, s3:89, s4:84, s5:71, s6:87};
+const FLAG_CONF = {"a8":68, "P7":61, "team:Cash Reconciliation":74};
+
+/* ---------------- RENDER MAP ---------------- */
+const LANES = [
+  ["steps","Customer actions","What the customer does","user","#EEF0FF","#3346D3"],
+  ["emo","Emotion","How it feels, step by step","heart","#FEF0F7","#DB2777"],
+  ["ch","Touchpoints","Channels in play","touch","#F1F5FF","#2F3FA8"],
+  ["front","Front stage","Teams the customer sees","front","#E6F7F5","#0D9488"],
+  ["lov"],
+  ["back","Back stage","Teams behind the scenes","back","#F2F4F7","#475467"],
+  ["sys","Systems","Tools and platforms","server","#F2F4F7","#344054"],
+  ["pain","Pain points","Where it breaks","alert","#FEF3F2","#C0352B"],
+  ["opp","Opportunities","Ideas to improve it","bulb","#ECFDF3","#067647"]
+];
+function hlStages() { return st.hl ? new Set([...st.hl].map(id => stepById(id).s)) : null; }
+
+function render(build = false) {
+  const map = $("#map"), hs = hlStages();
+  const max = Math.max(...STAGES.map(gDays)), tot = total();
+  let h = `<div class="corner"><span class="t">Stages</span><span class="v">${FUT() ? "Future state" : "Current state"}<br><b style="color:var(--ink)">${fmtD(tot)}*</b> end-to-end</span></div>`;
+  STAGES.forEach((g, i) => {
+    const d = gDays(g), hot = !FUT() && d / tot > .25;
+    const delta = FUT() ? `<span class="delta">−${fmtD(g.days - g.fdays).replace(" days","d").replace(" day","d")}</span>` : "";
+    const dc = st.draft && !FUT() ? `<span class="conf ai" title="AI draft confidence">AI ${DRAFT_CONF[g.id]}%</span>` : "";
+    h += `<div class="sh" style="--c:${i};--r:0" data-stage="${g.id}"><div class="n">STAGE ${String(i + 1).padStart(2, "0")} ${dc}</div><div class="nm">${esc(g.name)}</div>
+      <div class="dur ${hot ? "hot" : ""}"><b>${fmtD(d)}</b><span class="bar"><i style="width:${Math.max(6, d / max * 100)}%"></i></span>${delta}</div></div>`;
+  });
+  LANES.forEach((L, r) => {
+    const [k, name, desc, icon, bg, col] = L;
+    if (k === "lov") { h += `<div class="lov"><span>Line of visibility</span></div>`; return; }
+    h += `<div class="lab" data-lane="${k}"${k === "emo" ? ' id="emoLab"' : ""}><span class="t"><span class="ic" style="background:${bg};color:${col}">${ic(icon, "s")}</span>${name}</span><span class="d">${desc}</span></div>`;
+    if (k === "emo") {
+      h += `<div class="cell emo" id="emoCell" style="--c:0;--r:${r}"><span class="zl"></span><span class="face" style="top:6px">+ Positive</span><span class="face" style="bottom:6px">− Negative</span>
+        <span class="lg">${FUT() ? '<span><i></i>Future</span><span><i class="g"></i>Current</span>' : `<span><i></i>${esc(persona().id === "all" ? "All customers" : persona().full)}</span>`}</span><svg id="emoSvg"></svg></div>`;
+      return;
+    }
+    STAGES.forEach((g, i) => {
+      const dimCell = hs && !hs.has(g.id) ? " dim" : "";
+      h += `<div class="cell${k === "steps" ? "" : dimCell}" style="--c:${i};--r:${r}" data-lane="${k}" data-stage="${g.id}">${laneCell(k, g, hs)}</div>`;
+    });
+  });
+  map.innerHTML = h;
+  if (build) {
+    map.style.setProperty("--sp", FF ? 0 : SPEED);
+    map.classList.remove("build"); void map.offsetWidth; map.classList.add("build");
+    clearTimeout(render._t); render._t = setTimeout(() => map.classList.remove("build"), 2200 * SPEED + 200);
+  }
+  updateKpis();
+  requestAnimationFrame(drawCurve);
+}
+
+function laneCell(k, g, hs) {
+  const steps = STEPS.filter(s => s.s === g.id);
+  if (k === "steps") {
+    let o = steps.map(s => {
+      const chs = sCh(s), chDim = st.ch.size && !chs.some(c => st.ch.has(c));
+      const hlDim = st.hl && !st.hl.has(s.id), hlOn = st.hl && st.hl.has(s.id);
+      const flagged = st.draft && !FUT() && st.flags.has(s.id);
+      const pc = s.pains.length;
+      const pp = pc ? (FUT() ? `<span class="pp ok">${ic("check","xs")}${pc} fixed</span>` : `<span class="pp">${ic("alert","xs")}${pc}</span>`) : "";
+      return `<div role="button" tabindex="0" class="step${st.sel === s.id ? " sel" : ""}${chDim || hlDim ? " dim" : ""}${hlOn ? " hlx" : ""}${flagged ? " flagged" : ""}" data-step="${s.id}" aria-label="${esc(sTitle(s))}">
+        ${FUT() && s.ft ? '<span class="chg">Changed</span>' : ""}
+        <div class="tt">${esc(sTitle(s))}</div>
+        <div class="ft">${chs.map(c => `<span title="${CHANNELS.find(x => x[0] === c)[1]}">${ic(c, "s")}</span>`).join("")}${pp}</div>
+        ${flagged ? `<div class="flag">${ic("alert","xs")}Review · ${FLAG_CONF[s.id]}%<button data-confirm="${s.id}">${ic("check","xs")}Confirm</button></div>` : ""}
+      </div>`;
+    }).join("");
+    if (st.persona !== "all") { const p = persona(); o += `<div class="quote" style="--pc:${p.c}"><b>${esc(p.full)}</b>“${esc(g.q[p.id])}”</div>`; }
+    return o;
+  }
+  if (k === "ch") {
+    const all = [...new Set(steps.flatMap(sCh))], was = new Set(steps.flatMap(s => s.ch));
+    return `<div class="tags">${all.map(c => `<span class="tag ch${st.ch.size && !st.ch.has(c) ? " dim" : ""}${FUT() && !was.has(c) ? " new" : ""}">${ic(c, "s")}${CHANNELS.find(x => x[0] === c)[1]}</span>`).join("")}</div>`;
+  }
+  if (k === "front" || k === "back" || k === "sys") {
+    const key = k === "sys" ? "sys" : k, list = gList(g, key), base = new Set(g[key]);
+    const cls = k === "front" ? "fr" : k === "back" ? "bk" : "sy";
+    return `<div class="tags">${list.map(t => {
+      const fk = "team:" + t, fl = st.draft && !FUT() && st.flags.has(fk);
+      return `<span class="tag ${cls}${FUT() && !base.has(t) ? " new" : ""}${fl ? " flagged" : ""}">${k !== "sys" ? ic(k === "front" ? "users" : "back", "xs") : ""}${esc(t)}${fl ? `<button class="tconf" data-confirm="${esc(fk)}" title="Confirm (AI ${FLAG_CONF[fk]}%)">${ic("check","xs")}</button>` : ""}</span>`;
+    }).join("")}</div>`;
+  }
+  if (k === "pain") {
+    return PAINS.filter(p => p.s === g.id).map(p => {
+      const linked = STEPS.filter(s => s.pains.includes(p.id)).map(s => s.id);
+      const dim = st.hl && !linked.some(x => st.hl.has(x));
+      const fl = st.draft && !FUT() && st.flags.has(p.id);
+      if (FUT()) return `<button class="card pain res${dim ? " dim" : ""}" data-pain="${p.id}"><div class="k">${ic("check","xs")}${esc(p.fut)}</div><div class="txt">${esc(p.t)}</div></button>`;
+      return `<div role="button" tabindex="0" class="card pain${dim ? " dim" : ""}${fl ? " flagged" : ""}" data-pain="${p.id}"><div class="k">${ic("alert","xs")}${p.type || "Pain"} <span class="sev">${p.sev}</span></div><div class="txt">${esc(p.t)}</div>
+        ${fl ? `<div class="flag">${ic("alert","xs")}Review · ${FLAG_CONF[p.id]}%<button data-confirm="${p.id}">${ic("check","xs")}Confirm</button></div>` : ""}</div>`;
+    }).join("");
+  }
+  if (k === "opp") {
+    return OPPS.filter(o => o.s === g.id).map(o => {
+      if (FUT()) return `<button class="card opp live" data-opp="${o.id}"><div class="k">${ic("check","xs")}In future state <span class="sev">${o.imp} impact</span></div>${esc(o.t)}</button>`;
+      return `<button class="card opp${o.ai ? " aiopp" : ""}" data-opp="${o.id}"><div class="k">${ic(o.ai ? "spark" : "bulb","xs")}${o.ai ? "AI suggested" : "Idea"} <span class="sev">${o.ai ? o.ai + "% conf." : o.imp + " impact"}</span></div>${esc(o.t)}</button>`;
+    }).join("");
+  }
+  return "";
+}
+
+function updateKpis() {
+  const t = total();
+  $("#kpiDays").innerHTML = FUT() ? `Median end-to-end <b>${fmtD(t)}</b>* <span class="delta">−${Math.round(23 - t)} days</span>` : `Median end-to-end <b>${fmtD(t)}</b>*`;
+  $("#kpiPains").innerHTML = FUT() ? `<b>7 of 8</b> pain points resolved or reduced` : `<b>8</b> pain points · <b>14</b> handoffs`;
+}
+
+/* emotion curve */
+function smooth(pts) {
+  if (pts.length < 2) return "";
+  let d = `M${pts[0].x},${pts[0].y}`;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2, t = .18;
+    d += ` C${p1.x + (p2.x - p0.x) * t},${p1.y + (p2.y - p0.y) * t} ${p2.x - (p3.x - p1.x) * t},${p2.y - (p3.y - p1.y) * t} ${p2.x},${p2.y}`;
+  }
+  return d;
+}
+function curvePts(view, per) {
+  const cell = $("#emoCell"); if (!cell) return [];
+  const cr = cell.getBoundingClientRect(), H = cr.height, mid = H / 2, amp = (H / 2 - 18) / 2;
+  const pts = [];
+  STAGES.forEach(g => {
+    const hr = $(`.sh[data-stage="${g.id}"]`).getBoundingClientRect();
+    const ss = STEPS.filter(s => s.s === g.id);
+    ss.forEach((s, k) => { const v = emoOf(s, view, per); pts.push({x: hr.left - cr.left + hr.width * (k + 1) / (ss.length + 1), y: mid - v * amp, v, s}); });
+  });
+  return pts;
+}
+function drawCurve() {
+  const svg = $("#emoSvg"); if (!svg) return;
+  const cell = $("#emoCell"), H = cell.getBoundingClientRect().height, W = cell.getBoundingClientRect().width;
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+  const pts = curvePts(st.view, st.persona); if (!pts.length) return;
+  const col = v => v <= -1 ? "#F04438" : v < .5 ? "#F79009" : "#17B26A";
+  let o = `<defs><linearGradient id="eg" x1="0" y1="0" x2="0" y2="${H}" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#17B26A"/><stop offset=".5" stop-color="#6E7BEA"/><stop offset="1" stop-color="#F04438"/></linearGradient>
+    <linearGradient id="ef" x1="0" y1="0" x2="0" y2="${H}" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#17B26A" stop-opacity=".16"/><stop offset=".5" stop-color="#6E7BEA" stop-opacity="0"/><stop offset="1" stop-color="#F04438" stop-opacity=".16"/></linearGradient></defs>`;
+  if (FUT()) { const g = curvePts("current", st.persona); o += `<path d="${smooth(g)}" fill="none" stroke="#AAB3C2" stroke-width="2" stroke-dasharray="5 5"/>`; }
+  const d = smooth(pts);
+  o += `<path d="${d} L${pts[pts.length - 1].x},${H / 2} L${pts[0].x},${H / 2} Z" fill="url(#ef)"/>`;
+  o += `<path class="eline" d="${d}" fill="none" stroke="url(#eg)" stroke-width="3" stroke-linecap="round"/>`;
+  pts.forEach(p => {
+    const dim = (st.hl && !st.hl.has(p.s.id)) || (st.ch.size && !sCh(p.s).some(c => st.ch.has(c)));
+    o += `<g opacity="${dim ? .3 : 1}" style="cursor:pointer" data-step="${p.s.id}"><circle cx="${p.x}" cy="${p.y}" r="${st.sel === p.s.id ? 8 : 6}" fill="#fff" stroke="${col(p.v)}" stroke-width="3"/><title>${esc(sTitle(p.s))}: ${emoLabel(p.v)}</title></g>`;
+  });
+  const lo = pts.reduce((a, b) => b.v < a.v ? b : a);
+  if (lo.v < -.5) o += `<g transform="translate(${lo.x + 12},${lo.y - 10})"><rect x="0" y="0" width="88" height="20" rx="10" fill="#FEF3F2" stroke="#FDD3CF"/><text x="44" y="13.5" text-anchor="middle" font-size="10.5" font-weight="650" fill="#C0352B" font-family="Inter,sans-serif">Lowest point</text></g>`;
+  svg.innerHTML = o;
+  const line = svg.querySelector(".eline");
+  if (line && line.getTotalLength) { const L = line.getTotalLength(); line.style.strokeDasharray = L; line.style.strokeDashoffset = L; line.getBoundingClientRect(); line.style.transition = `stroke-dashoffset ${FF ? 0 : 900 * SPEED}ms cubic-bezier(.2,.8,.2,1)`; line.style.strokeDashoffset = 0; }
+}
+
+/* ---------------- FILTERS / VIEW ---------------- */
+function renderFilters() {
+  $("#personaChips").innerHTML = PERSONAS.map(p => `<button class="chip" aria-pressed="${st.persona === p.id}" data-persona="${p.id}" title="${esc(p.meta || "")}">${p.c ? `<span class="av pa" style="background:${p.c}">${p.name[0]}</span>` : ""}${esc(p.id === "all" ? "All" : p.name)}</button>`).join("");
+  $("#channelChips").innerHTML = CHANNELS.map(([k, n]) => `<button class="chip" aria-pressed="${st.ch.has(k)}" data-chan="${k}" title="${n}" aria-label="${n}">${ic(k, "s")}<span class="cl">${n}</span></button>`).join("");
+}
+function setPersona(id) { st.persona = id; renderFilters(); render(); refreshDrawer(); }
+function setView(v) {
+  st.view = v;
+  $$("#stateToggle button, #exToggle button").forEach(b => b.setAttribute("aria-pressed", b.dataset.view === v));
+  render(); refreshDrawer();
+  if (st.exOpen) renderSlide();
+}
+function setHL(steps, name) { st.hl = new Set(steps); st.hlName = name; $("#hlName").textContent = name; $("#hlbar").classList.add("show"); render(); }
+function clearHL() { st.hl = null; $("#hlbar").classList.remove("show"); render(); }
+
+/* ---------------- DRAWER ---------------- */
+function openDrawer(kick, title, body) {
+  $("#dKick").innerHTML = kick; $("#dTitle").textContent = title; $("#dBody").innerHTML = body;
+  $("#drawer").classList.add("open"); $("#drawer").setAttribute("aria-hidden", "false"); $("#dBody").scrollTop = 0;
+}
+function closeDrawer() { $("#drawer").classList.remove("open"); $("#drawer").setAttribute("aria-hidden", "true"); st.drawer = null; if (st.sel) { st.sel = null; render(); } }
+function refreshDrawer() { if (st.drawer && st.drawer.startsWith("step:")) stepDrawer(st.drawer.slice(5)); }
+
+function openStep(id) { st.sel = id; st.drawer = "step:" + id; render(); stepDrawer(id); }
+function stepDrawer(id) {
+  const s = stepById(id), g = stageOf(s.s), i = sIdx(s.s), m = sM(s), was = s.m, per = PEOPLE[s.owner];
+  const v = emoOf(s), labels = ["Time in step","Monthly volume","Drop-off / quality","Handoffs"], icons = ["clock","trend","alert","handoff"];
+  let b = "";
+  if (FUT() && s.ft) b += `<div class="sec"><div class="fut">${ic("target")}<div><b>Future state.</b> Replaces “${esc(s.t)}”. ${esc(s.fd)}</div></div></div>`;
+  b += `<div class="sec"><h4>What happens</h4><p>${esc(FUT() && s.fd ? s.fd : s.d)}</p></div>`;
+  b += `<div class="sec"><h4>Step owner</h4><div class="owner">${av(s.owner)}<div><b>${per[0]}</b><span>${per[1]}</span></div></div></div>`;
+  b += `<div class="sec"><h4>Metrics <span class="sample">Sample data · illustrative</span></h4><div class="metrics">${m.map((x, k) => `<div class="metric"><div class="l">${ic(icons[k],"xs")}${labels[k]}</div><div class="v">${esc(x)}${FUT() && s.fm && was[k] !== x ? `<span class="was">${esc(was[k])}</span>` : ""}</div></div>`).join("")}</div></div>`;
+  b += `<div class="sec"><h4>How it feels</h4><div class="emobar"><div class="track"><i style="left:${(v + 2) / 4 * 100}%"></i></div><span class="lab2">${emoLabel(v)}</span></div>
+    <div class="lst" style="margin-top:10px">${PERSONAS.filter(p => p.c && (st.persona === "all" || st.persona === p.id)).map(p => `<div class="quote" style="--pc:${p.c}"><b>${esc(p.full)}</b>“${esc(g.q[p.id])}”</div>`).join("")}</div></div>`;
+  b += `<div class="sec"><h4>Channels & systems</h4><div class="tags">${sCh(s).map(c => `<span class="tag ch">${ic(c,"s")}${CHANNELS.find(x => x[0] === c)[1]}</span>`).join("")}${gList(g,"sys").map(t => `<span class="tag sy">${esc(t)}</span>`).join("")}</div></div>`;
+  b += `<div class="sec"><h4>Teams involved</h4><div class="tags">${gList(g,"front").map(t => `<span class="tag fr">${ic("users","xs")}${esc(t)}</span>`).join("")}${gList(g,"back").map(t => `<span class="tag bk">${ic("back","xs")}${esc(t)}</span>`).join("")}</div></div>`;
+  const pains = PAINS.filter(p => s.pains.includes(p.id));
+  b += `<div class="sec"><h4>Linked pain points</h4>${pains.length ? `<div class="lst">${pains.map(p => FUT() ? `<div class="card pain res"><div class="k">${ic("check","xs")}${esc(p.fut)}</div><div class="txt">${esc(p.t)}</div></div>` : `<div class="card pain"><div class="k">${ic("alert","xs")}${p.type || "Pain"} <span class="sev">${p.sev} severity</span></div>${esc(p.t)}</div>`).join("")}</div>` : `<p style="color:var(--muted)">None logged. This step is working well.</p>`}</div>`;
+  const opps = OPPS.filter(o => o.s === s.s);
+  b += `<div class="sec"><h4>Opportunities in this stage</h4><div class="lst">${opps.map(o => `<div class="card opp${o.ai ? " aiopp" : ""}${FUT() ? " live" : ""}"><div class="k">${ic(o.ai ? "spark" : "bulb","xs")}${FUT() ? "In future state" : o.ai ? "AI suggested" : "Idea"}<span class="sev">${o.imp} impact</span></div>${esc(o.t)}</div>`).join("")}</div></div>`;
+  b += `<div class="sec"><h4>AI note</h4><div class="ainote"><div class="orb">${ic("spark","xs")}</div><div>${esc(s.ai[0])}<div style="margin-top:6px">${confTag(s.ai[1])}</div></div></div></div>`;
+  openDrawer(`Stage ${i + 1} · ${esc(g.name)}`, sTitle(s), b);
+}
+
+async function openInsights() {
+  st.drawer = "ins"; st.sel = null;
+  const head = `${ic("spark","s")} Wayloom AI`;
+  if (!st.insSeen) {
+    openDrawer(head, "AI insights", `<div class="sec"><div class="scanning"><span class="spin"></span><span id="scanTxt">Reading 10 steps, 9 teams and 49 notes…</span></div></div>`);
+    const msgs = ["Measuring time in each stage…","Tracing handoffs across team lanes…","Matching pain points to call summaries…","Scoring confidence…"];
+    for (const m of msgs) { await wait(450); if (st.drawer !== "ins") return; const e = $("#scanTxt"); if (e) e.textContent = m; }
+    await wait(350); if (st.drawer !== "ins") return;
+    st.insSeen = true;
+  }
+  let b = `<div class="sec"><h4>What's slowing this journey down</h4><div class="lst">`;
+  INSIGHTS.forEach((n, k) => {
+    const [cc] = confCls(n.conf), color = cc === "hi" ? "var(--ok)" : cc === "md" ? "var(--warn)" : "var(--bad)";
+    b += `<div class="ins" style="animation-delay:${k * 120 * SPEED}ms"><div class="row1"><span class="typ ${n.typ}">${ic(n.typ === "h" ? "handoff" : n.typ === "f" ? "phone" : n.typ === "d" ? "trend" : "clock","xs")}${n.label}</span>
+      <span class="meter" style="color:${color}"><span class="m"><i style="width:${n.conf}%"></i></span>${confTag(n.conf)}</span></div>
+      <h5>${esc(n.h)}</h5><p>${esc(n.p)}</p><div class="ev">${esc(n.ev)}</div>
+      <div class="acts"><button class="btn" data-hl="${k}">${ic("eye","s")}Show on map</button><button class="btn btn-ghost" data-open="${n.steps[0]}">Open step</button></div></div>`;
+  });
+  b += `</div></div><div class="sec"><h4>Suggested opportunities</h4><div class="lst">`;
+  SUGGEST.forEach((sg, k) => {
+    const o = OPPS.find(x => x.id === sg.o);
+    b += `<div class="ins" style="animation-delay:${(k + 4) * 120 * SPEED}ms"><div class="row1"><span class="typ" style="color:var(--ai)">${ic("bulb","xs")}${sg.imp} impact</span><span class="meter">${confTag(sg.conf)}</span></div>
+      <h5>${esc(o.t)}</h5><p>${esc(sg.p)}</p><div class="acts"><button class="btn" data-fut="${k}">${ic("target","s")}Preview in future state</button></div></div>`;
+  });
+  b += `</div></div><div class="sec"><p style="font-size:12px;color:var(--faint)">Confidence reflects how much evidence supports each finding: High ≥85%, Medium 70–84%, Low below 70%. Figures are illustrative.</p></div>`;
+  if (st.drawer === "ins") openDrawer(head, "AI insights", b);
+}
+
+/* ---------------- DRAFT FROM NOTES ---------------- */
+const plainNotes = NOTES.replace(/\[\[\w+\|([^\]]+)\]\]/g, "$1");
+function openModal(id) { const m = $(id); m.classList.add("open"); m.setAttribute("aria-hidden", "false"); }
+function closeModal(id) { const m = $(id); m.classList.remove("open"); m.setAttribute("aria-hidden", "true"); if (id === "#sumModal") st.sumTok = (st.sumTok || 0) + 1; }
+function openDraft() {
+  if (st.draftState === "running") { openModal("#draftModal"); return; }
+  st.draftState = "idle";
+  $("#notesTa").style.display = ""; $("#notesView").style.display = "none"; $("#legend").style.visibility = "hidden";
+  $("#notesTa").value = plainNotes;
+  $("#srcChips").innerHTML = [["Workshop notes",1],["Call transcript"],["SOP / policy doc"],["Upload file"]].map(([n, on]) => `<button class="chip" aria-pressed="${!!on}" data-src>${esc(n)}</button>`).join("");
+  $("#draftOut").innerHTML = `<div class="empty"><div><div class="orb">${ic("map")}</div><h4>Your draft map appears here</h4><p style="margin:0;font-size:12.5px">Wayloom pulls out stages, customer steps, teams, systems,<br>pain points and ideas, with a confidence score for each.</p></div></div>`;
+  const g = $("#btnGen"); g.disabled = false; g.innerHTML = `${ic("spark","s")}Draft my map`; g.dataset.mode = "gen";
+  openModal("#draftModal");
+}
+async function runDraft() {
+  if (st.draftState !== "idle") return;
+  st.draftState = "running";
+  const g = $("#btnGen"); g.disabled = true; g.innerHTML = `<span class="spin" style="border-color:rgba(255,255,255,.3);border-top-color:#fff"></span>Drafting…`;
+  const nv = $("#notesView");
+  nv.innerHTML = esc(NOTES).replace(/\[\[(\w+)\|([^\]]+)\]\]/g, (_, c, t) => `<mark class="${c}">${t}</mark>`);
+  $("#notesTa").style.display = "none"; nv.style.display = ""; $("#legend").style.visibility = "visible";
+  const out = $("#draftOut");
+  out.innerHTML = `<div class="prog" id="prog"></div>`;
+  const marks = $$("#notesView mark");
+  const steps = ["Reading 196 words of workshop notes","Finding stages and customer steps","Matching teams and systems","Spotting pain points and handoffs","Scoring confidence"];
+  let mi = 0;
+  for (let k = 0; k < steps.length; k++) {
+    const row = document.createElement("div");
+    row.innerHTML = `<span class="spin"></span>${steps[k]}`; $("#prog").appendChild(row);
+    const take = Math.ceil(marks.length / steps.length);
+    for (let j = 0; j < take && mi < marks.length; j++, mi++) { marks[mi].classList.add("on"); await wait(110); }
+    await wait(260);
+    row.innerHTML = `<span class="ok">${ic("check","xs")}</span>${steps[k]}`;
+  }
+  const counts = [["6","Stages"],["10","Customer steps"],["9","Teams"],["8","Pain points"]];
+  out.insertAdjacentHTML("beforeend", `<div class="counts">${counts.map(c => `<div><b data-to="${c[0]}">0</b><span>${c[1]}</span></div>`).join("")}</div><div id="outline"></div>`);
+  for (let n = 1; n <= 10; n++) { $$(".counts b").forEach(b => b.textContent = Math.round(+b.dataset.to * n / 10)); await wait(40); }
+  for (let i = 0; i < STAGES.length; i++) {
+    const s = STAGES[i], ss = STEPS.filter(x => x.s === s.id), pc = PAINS.filter(p => p.s === s.id).length;
+    $("#outline").insertAdjacentHTML("beforeend", `<div class="ostage"><span class="num">${i + 1}</span><div><b>${esc(s.name)}</b><div class="sub">${ss.length} step${ss.length > 1 ? "s" : ""} · ${s.back.length + s.front.length} teams · ${pc} pain point${pc > 1 ? "s" : ""}</div></div>${confTag(DRAFT_CONF[s.id], "AI ")}</div>`);
+    await wait(260);
+  }
+  $("#outline").insertAdjacentHTML("beforeend", `<div class="ainote" style="margin-top:12px"><div class="orb">${ic("spark","xs")}</div><div><b>3 items need a human check.</b> The notes don't say who forwards checks, the 3.5-day exception time is a guess, and “Cash Recon” may be a team or a process.</div></div>`);
+  st.draftState = "done";
+  g.disabled = false; g.innerHTML = `${ic("map","s")}Build the map`; g.dataset.mode = "build";
+}
+function buildMap() {
+  closeModal("#draftModal"); closeDrawer(); clearHL();
+  st.draft = true; st.flags = new Set(Object.keys(FLAG_CONF)); st.draftState = "idle"; st.ch.clear(); st.persona = "all";
+  st.view = "current"; $$("#stateToggle button").forEach(b => b.setAttribute("aria-pressed", b.dataset.view === "current"));
+  renderFilters(); $("#scroll").scrollTo({top:0,left:0}); render(true); updateDraft();
+  toast("Draft map built from your notes. Review the 3 flagged items.");
+}
+function updateDraft() {
+  const ban = $("#draftBanner"), n = st.flags.size;
+  ban.classList.toggle("show", st.draft);
+  $("#status").classList.toggle("draft", st.draft);
+  $("#statusTxt").textContent = st.draft ? "AI draft · v4" : (st.published ? "v4 · Published" : "v3 · Published");
+  $("#draftTxt").innerHTML = n ? `<b>AI draft from workshop notes.</b> ${n} item${n > 1 ? "s" : ""} need${n > 1 ? "" : "s"} your review (amber, dashed). Everything else matched with high confidence.` : `<b>All items reviewed.</b> Your draft is ready to publish as v4.`;
+  $("#btnReview").style.display = n ? "" : "none";
+}
+function confirmFlag(k) { st.flags.delete(k); render(); updateDraft(); toast("Confirmed. Thanks, that trains your workspace's drafts."); }
+function jumpFlag() {
+  const el = $(".flagged"); if (!el) return;
+  el.scrollIntoView({behavior: "smooth", block: "center", inline: "center"});
+  el.animate([{boxShadow:"0 0 0 0 rgba(247,144,9,.6)"},{boxShadow:"0 0 0 10px rgba(247,144,9,0)"}], {duration: 900, iterations: 2});
+}
+
+/* ---------------- SUMMARY ---------------- */
+async function openSummary(len) {
+  st.sumLen = len || st.sumLen || "full";
+  $$("#sumLen button").forEach(b => b.setAttribute("aria-pressed", b.dataset.len === st.sumLen));
+  $("#sumState").textContent = FUT() ? "Based on the future state." : "Based on the current state.";
+  openModal("#sumModal");
+  const tok = st.sumTok = (st.sumTok || 0) + 1, body = $("#sumBody");
+  body.innerHTML = "";
+  const blocks = SUMMARY[FUT() ? "fut" : "cur"][st.sumLen];
+  const typeInto = async (el, text) => {
+    const words = text.split(" ");
+    el.classList.add("cursor");
+    for (let i = 0; i < words.length; i++) { if (tok !== st.sumTok) return false; el.textContent += (i ? " " : "") + words[i]; if (i % 2) await wait(28); }
+    el.classList.remove("cursor"); return true;
+  };
+  for (const [tag, c] of blocks) {
+    if (tok !== st.sumTok) return;
+    if (tag === "ul" || tag === "ol") {
+      const l = document.createElement(tag); body.appendChild(l);
+      for (const it of c) { const li = document.createElement("li"); l.appendChild(li); if (!await typeInto(li, it)) return; }
+    } else { const e = document.createElement(tag); body.appendChild(e); if (!await typeInto(e, c)) return; }
+  }
+  body.insertAdjacentHTML("beforeend", `<div class="ill">*Illustrative figures from sample data. Harborline Financial is a fictional company.</div>`);
+}
+
+/* ---------------- SHARE ---------------- */
+function openShare() {
+  $("#exps").innerHTML = [["image","PNG image","Full map"],["file","PDF","Map + summary"],["slides","Slide deck","Explain mode"],["table","CSV","Steps & metrics"]].map(([i, n, s]) => `<button class="exp" data-exp="${n}"><span class="ei">${ic(i)}</span>${n}<small>${s}</small></button>`).join("");
+  openModal("#shareModal");
+}
+
+/* ---------------- EXPLAIN MODE ---------------- */
+const SLIDES = ["intro", ...STAGES.map(s => s.id), "wrap"];
+function openExplain(i = 0) { st.ex = i; st.exOpen = true; $("#explain").classList.add("open"); $("#explain").setAttribute("aria-hidden", "false"); renderSlide(); }
+function closeExplain() { st.exOpen = false; $("#explain").classList.remove("open"); $("#explain").setAttribute("aria-hidden", "true"); }
+function avgEmo(gid) { const ss = STEPS.filter(s => s.s === gid); return ss.reduce((a, s) => a + emoOf(s, st.view, "all"), 0) / ss.length; }
+function renderSlide() {
+  const id = SLIDES[st.ex], f = FUT();
+  $$("#exToggle button").forEach(b => b.setAttribute("aria-pressed", b.dataset.view === st.view));
+  $("#exDots").innerHTML = SLIDES.map((s, i) => `<button class="${i === st.ex ? "on" : i < st.ex ? "done" : ""}" data-slide="${i}" aria-label="Go to slide ${i + 1}"><i></i><span>${i === 0 ? "Overview" : i === SLIDES.length - 1 ? "The ask" : esc(stageOf(s).name)}</span></button>`).join("");
+  $("#exPrev").style.visibility = st.ex ? "visible" : "hidden";
+  $("#exNext").innerHTML = st.ex === SLIDES.length - 1 ? `Finish${ic("check")}` : `Next${ic("chevR")}`;
+  const body = $("#exBody"); let html, note;
+  if (id === "intro") {
+    const tot = total(), mx = Math.max(...STAGES.map(gDays));
+    html = `<div class="exl slide"><div class="exk">Journey walkthrough <span class="pillx">${f ? "Future state" : "Current state"}</span></div>
+      <h2>${f ? "Where the rollover journey is <em>headed.</em>" : "How a 401(k) rollover <em>really</em> works at Harborline."}</h2>
+      <p>${f ? "Same customer, same goal. We take on the chasing, money moves electronically where it can, and the customer can see every step." : "Six stages, nine teams and a lot of waiting. Here's what the customer goes through, stage by stage, and where it breaks."}</p>
+      <div class="strip">${STAGES.map(g => `<div><b>${esc(g.name)}</b><span>${fmtD(gDays(g))}*</span><i class="${!f && gDays(g) / tot > .25 ? "hot" : ""}" style="width:${Math.max(8, gDays(g) / mx * 100)}%"></i></div>`).join("")}</div></div>
+      <div class="excards slide" style="animation-delay:.1s">
+        <div class="exc"><div class="l">${ic("clock","s")}Median end-to-end</div><div class="big">${fmtD(tot)}<small>${f ? "was 23 days" : "per rollover"}*</small></div></div>
+        <div class="exc"><div class="l">${ic("alert","s")}Pain points</div><div class="big">${f ? "1" : "8"}<small>${f ? "open · 7 resolved or reduced" : "logged across 6 stages"}</small></div></div>
+        <div class="exc"><div class="l">${ic("handoff","s")}Handoffs on a typical rollover</div><div class="big">${f ? "4" : "14"}<small>${f ? "was 14" : "across 9 teams"}*</small></div></div></div>`;
+    note = "Set the scene: a rollover is how Harborline wins new assets, so every lost day is a risk. Then walk the stages left to right.";
+  } else if (id === "wrap") {
+    html = `<div class="exl slide"><div class="exk">The ask</div><h2>Three moves get us from <em>23 days to about 6.</em>*</h2>
+      <p>Each one removes a wait the customer can't see today. In order of impact:</p>
+      <div class="excards" style="margin-top:22px"><div class="exc"><ul><li>Electronic plan-to-plan transfers, with Plan Network Ops</li><li>Proactive milestone updates by SMS, email and app</li><li>'Invest like before', after a compliance and advice review</li></ul></div></div></div>
+      <div class="excards slide" style="animation-delay:.1s">
+        <div class="exc good"><div class="l">${ic("target","s")}If we do this</div><div class="big">−17 days<small>median, illustrative*</small></div></div>
+        <div class="exc"><div class="l">${ic("phone","s")}Status calls</div><div class="big">Mostly gone<small>proactive updates</small></div></div>
+        <div class="exc"><div class="l">${ic("trend","s")}Money left in cash</div><div class="big">28% → 9%<small>illustrative*</small></div></div></div>`;
+    note = "End with the ask: a partnership decision on the transfer network and a compliance slot for 'invest like before'. Leave the map up for questions.";
+  } else {
+    const g = stageOf(id), i = sIdx(id), ex = EX[id][f ? "fut" : "cur"], ss = STEPS.filter(s => s.s === id), v = avgEmo(id);
+    const pains = PAINS.filter(p => p.s === id), opps = OPPS.filter(o => o.s === id);
+    html = `<div class="exl slide"><div class="exk">Stage ${i + 1} of 6 <span class="pillx">${fmtD(gDays(g))}*${f ? ` · was ${fmtD(g.days)}` : ""}</span></div>
+      <h2>${ex[0]}</h2><p>${esc(ex[1])}</p></div>
+      <div class="excards slide" style="animation-delay:.1s">
+        <div class="exc"><div class="l">${ic("user","s")}What the customer does</div><ul>${ss.map(s => `<li>${esc(sTitle(s))}</li>`).join("")}</ul></div>
+        <div class="exc"><div class="l">${ic("heart","s")}How it feels</div><div class="feel"><div class="track"><i style="left:${(v + 2) / 4 * 100}%"></i></div><b>${emoLabel(v)}</b></div></div>
+        <div class="exc"><div class="l">${ic("users","s")}Who's involved</div><div class="exteams">${gList(g,"front").map(t => `<span>${esc(t)}</span>`).join("")}${gList(g,"back").map(t => `<span class="b">${esc(t)}</span>`).join("")}</div></div>
+        ${f ? `<div class="exc good"><div class="l">${ic("check","s")}What changes</div>${opps.map(o => esc(o.t)).join("<br>")}</div>`
+            : `<div class="exc pain"><div class="l">${ic("alert","s")}The hard part</div>${pains.map(p => esc(p.t)).join("<br>")}</div>`}
+      </div>`;
+    note = ex[2];
+  }
+  body.innerHTML = html;
+  $("#exNotes").innerHTML = `<b>Speaker notes</b>${esc(note)}`;
+  $("#exNotes").classList.toggle("show", st.notesOn);
+  $("#exNotesBtn").style.color = st.notesOn ? "#5EEAD4" : "";
+}
+function exGo(d) { const n = st.ex + d; if (n < 0) return; if (n >= SLIDES.length) { closeExplain(); toast("Walkthrough finished. Nice job, Dana."); return; } st.ex = n; renderSlide(); }
+
+/* ---------------- TOAST ---------------- */
+function toast(t) { $("#toastTxt").textContent = t; const e = $("#toast"); e.classList.add("show"); clearTimeout(toast._t); toast._t = setTimeout(() => e.classList.remove("show"), 2600); }
+
+/* ---------------- TOUR ---------------- */
+function cleanAll() { closeModal("#draftModal"); closeModal("#sumModal"); closeModal("#shareModal"); closeExplain(); if ($("#drawer").classList.contains("open")) closeDrawer(); if (st.hl) clearHL(); }
+async function ensureDraftBuilt() {
+  if (!st.draft) {
+    if (st.draftState === "idle") { openDraft(); runDraft(); }
+    FF = true; while (st.draftState === "running") await new Promise(r => setTimeout(r, 30)); FF = false;
+    buildMap();
+  }
+}
+const TOUR = [
+  {h:"Welcome to Wayloom", p:"Wayloom helps Journey Owners see, explain and improve the processes they own. This 2-minute tour uses a fictional fintech, Harborline Financial, and its 401(k) rollover journey.",
+   go:() => { cleanAll(); if (st.view !== "current") setView("current"); if (st.persona !== "all") setPersona("all"); }},
+  {h:"One map, every lane", t:"#scroll", p:"Stages run across the top with their median time. Swimlanes show what the customer does, how they feel, the channels they use, the teams on either side of the line of visibility, systems, pain points and opportunities.",
+   go:() => { cleanAll(); $("#scroll").scrollTo({top:0,left:0}); }},
+  {h:"See where it hurts", t:"#emoCell", p:"The emotion curve plots how customers feel at each step. The dip lines up with stages 3 and 4, which are also the longest (red bars in the header).",
+   go:() => { cleanAll(); $("#scroll").scrollTo({top:0,left:0}); }},
+  {h:"Click any step for the detail", t:"#drawer", p:"Owners, systems, time and volume (sample data), linked pain points, and an AI note with its confidence level.",
+   go:() => { cleanAll(); openStep("a6"); }},
+  {h:"AI moment: start from messy notes", t:"#draftCard", wide:1, p:"Paste workshop notes or a call transcript. Wayloom highlights stages, teams, systems and pain points as it reads, then drafts a structured map.",
+   go:() => { cleanAll(); if (st.draftState === "idle" && !st.draft) { openDraft(); setTimeout(runDraft, 500 * SPEED); } else if (!st.draft) openModal("#draftModal"); else { st.draft = false; openDraft(); setTimeout(runDraft, 500 * SPEED); } }},
+  {h:"You stay in charge", t:"#draftBanner", p:"The draft is built. Items the AI wasn't sure about are dashed amber, with a confidence score, for the JO to confirm. Nothing publishes until you say so.",
+   go:async () => { await ensureDraftBuilt(); }},
+  {h:"AI moment: bottlenecks and handoffs", t:"#drawer", p:"Wayloom flags where time goes, where work changes hands, and what to try next. Every finding shows its confidence and evidence; weak ones are labelled as hypotheses.",
+   go:async () => { cleanAll(); await ensureDraftBuilt(); openInsights(); }},
+  {h:"Filter by persona or channel", t:".head", p:"Here we've switched to Glenn, a 61-year-old pre-retiree. His quotes appear on each stage and his emotion curve dips deeper. Channel filters work the same way.",
+   go:() => { cleanAll(); if (st.view !== "current") setView("current"); setPersona("glenn"); $("#scroll").scrollTo({top:0,left:0}); }},
+  {h:"Compare current vs. future state", t:"#work", pos:"br", p:"One toggle shows the redesigned journey: changed steps, new teams and systems, resolved pain points, and the old emotion curve as a dashed line. 23 days becomes about 6.*",
+   go:() => { cleanAll(); setPersona("all"); setView("future"); $("#scroll").scrollTo({top:0,left:0}); }},
+  {h:"AI moment: a summary execs will read", t:"#sumCard", p:"A plain-language summary drafted from the map: what's happening, where it hurts, what to do, in order. One click gives you a 30-second version.",
+   go:() => { cleanAll(); setView("current"); openSummary("full"); }},
+  {h:"Explain my process", t:"#exBody", pos:"br", p:"Presenter mode walks execs or new teammates through the journey stage by stage, with speaker notes and a Today / Where we're going toggle. Arrow keys work too.",
+   go:() => { cleanAll(); st.notesOn = true; openExplain(3); }},
+  {h:"Share it, export it", t:"#btnShare", p:"Send a view-only link, or export a PNG, PDF, slide deck or CSV. That's Wayloom: map the process, understand it, explain it, improve it.",
+   go:() => { cleanAll(); st.notesOn = false; if (st.view !== "current") setView("current"); }}
+];
+let tI = -1;
+async function tourGo(i) {
+  tI = i; const T = TOUR[i];
+  $("#tour").classList.add("on");
+  $("#tcard").style.visibility = "hidden";
+  $("#tBack").disabled = true; $("#tNext").disabled = true;
+  await T.go();
+  if (tI !== i) return;
+  await new Promise(r => setTimeout(r, 420));
+  if (tI !== i) return;
+  $("#tH").textContent = T.h; $("#tP").textContent = T.p;
+  $("#tCount").textContent = `${i + 1} of ${TOUR.length}`;
+  $("#tBar").style.width = ((i + 1) / TOUR.length * 100) + "%";
+  $("#tBack").disabled = i === 0; $("#tBack").style.visibility = i === 0 ? "hidden" : "visible";
+  $("#tNext").disabled = false;
+  $("#tNext").textContent = i === TOUR.length - 1 ? "Finish tour" : i === 0 ? "Start" : "Next";
+  $("#tcard").classList.toggle("wide", !!T.wide);
+  placeTour();
+  $("#tcard").style.visibility = "visible";
+  $("#tNext").focus({preventScroll:true});
+}
+function placeTour() {
+  if (tI < 0) return;
+  const T = TOUR[tI], hole = $("#hole"), card = $("#tcard"), vw = innerWidth, vh = innerHeight, cw = card.offsetWidth, chh = card.offsetHeight, pad = 6, gap = 16;
+  const el = T.t && $(T.t);
+  if (!el) { hole.classList.add("none"); card.style.left = (vw - cw) / 2 + "px"; card.style.top = (vh - chh) / 2 + "px"; return; }
+  const r = el.getBoundingClientRect();
+  const R = {l:Math.max(4, r.left - pad), t:Math.max(4, r.top - pad), r:Math.min(vw - 4, r.right + pad), b:Math.min(vh - 4, r.bottom + pad)};
+  hole.classList.remove("none");
+  Object.assign(hole.style, {left:R.l + "px", top:R.t + "px", width:(R.r - R.l) + "px", height:(R.b - R.t) + "px"});
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  let L, Tp;
+  if (T.pos === "br") { L = vw - cw - 28; Tp = vh - chh - 60; }
+  else if (vw - R.r - gap >= cw + 12) { L = R.r + gap; Tp = clamp(R.t, 12, vh - chh - 12); }
+  else if (R.l - gap >= cw + 12) { L = R.l - gap - cw; Tp = clamp(R.t, 12, vh - chh - 12); }
+  else if (vh - R.b - gap >= chh + 12) { Tp = R.b + gap; L = clamp(R.l, 12, vw - cw - 12); }
+  else if (R.t - gap >= chh + 12) { Tp = R.t - gap - chh; L = clamp(R.l, 12, vw - cw - 12); }
+  else { L = vw - cw - 28; Tp = vh - chh - 60; }
+  card.style.left = L + "px"; card.style.top = Tp + "px";
+}
+function tourEnd() { tI = -1; $("#tour").classList.remove("on"); cleanAll(); st.notesOn = false; toast("Tour complete. Click any step, or try Draft from notes yourself."); }
+function startTour() { tourGo(0); }
+
+/* ---------------- EVENTS ---------------- */
+hydrateIcons();
+renderFilters(); render(); updateDraft();
+$("#map").addEventListener("click", e => {
+  const c = e.target.closest("[data-confirm]"); if (c) { e.stopPropagation(); confirmFlag(c.dataset.confirm); return; }
+  const s = e.target.closest("[data-step]"); if (s) { openStep(s.dataset.step); return; }
+  const p = e.target.closest("[data-pain]");
+  if (p) { const linked = STEPS.filter(x => x.pains.includes(p.dataset.pain)).map(x => x.id); if (linked.length === 1) openStep(linked[0]); else setHL(linked, "Pain " + p.dataset.pain); return; }
+  const o = e.target.closest("[data-opp]");
+  if (o) { const op = OPPS.find(x => x.id === o.dataset.opp); setHL(STEPS.filter(x => x.s === op.s).map(x => x.id), op.t.length > 34 ? op.t.slice(0, 32) + "…" : op.t); }
+});
+$("#map").addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && e.target.matches('[role="button"]')) { e.preventDefault(); e.target.click(); } });
+$("#personaChips").addEventListener("click", e => { const b = e.target.closest("[data-persona]"); if (b) setPersona(b.dataset.persona); });
+$("#channelChips").addEventListener("click", e => { const b = e.target.closest("[data-chan]"); if (!b) return; const k = b.dataset.chan; st.ch.has(k) ? st.ch.delete(k) : st.ch.add(k); renderFilters(); render(); });
+$("#stateToggle").addEventListener("click", e => { const b = e.target.closest("[data-view]"); if (b) setView(b.dataset.view); });
+$("#exToggle").addEventListener("click", e => { const b = e.target.closest("[data-view]"); if (b) setView(b.dataset.view); });
+$("#dClose").onclick = closeDrawer;
+$("#dBody").addEventListener("click", e => {
+  const h = e.target.closest("[data-hl]"); if (h) { const n = INSIGHTS[+h.dataset.hl]; setHL(n.steps, n.name); return; }
+  const o = e.target.closest("[data-open]"); if (o) { openStep(o.dataset.open); return; }
+  const f = e.target.closest("[data-fut]"); if (f) { const sg = SUGGEST[+f.dataset.fut]; setView("future"); setHL(sg.steps, "Future: " + OPPS.find(x => x.id === sg.o).t.slice(0, 30) + "…"); toast("Previewing in the future state"); }
+});
+$("#hlClear").onclick = clearHL;
+$("#btnInsights").onclick = openInsights; $("#railIns").onclick = openInsights;
+$("#btnDraft").onclick = openDraft;
+$("#btnGen").onclick = () => { if ($("#btnGen").dataset.mode === "build") buildMap(); else runDraft(); };
+$("#srcChips").addEventListener("click", e => { const b = e.target.closest("[data-src]"); if (!b || st.draftState !== "idle") return; $$("#srcChips .chip").forEach(x => x.setAttribute("aria-pressed", x === b)); if (!/Workshop/.test(b.textContent)) toast("Prototype: every source uses the workshop sample"); });
+$("#btnReview").onclick = jumpFlag;
+$("#btnPublish").onclick = () => { st.draft = false; st.flags.clear(); st.published = true; render(); updateDraft(); toast("Published v4. Your team has been notified (prototype)."); };
+$("#btnSummary").onclick = () => openSummary();
+$("#sumLen").addEventListener("click", e => { const b = e.target.closest("[data-len]"); if (b) openSummary(b.dataset.len); });
+$("#sumCopy").onclick = () => { try { navigator.clipboard && navigator.clipboard.writeText($("#sumBody").innerText).catch(() => {}); } catch (_) {} toast("Summary copied to clipboard"); };
+$("#sumPresent").onclick = () => { closeModal("#sumModal"); openExplain(0); };
+$("#btnShare").onclick = openShare;
+$("#copyLink").onclick = () => { try { navigator.clipboard && navigator.clipboard.writeText("https://wayloom.app/harborline/j/401k-rollover-v3").catch(() => {}); } catch (_) {} toast("Link copied (prototype link)"); };
+$("#exps").addEventListener("click", e => { const b = e.target.closest("[data-exp]"); if (b) toast(`Preparing ${b.dataset.exp}… (visual only in this prototype)`); });
+$("#btnExplain").onclick = () => openExplain(0);
+$("#exClose").onclick = closeExplain;
+$("#exPrev").onclick = () => exGo(-1); $("#exNext").onclick = () => exGo(1);
+$("#exDots").addEventListener("click", e => { const b = e.target.closest("[data-slide]"); if (b) { st.ex = +b.dataset.slide; renderSlide(); } });
+$("#exNotesBtn").onclick = () => { st.notesOn = !st.notesOn; renderSlide(); };
+$$(".modal").forEach(m => { m.addEventListener("click", e => { if (e.target === m || e.target.closest("[data-close]")) closeModal("#" + m.id); }); });
+$("#btnTour").onclick = startTour;
+$("#tNext").onclick = () => tI === TOUR.length - 1 ? tourEnd() : tourGo(tI + 1);
+$("#tBack").onclick = () => tI > 0 && tourGo(tI - 1);
+$("#tSkip").onclick = tourEnd;
+document.addEventListener("keydown", e => {
+  if (tI >= 0) { if (e.key === "Escape") tourEnd(); else if (e.key === "ArrowRight" && !$("#tNext").disabled) $("#tNext").click(); else if (e.key === "ArrowLeft" && !$("#tBack").disabled) $("#tBack").click(); return; }
+  if (st.exOpen) { if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); exGo(1); } else if (e.key === "ArrowLeft") exGo(-1); else if (e.key === "Escape") closeExplain(); return; }
+  if (e.key === "Escape") { const m = $(".modal.open"); if (m) closeModal("#" + m.id); else if ($("#drawer").classList.contains("open")) closeDrawer(); }
+});
+let rz; addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => { drawCurve(); placeTour(); }, 80); });
+if ("ResizeObserver" in window) new ResizeObserver(() => drawCurve()).observe($("#map"));
+if (/[?&]tour/.test(location.search)) setTimeout(startTour, 600 * SPEED);
+
+window.__demo = {st, openStep, openInsights, openDraft, runDraft, buildMap, openSummary, openExplain, closeExplain, setView, setPersona, startTour, tourGo, cleanAll, openShare, confirmFlag};
+})();
+</script>
+</body>
+</html>

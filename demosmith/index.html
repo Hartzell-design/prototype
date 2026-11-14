@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demosmith · Tailored product demos for every prospect — Prototype by Hartzell Design</title>
+<meta name="description" content="Clickable prototype of Demosmith, an AI sales demo platform. Fictional brands and sample data. Prototype by Hartzell Design.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230B0D12'/%3E%3Cpath d='M9 8h7a8 8 0 0 1 0 16H9z' fill='none' stroke='%23A78BFA' stroke-width='3'/%3E%3Ccircle cx='22.5' cy='9.5' r='2.5' fill='%2367E8F9'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F5F6F8; --panel:#fff; --ink:#0B0D12; --ink2:#252A35; --muted:#5D6574; --faint:#8B93A1;
+  --line:#E4E7EC; --line2:#EEF0F3; --side:#0B0D12; --side2:#151821; --side-line:#222634;
+  --acc:#5B4BF5; --acc-soft:#F0EEFF; --ai1:#8B5CF6; --ai2:#06B6D4; --ai-soft:#F5F2FF; --ai-line:#E0D7FF;
+  --grad:linear-gradient(120deg,#8B5CF6 0%,#6366F1 45%,#06B6D4 100%);
+  --ok:#067647; --ok-bg:#ECFDF3; --ok-line:#ABEFC6; --warn:#B54708; --warn-bg:#FFFAEB; --warn-line:#FEDF89;
+  --r:12px; --shadow:0 1px 2px rgba(16,24,40,.04),0 1px 3px rgba(16,24,40,.07);
+  --shadow-lg:0 24px 60px -16px rgba(16,24,40,.28); --ease:cubic-bezier(.2,.8,.2,1);
+  --p:#1B3A6B; --rad:14px;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.5;font-feature-settings:"cv11","ss01";overflow:hidden}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:6px}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:12px}
+.serif{font-family:"Instrument Serif",Georgia,serif;font-weight:400;letter-spacing:0}
+svg{flex:none}
+
+/* ---------- Shell ---------- */
+.shell{display:grid;grid-template-columns:240px 1fr;height:100vh;height:100dvh}
+.side{background:var(--side);color:#C9CED8;display:flex;flex-direction:column;padding:16px 12px;gap:4px;min-height:0;position:relative;z-index:6}
+.logo{display:flex;align-items:center;gap:10px;padding:4px 8px 18px;color:#fff;font-weight:650;font-size:16px;letter-spacing:-.02em}
+.logo .ws{margin-left:auto;font-size:10.5px;font-weight:600;color:#9AA2B2;border:1px solid var(--side-line);padding:2px 7px;border-radius:999px}
+.navlab{font-size:11px;font-weight:600;color:#6B7385;text-transform:uppercase;letter-spacing:.08em;padding:14px 10px 6px}
+.nav{display:flex;align-items:center;gap:11px;padding:8px 10px;border-radius:9px;border:0;background:none;color:#C9CED8;font-weight:500;font-size:13.5px;text-align:left;width:100%;transition:background .15s}
+.nav:hover{background:var(--side2);color:#fff}
+.nav.on{background:#1C2030;color:#fff;box-shadow:inset 0 0 0 1px #2A3044}
+.nav .ct{margin-left:auto;font-size:11px;color:#8890A0;background:#1C2030;border-radius:6px;padding:0 6px}
+.nav svg{opacity:.85}
+.prod{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:9px;font-size:13px;color:#C9CED8}
+.prod .pi{width:22px;height:22px;border-radius:6px;display:grid;place-items:center;font-size:10px;font-weight:700;color:#fff}
+.prod .live{margin-left:auto;width:7px;height:7px;border-radius:50%;background:#22C55E;box-shadow:0 0 0 3px rgba(34,197,94,.18)}
+.prod .lbl{display:flex;flex-direction:column;line-height:1.25;min-width:0}
+.prod .lbl small{color:#6B7385;font-size:11px}
+.side .grow{flex:1}
+.sidecard{border:1px solid var(--side-line);border-radius:12px;padding:12px;background:linear-gradient(180deg,#141725,#0F1119);font-size:12px;color:#9AA2B2}
+.sidecard b{color:#fff;font-weight:600}
+.sidecard a{color:#C4B5FD;text-decoration:none;font-weight:600}
+.me{display:flex;align-items:center;gap:10px;padding:10px 8px 2px;font-size:13px;color:#fff}
+.me .av{width:28px;height:28px;border-radius:50%;background:#2A3044;display:grid;place-items:center;font-size:11px;font-weight:650}
+.me small{display:block;color:#6B7385;font-size:11px}
+
+.main{display:grid;grid-template-rows:58px 1fr;min-width:0;min-height:0}
+.top{display:flex;align-items:center;gap:12px;padding:0 22px;background:var(--panel);border-bottom:1px solid var(--line);min-width:0}
+.crumbs{display:flex;align-items:center;gap:8px;color:var(--muted);font-weight:500;white-space:nowrap;overflow:hidden}
+.crumbs b{color:var(--ink);font-weight:600}
+.crumbs .sl{color:#C3C8D1}
+.top .sp{flex:1}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:var(--muted);background:var(--bg);border:1px solid var(--line);padding:4px 10px;border-radius:999px;white-space:nowrap}
+.pill .dot{width:6px;height:6px;border-radius:50%;background:#F79009;box-shadow:0 0 0 3px rgba(247,144,9,.15)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid var(--line);background:var(--panel);padding:7px 12px;border-radius:9px;font-weight:550;font-size:13px;box-shadow:var(--shadow);transition:all .15s var(--ease);white-space:nowrap}
+.btn:hover{border-color:#CDD2DA;background:#FAFBFC}
+.btn.pri{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn.pri:hover{background:#222836}
+.btn.ai{background:var(--grad);color:#fff;border-color:transparent;box-shadow:0 6px 16px -6px rgba(99,102,241,.6)}
+.btn.ai:hover{filter:brightness(1.06)}
+.btn.ghost{box-shadow:none;border-color:transparent;background:transparent}
+.btn.ghost:hover{background:var(--line2)}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.btn.sm{padding:5px 9px;font-size:12px;border-radius:8px}
+.view{display:none;min-height:0;overflow:auto}
+.view.on{display:block}
+#v-builder.on,#v-email.on{display:grid}
+.spin{width:13px;height:13px;border-radius:50%;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;animation:sp .7s linear infinite}
+.spin.dk{border-color:#D9DCE3;border-top-color:var(--acc)}
+@keyframes sp{to{transform:rotate(360deg)}}
+@keyframes pop{from{opacity:0;transform:translateY(6px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes shimmer{to{background-position:-200% 0}}
+.skel{background:linear-gradient(90deg,#EEF0F3 25%,#F7F8FA 50%,#EEF0F3 75%);background-size:200% 100%;animation:shimmer 1.2s linear infinite;border-radius:6px}
+.aitag{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:650;letter-spacing:.02em;color:#6D28D9;background:var(--ai-soft);border:1px solid var(--ai-line);padding:1px 7px;border-radius:999px;white-space:nowrap}
+.sample{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--warn);background:var(--warn-bg);border:1px solid var(--warn-line);padding:1px 8px;border-radius:999px;white-space:nowrap}
+
+/* ---------- Dashboard ---------- */
+.page{padding:28px 32px 60px;max-width:1240px;margin:0 auto}
+.ph{display:flex;align-items:flex-end;gap:16px;margin-bottom:22px}
+.ph h1{margin:0;font-size:26px;letter-spacing:-.025em;font-weight:650}
+.ph h1 .serif{font-size:30px;color:#4B4FD6}
+.ph p{margin:4px 0 0;color:var(--muted)}
+.ph .sp{flex:1}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;box-shadow:var(--shadow)}
+.kpi .l{color:var(--muted);font-size:12.5px;font-weight:500;display:flex;gap:6px;align-items:center}
+.kpi .v{font-size:26px;font-weight:650;letter-spacing:-.025em;margin-top:6px;display:flex;align-items:baseline;gap:8px}
+.kpi .d{font-size:12px;font-weight:600;color:var(--ok)}
+.connect{display:flex;align-items:center;gap:16px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px 18px;margin-bottom:18px;box-shadow:var(--shadow)}
+.connect .ic{width:38px;height:38px;border-radius:10px;background:#0E2347;display:grid;place-items:center;color:#fff;font-weight:700;font-size:13px}
+.connect h3{margin:0;font-size:14px;font-weight:600}
+.connect p{margin:0;color:var(--muted);font-size:12.5px}
+.connect .sp{flex:1}
+.chipset{display:flex;gap:6px;flex-wrap:wrap}
+.tag{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:550;color:var(--ink2);background:var(--bg);border:1px solid var(--line);padding:2px 8px;border-radius:7px;white-space:nowrap}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.card-h{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line2)}
+.card-h h3{margin:0;font-size:14px;font-weight:600}
+.card-h .sp{flex:1}
+.seg{display:inline-flex;background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:2px}
+.seg button{border:0;background:none;padding:4px 10px;border-radius:7px;font-size:12.5px;font-weight:550;color:var(--muted)}
+.seg button.on{background:#fff;color:var(--ink);box-shadow:var(--shadow)}
+table{width:100%;border-collapse:collapse}
+th{font-size:11.5px;font-weight:600;color:var(--faint);text-align:left;padding:10px 18px;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--line2);white-space:nowrap}
+td{padding:12px 18px;border-bottom:1px solid var(--line2);vertical-align:middle;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+tbody tr{transition:background .12s;cursor:pointer}
+tbody tr:hover{background:#FAFBFC}
+.pros{display:flex;align-items:center;gap:12px}
+.plogo{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;color:#fff;font-weight:700;font-size:12px;flex:none}
+.pros b{font-weight:600;display:block}
+.pros small{color:var(--muted);font-size:12px}
+.st{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;border:1px solid}
+.st i{width:6px;height:6px;border-radius:50%;background:currentColor}
+.st.draft{color:#6D28D9;background:var(--ai-soft);border-color:var(--ai-line)}
+.st.ready{color:#175CD3;background:#EFF8FF;border-color:#B2DDFF}
+.st.pres{color:var(--ok);background:var(--ok-bg);border-color:var(--ok-line)}
+.st.shared{color:#B54708;background:var(--warn-bg);border-color:var(--warn-line)}
+.st.won{color:#fff;background:#0B0D12;border-color:#0B0D12}
+.views{display:flex;align-items:center;gap:8px}
+.views svg{opacity:.9}
+.rowact{opacity:0;transition:opacity .15s}
+tbody tr:hover .rowact{opacity:1}
+.hl-row{background:linear-gradient(90deg,#F7F5FF,#fff 60%)}
+
+/* ---------- Builder ---------- */
+#v-builder{grid-template-columns:380px 1fr;height:100%;overflow:hidden}
+.ctrl{background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+.ctrl-h{padding:16px 18px 0}
+.ctrl-h .who{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.ctrl-h h2{margin:0;font-size:16px;font-weight:650;letter-spacing:-.015em}
+.ctrl-h p{margin:0;color:var(--muted);font-size:12.5px}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);margin:0 -18px;padding:0 14px}
+.tabs button{border:0;background:none;padding:10px 10px;font-weight:550;font-size:13px;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;display:flex;align-items:center;gap:6px}
+.tabs button.on{color:var(--ink);border-bottom-color:var(--ink)}
+.ctrl-b{flex:1;overflow-y:auto;padding:16px 18px 40px}
+.tabp{display:none}
+.tabp.on{display:block;animation:pop .25s var(--ease)}
+.grp{margin-bottom:20px}
+.grp>label,.lab{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--ink2);margin-bottom:7px}
+.grp>label .sp,.lab .sp{flex:1}
+.grp>label small,.lab small{color:var(--faint);font-weight:500}
+.inp{width:100%;border:1px solid var(--line);border-radius:9px;padding:8px 11px;background:#fff;font-size:13.5px;transition:border .15s,box-shadow .15s}
+.inp:focus{outline:0;border-color:#A5A0F8;box-shadow:0 0 0 3px rgba(91,75,245,.12)}
+.inrow{display:flex;gap:8px}
+.inrow .inp{flex:1;min-width:0}
+.logos{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.logos button{height:58px;border:1px solid var(--line);border-radius:10px;background:#fff;display:grid;place-items:center;transition:all .15s;padding:0}
+.logos button.on{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+.logos button.up{color:var(--faint);font-size:11px;border-style:dashed;display:flex;flex-direction:column;gap:2px;align-items:center;justify-content:center}
+.sw{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.sw button{width:30px;height:30px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--line);transition:transform .15s}
+.sw button:hover{transform:scale(1.08)}
+.sw button.on{box-shadow:0 0 0 2px var(--ink)}
+.sw .hex{margin-left:auto;display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:8px;padding:3px 8px 3px 4px}
+.sw .hex input[type=color]{width:22px;height:22px;border:0;padding:0;background:none;border-radius:5px}
+.detected{display:none;margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--ai-soft);border:1px solid var(--ai-line);font-size:12px;color:#4C1D95;animation:pop .3s var(--ease)}
+.detected.on{display:flex;gap:10px;align-items:center}
+.detected .pal{display:flex;gap:3px;margin-left:auto}
+.detected .pal i{width:16px;height:16px;border-radius:4px;display:block}
+.aicard{position:relative;border-radius:14px;padding:1px;background:var(--grad);margin-bottom:20px;box-shadow:0 10px 30px -14px rgba(99,102,241,.55)}
+.aicard>div{background:#fff;border-radius:13px;padding:14px}
+.aicard h4{margin:0 0 2px;font-size:13.5px;font-weight:650;display:flex;align-items:center;gap:7px}
+.aicard p{margin:0 0 10px;font-size:12px;color:var(--muted)}
+.aicard textarea{resize:none;height:64px;line-height:1.45}
+.aicard .foot{display:flex;align-items:center;gap:8px;margin-top:10px}
+.aicard .foot .sp{flex:1}
+.aisteps{list-style:none;margin:10px 0 0;padding:0;display:none}
+.aisteps.on{display:block}
+.aisteps li{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);padding:3px 0;animation:pop .25s var(--ease)}
+.aisteps li .ck{width:16px;height:16px;border-radius:50%;display:grid;place-items:center;flex:none}
+.aisteps li.done{color:var(--ink2)}
+.aisteps li.done .ck{background:var(--ok-bg);color:var(--ok)}
+.aisum{display:none;margin-top:10px;font-size:12px;background:var(--bg);border-radius:9px;padding:9px 11px;color:var(--ink2)}
+.aisum.on{display:block;animation:pop .3s var(--ease)}
+.personas{display:grid;gap:8px}
+.pcard{display:flex;align-items:center;gap:11px;border:1px solid var(--line);border-radius:11px;padding:10px 12px;background:#fff;text-align:left;width:100%;transition:all .15s;animation:pop .35s var(--ease) both}
+.pcard:hover{border-color:#CDD2DA}
+.pcard.on{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+.pav{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:650;font-size:12px;flex:none;color:#fff}
+.pcard .nm{font-weight:600;font-size:13px;display:flex;gap:4px 6px;align-items:center;flex-wrap:wrap}
+.pcard .nm .n{white-space:nowrap}
+.pcard>span:nth-child(2){min-width:0}
+.pcard .bal small{white-space:nowrap}
+.pcard .meta{display:block;color:var(--muted);font-size:12px}
+.pcard .bal{margin-left:auto;text-align:right;font-weight:600;font-size:13px}
+.pcard .bal small{display:block;color:var(--muted);font-weight:500;font-size:11.5px}
+.pskel{height:56px;border-radius:11px}
+.rng{display:grid;grid-template-columns:1fr 84px;gap:10px;align-items:center}
+input[type=range]{width:100%;accent-color:var(--ink);height:4px}
+.rng .val{border:1px solid var(--line);border-radius:8px;padding:5px 8px;text-align:right;font-weight:600;font-size:13px;font-variant-numeric:tabular-nums}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fundrow{display:grid;grid-template-columns:10px 1fr 44px;gap:8px;align-items:center;font-size:12.5px;padding:5px 0}
+.fundrow i{width:10px;height:10px;border-radius:3px}
+.fundrow b{text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+.tog{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--line2)}
+.tog:last-child{border-bottom:0}
+.tog .tx{flex:1}
+.tog .tx b{display:block;font-weight:600;font-size:13px}
+.tog .tx small{color:var(--muted);font-size:12px}
+.sw-t{position:relative;width:36px;height:20px;border-radius:999px;background:#D0D5DD;border:0;flex:none;transition:background .2s;margin-top:2px}
+.sw-t::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.2);transition:transform .2s var(--ease)}
+.sw-t.on{background:var(--ink)}
+.sw-t.on::after{transform:translateX(16px)}
+.sw-t:disabled{opacity:.5;cursor:not-allowed}
+.hint{font-size:12px;color:var(--muted);background:var(--bg);border-radius:10px;padding:10px 12px;display:flex;gap:8px}
+
+.stagewrap{display:flex;flex-direction:column;min-width:0;min-height:0;background:radial-gradient(1200px 500px at 70% -10%,#ECEBFF 0%,transparent 60%),#EEF0F4}
+.ptool{display:flex;align-items:center;gap:10px;padding:12px 20px}
+.ptool .sp{flex:1}
+.ptool .lbl{font-size:12px;font-weight:600;color:var(--muted);display:flex;align-items:center;gap:6px}
+.live{width:7px;height:7px;border-radius:50%;background:#22C55E;box-shadow:0 0 0 3px rgba(34,197,94,.18);animation:pulse 2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 6px rgba(34,197,94,.05)}}
+.frame-wrap{flex:1;min-height:0;overflow:auto;padding:0 20px 24px;display:flex;justify-content:center}
+.frame{width:100%;max-width:1040px;background:#fff;border-radius:14px;box-shadow:var(--shadow-lg),0 0 0 1px rgba(16,24,40,.06);overflow:hidden;display:flex;flex-direction:column;align-self:flex-start;transition:max-width .4s var(--ease)}
+.frame.tablet{max-width:720px}
+.chrome{display:flex;align-items:center;gap:10px;padding:9px 14px;background:#F7F8FA;border-bottom:1px solid var(--line)}
+.dots{display:flex;gap:6px}.dots i{width:10px;height:10px;border-radius:50%;background:#E0E3E8;display:block}
+.url{flex:1;max-width:460px;margin:0 auto;background:#fff;border:1px solid var(--line);border-radius:7px;padding:3px 10px;font-size:11.5px;color:var(--muted);display:flex;align-items:center;gap:6px;overflow:hidden;white-space:nowrap}
+.flash{animation:flash .9s var(--ease)}
+@keyframes flash{0%{box-shadow:0 0 0 0 rgba(139,92,246,.0)}30%{box-shadow:0 0 0 6px rgba(139,92,246,.35)}100%{box-shadow:0 0 0 0 rgba(139,92,246,0)}}
+
+/* ---------- Participant app (the connected product) ---------- */
+.kapp{--pl:color-mix(in srgb,var(--p) 10%,#fff);--pm:color-mix(in srgb,var(--p) 55%,#fff);--pd:color-mix(in srgb,var(--p) 80%,#000);container-type:inline-size;background:#F7F8FA;color:#101828;font-size:13.5px;transition:background .3s}
+.kapp *{transition:background-color .35s var(--ease),color .35s,border-color .35s,fill .35s,stroke .35s}
+.k-top{display:flex;align-items:center;gap:14px;padding:12px 22px;background:#fff;border-bottom:1px solid #EAECF0}
+.k-brand{display:flex;align-items:center;gap:10px;min-width:0}
+.k-brand .nm{font-weight:700;font-size:15px;letter-spacing:-.02em;white-space:nowrap}
+.k-brand .pl{font-size:11.5px;color:#667085;white-space:nowrap}
+.k-nav{display:flex;gap:2px;margin-left:16px}
+.k-nav span{padding:6px 10px;border-radius:8px;font-weight:550;font-size:12.5px;color:#475467;white-space:nowrap}
+.k-nav span.on{background:var(--pl);color:var(--pd)}
+.k-top .sp{flex:1}
+.k-pw{font-size:10.5px;color:#98A2B3;white-space:nowrap;text-align:right;line-height:1.3}
+.k-pw b{color:#475467;font-weight:600}
+.k-av{width:30px;height:30px;border-radius:50%;background:var(--p);color:#fff;display:grid;place-items:center;font-size:11px;font-weight:650}
+.k-body{padding:20px 22px 26px}
+.k-hello{display:flex;align-items:flex-end;gap:12px;margin-bottom:16px}
+.k-hello h2{margin:0;font-size:21px;letter-spacing:-.02em;font-weight:650}
+.k-hello p{margin:2px 0 0;color:#667085;font-size:13px}
+.k-hello .sp{flex:1}
+.k-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:14px}
+.k-card{background:#fff;border:1px solid #EAECF0;border-radius:var(--rad);padding:16px 18px;position:relative;transition:box-shadow .3s,transform .3s}
+.k-card h3{margin:0 0 10px;font-size:13px;font-weight:600;color:#344054;display:flex;align-items:center;gap:8px}
+.k-card h3 .sp{flex:1}
+.k-hero{grid-column:1/-1;display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center;background:linear-gradient(135deg,var(--p),var(--pd));color:#fff;border:0;overflow:hidden}
+.k-hero .lb{font-size:12px;opacity:.8;font-weight:500}
+.k-hero .big{font-size:36px;font-weight:650;letter-spacing:-.03em;line-height:1.1;margin:4px 0 6px;font-variant-numeric:tabular-nums}
+.k-hero .chg{display:inline-flex;gap:6px;align-items:center;font-size:12px;font-weight:600;background:rgba(255,255,255,.16);padding:3px 9px;border-radius:999px}
+.k-hero .sub{display:flex;gap:18px;margin-top:14px;font-size:12px}
+.k-hero .sub div{opacity:.85}.k-hero .sub b{display:block;font-size:14px;opacity:1}
+.k-hero svg{width:100%;height:120px}
+.k-btn{white-space:nowrap;display:inline-flex;align-items:center;gap:6px;background:var(--p);color:#fff;border:0;border-radius:calc(var(--rad) - 4px);padding:7px 13px;font-weight:600;font-size:12.5px}
+.k-btn.lt{background:var(--pl);color:var(--pd)}
+.k-rate{display:flex;align-items:baseline;gap:8px}
+.k-rate .n{font-size:28px;font-weight:650;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.k-rate small{color:#667085}
+.k-card input[type=range]{accent-color:var(--p);margin:10px 0 4px}
+.k-scale{display:flex;justify-content:space-between;font-size:10.5px;color:#98A2B3}
+.k-match{margin-top:12px;border-radius:10px;padding:10px 12px;font-size:12.5px;display:flex;gap:9px;align-items:flex-start}
+.k-match.ok{background:#ECFDF3;color:#05603A}
+.k-match.miss{background:#FFFAEB;color:#93370D}
+.k-match b{font-weight:650}
+.k-split{display:flex;gap:6px;margin-top:10px;font-size:11.5px;color:#475467}
+.k-split span{flex:1;background:#F9FAFB;border:1px solid #EAECF0;border-radius:8px;padding:6px 8px}
+.k-split b{display:block;font-size:13px;color:#101828}
+.k-alloc{display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:center}
+.k-leg{display:grid;gap:6px;font-size:12px}
+.k-leg div{display:grid;grid-template-columns:10px 1fr auto;gap:8px;align-items:center}
+.k-leg i{width:10px;height:10px;border-radius:3px}
+.k-leg b{font-variant-numeric:tabular-nums}
+.k-proj .big{font-size:24px;font-weight:650;letter-spacing:-.02em}
+.k-proj svg{width:100%;height:96px;margin-top:6px}
+.k-gauge{height:8px;border-radius:999px;background:#F2F4F7;overflow:hidden;margin-top:8px}
+.k-gauge i{display:block;height:100%;background:var(--p);border-radius:999px;transition:width .5s var(--ease)}
+.k-nudge{grid-column:1/-1;display:flex;align-items:center;gap:14px;background:var(--pl);border-color:transparent}
+.k-nudge .ic svg{width:18px;height:18px}
+.k-nudge .ic{width:38px;height:38px;border-radius:11px;background:#fff;display:grid;place-items:center;color:var(--p);flex:none}
+.k-nudge b{display:block;font-size:13.5px;color:var(--pd)}
+.k-nudge small{color:#475467;font-size:12.5px}
+.k-nudge .sp{flex:1}
+.k-loan{display:flex;align-items:center;gap:10px;font-size:12.5px;color:#475467}
+.k-foot{text-align:center;font-size:11px;color:#98A2B3;padding:0 0 16px}
+.k-hl{box-shadow:0 0 0 3px var(--p),0 12px 30px -10px color-mix(in srgb,var(--p) 50%,transparent);z-index:1}
+@container (max-width:760px){
+  .k-grid{grid-template-columns:1fr}
+  .k-nav{display:none}
+  .k-hero{grid-template-columns:1fr;gap:6px}
+  .k-hero svg{height:80px}
+}
+
+/* ---------- Email ---------- */
+#v-email{grid-template-columns:440px 1fr;height:100%;overflow:hidden}
+.ed textarea{resize:none;height:250px;line-height:1.55;font-size:13px}
+.mf{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.mf button{font-family:"JetBrains Mono",monospace;font-size:11px;border:1px dashed #C7CDD6;background:#FAFBFC;border-radius:6px;padding:2px 7px;color:#475467}
+.mf button:hover{border-color:var(--acc);color:var(--acc)}
+.sugg{display:grid;gap:6px;margin-top:8px}
+.sugg button{text-align:left;border:1px solid var(--ai-line);background:var(--ai-soft);border-radius:9px;padding:7px 10px;font-size:12.5px;color:#3B1D8F;animation:pop .3s var(--ease) both}
+.sugg button:hover{border-color:#B9A6FF}
+.typing::after{content:"▍";color:var(--ai1);animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.mail{width:100%;max-width:720px;background:#fff;border-radius:14px;box-shadow:var(--shadow-lg),0 0 0 1px rgba(16,24,40,.06);overflow:hidden;align-self:flex-start}
+.mail-h{padding:16px 22px;border-bottom:1px solid var(--line2);display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center}
+.mail-h .from b{display:block;font-size:13.5px}
+.mail-h .from small{color:var(--muted);font-size:12px}
+.mail-h .subj{grid-column:1/-1;font-size:18px;font-weight:650;letter-spacing:-.015em}
+.mail-b{background:#F3F4F6;padding:24px}
+.mail-in{max-width:540px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #EAECF0}
+.mail-ban{background:linear-gradient(135deg,var(--p),color-mix(in srgb,var(--p) 75%,#000));padding:22px 26px;color:#fff;display:flex;align-items:center;gap:12px}
+.mail-ban .nm{font-weight:700;font-size:16px}
+.mail-txt{padding:22px 26px 6px;font-size:14px;line-height:1.65;color:#1D2939}
+.mail-txt p{margin:0 0 12px}
+.mail-txt .mfv{background:var(--ai-soft);border-radius:4px;padding:0 3px;color:#4C1D95}
+.mail-cta{padding:4px 26px 24px}
+.mail-cta span{display:inline-block;background:var(--p);color:#fff;font-weight:600;padding:10px 18px;border-radius:9px;font-size:13.5px}
+.mail-f{padding:14px 26px;border-top:1px solid #EAECF0;font-size:11px;color:#98A2B3}
+
+/* ---------- Present ---------- */
+.present{position:fixed;inset:0;z-index:40;background:#07080C;display:none;grid-template-columns:1fr 340px;grid-template-rows:52px 1fr}
+.present.on{display:grid;animation:pop .35s var(--ease)}
+.pbar{grid-column:1/-1;display:flex;align-items:center;gap:12px;padding:0 16px;color:#C9CED8;border-bottom:1px solid #1A1D27;font-size:13px}
+.pbar .rec{display:flex;align-items:center;gap:7px;font-weight:600;color:#fff}
+.pbar .rec i{width:8px;height:8px;border-radius:50%;background:#F04438;box-shadow:0 0 0 3px rgba(240,68,56,.25);animation:pulse 1.6s infinite}
+.pbar .sp{flex:1}
+.pbar .btn{background:#151821;border-color:#262A36;color:#E4E7EC;box-shadow:none}
+.pbar .btn:hover{background:#1C2030}
+.pbar .tm{font-family:"JetBrains Mono",monospace;font-size:12px;color:#9AA2B2}
+.pstage{overflow:auto;padding:22px;min-width:0}
+.pstage .frame{max-width:none;box-shadow:0 30px 80px -20px rgba(0,0,0,.6)}
+.pnotes{background:#0E1017;border-left:1px solid #1A1D27;color:#C9CED8;display:flex;flex-direction:column;min-height:0}
+.pn-steps{display:flex;gap:4px;padding:14px 16px 0}
+.pn-steps button{flex:1;height:4px;border-radius:4px;background:#232736;border:0;padding:0}
+.pn-steps button.on{background:#A78BFA}
+.pn-steps button.done{background:#5B4BB5}
+.pn-b{flex:1;overflow:auto;padding:16px 18px}
+.pn-b .k{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#6B7385;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.pn-b h3{margin:0 0 14px;color:#fff;font-size:18px;font-weight:600;letter-spacing:-.015em}
+.pn-b ul{margin:0 0 18px;padding:0;list-style:none;display:grid;gap:10px}
+.pn-b li{display:flex;gap:10px;font-size:13.5px;line-height:1.5}
+.pn-b li i{flex:none;width:20px;height:20px;border-radius:6px;background:#1A1D29;display:grid;place-items:center;font-style:normal;font-size:11px;color:#A78BFA;font-weight:600;margin-top:1px}
+.pn-q{border:1px solid #2B2550;background:linear-gradient(180deg,#171329,#100E1C);border-radius:12px;padding:12px 14px;font-size:13px}
+.pn-q .aitag{background:#241C45;border-color:#3B2F70;color:#C4B5FD}
+.pn-q b{display:block;color:#fff;margin:8px 0 4px;font-weight:600}
+.pn-ctx{margin-top:14px;font-size:12px;color:#8890A0;border-top:1px solid #1A1D27;padding-top:12px;display:grid;gap:6px}
+.pn-ctx span{display:flex;justify-content:space-between}
+.pn-ctx span b{color:#E4E7EC;font-weight:550}
+.pn-f{display:flex;gap:8px;padding:12px 16px;border-top:1px solid #1A1D27}
+.pn-f .btn{flex:1;background:#151821;border-color:#262A36;color:#E4E7EC;box-shadow:none}
+.pn-f .btn.go{background:#fff;color:#0B0D12;border-color:#fff}
+
+/* ---------- Share ---------- */
+.share-grid{display:grid;grid-template-columns:360px minmax(0,1fr);gap:18px;align-items:start}
+.share-grid>*{min-width:0}
+.linkbox{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;padding:6px 6px 6px 12px;background:var(--bg)}
+.linkbox span{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.setrow{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line2);font-size:13px}
+.setrow:last-child{border-bottom:0}
+.setrow .sp{flex:1}
+.setrow small{display:block;color:var(--muted);font-size:12px}
+.akpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:16px 18px}
+.akpi .l{font-size:12px;color:var(--muted);font-weight:500}
+.akpi .v{font-size:22px;font-weight:650;letter-spacing:-.02em}
+.bars{display:flex;align-items:flex-end;gap:6px;height:120px;padding:0 18px}
+.bars div{flex:1;background:linear-gradient(180deg,#8B5CF6,#6366F1);border-radius:5px 5px 2px 2px;min-height:3px;position:relative;transform-origin:bottom;animation:grow .7s var(--ease) both}
+.bars div.z{background:#E4E7EC}
+@keyframes grow{from{transform:scaleY(0)}}
+.bx{display:flex;gap:6px;padding:6px 18px 14px;font-size:10.5px;color:var(--faint)}
+.bx span{flex:1;text-align:center}
+.attn{display:grid;gap:10px;padding:14px 18px 18px}
+.attn div{display:grid;grid-template-columns:150px 1fr 54px;gap:10px;align-items:center;font-size:12.5px}
+.attn .tr{height:8px;background:var(--line2);border-radius:999px;overflow:hidden}
+.attn .tr i{display:block;height:100%;border-radius:999px;background:var(--ink)}
+.attn b{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+.vlist td{padding:10px 18px}
+.insight{border-radius:14px;padding:1px;background:var(--grad)}
+.insight>div{background:#fff;border-radius:13px;padding:14px 16px}
+.insight p{margin:6px 0 10px;font-size:13px;color:var(--ink2)}
+.an-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:18px}
+
+/* ---------- Tour ---------- */
+.tour-spot{position:fixed;z-index:90;border-radius:14px;box-shadow:0 0 0 9999px rgba(7,8,12,.55),0 0 0 2px rgba(167,139,250,.9);pointer-events:none;transition:all .45s var(--ease);display:none}
+.tour-pop{position:fixed;z-index:91;width:340px;background:#fff;border-radius:16px;box-shadow:0 30px 80px -20px rgba(0,0,0,.45),0 0 0 1px rgba(16,24,40,.06);padding:18px 18px 14px;display:none;transition:top .45s var(--ease),left .45s var(--ease)}
+.tour-pop.on,.tour-spot.on{display:block}
+.tour-pop .k{display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:600;color:var(--muted);margin-bottom:8px}
+.tour-pop .k .bar{flex:1;height:3px;border-radius:3px;background:var(--line2);overflow:hidden}
+.tour-pop .k .bar i{display:block;height:100%;background:var(--grad);transition:width .4s var(--ease)}
+.tour-pop h4{margin:0 0 6px;font-size:16px;font-weight:650;letter-spacing:-.015em}
+.tour-pop p{margin:0 0 14px;color:var(--ink2);font-size:13.5px;line-height:1.55}
+.tour-pop .f{display:flex;align-items:center;gap:8px}
+.tour-pop .f .sp{flex:1}
+.tour-pop .status{font-size:12px;color:#6D28D9;display:flex;align-items:center;gap:7px;font-weight:550}
+.modal-bg{position:fixed;inset:0;z-index:95;background:rgba(7,8,12,.6);backdrop-filter:blur(4px);display:none;place-items:center;padding:20px}
+.modal-bg.on{display:grid;animation:pop .3s var(--ease)}
+.modal{width:560px;max-width:100%;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 40px 100px -20px rgba(0,0,0,.5)}
+.modal .hero{padding:30px 32px 22px;background:radial-gradient(500px 220px at 85% -20%,#E8E2FF,transparent 70%),radial-gradient(400px 200px at 0% 120%,#D9F6FB,transparent 70%),#fff}
+.modal h2{margin:12px 0 8px;font-size:28px;letter-spacing:-.03em;line-height:1.15;font-weight:650}
+.modal h2 .serif{font-size:32px;color:#4B4FD6}
+.modal p{margin:0;color:var(--ink2);font-size:14.5px;line-height:1.6}
+.modal ul{margin:16px 0 0;padding:0;list-style:none;display:grid;gap:8px;font-size:13.5px;color:var(--ink2)}
+.modal ul li{display:flex;gap:10px;align-items:center}
+.modal ul li i{width:22px;height:22px;border-radius:7px;background:var(--ai-soft);color:#6D28D9;display:grid;place-items:center;font-style:normal;flex:none}
+.modal .mf2{display:flex;gap:10px;padding:16px 32px 24px;align-items:center}
+.modal .mf2 .sp{flex:1}
+.modal .mf2 small{color:var(--muted);font-size:12px}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);opacity:0;z-index:99;background:#0B0D12;color:#fff;padding:10px 16px;border-radius:11px;font-size:13px;font-weight:500;box-shadow:var(--shadow-lg);transition:all .3s var(--ease);pointer-events:none;display:flex;gap:8px;align-items:center}
+.toast.on{opacity:1;transform:translateX(-50%)}
+.credit{position:fixed;right:16px;bottom:14px;z-index:30;font-size:11.5px;color:var(--muted);background:rgba(255,255,255,.9);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:999px;padding:5px 11px;box-shadow:var(--shadow);text-decoration:none}
+.credit b{color:var(--ink);font-weight:600}
+.present.on~.credit{z-index:41;background:rgba(14,16,23,.9);border-color:#262A36;color:#8890A0;right:356px}
+.present.on~.credit b{color:#fff}
+
+/* ---------- Responsive ---------- */
+@media (max-width:1280px){
+  .shell{grid-template-columns:68px 1fr}
+  .side{padding:16px 10px}
+  .logo{justify-content:center;padding:4px 0 18px}
+  .logo .t,.logo .ws,.navlab,.nav .tx,.nav .ct,.prod .lbl,.prod .live,.sidecard,.me .tx{display:none}
+  .nav,.prod{justify-content:center;padding:9px 0}
+  .me{justify-content:center}
+  #v-builder{grid-template-columns:350px 1fr}
+  #v-email{grid-template-columns:380px 1fr}
+  .share-grid{grid-template-columns:320px minmax(0,1fr)}
+}
+@media (max-width:1120px){
+  .page{padding:22px 22px 60px}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .an-grid{grid-template-columns:1fr}
+  .akpis{grid-template-columns:repeat(2,1fr)}
+  .present{grid-template-columns:1fr 300px}
+  .present.on~.credit{right:316px}
+  .hide-md{display:none!important}
+  .top .pill{display:none}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="side" aria-label="Demosmith navigation">
+    <div class="logo">
+      <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#A78BFA"/><stop offset="1" stop-color="#22D3EE"/></linearGradient></defs><rect width="32" height="32" rx="8" fill="#1C2030"/><path d="M9 8h7a8 8 0 0 1 0 16H9z" fill="none" stroke="url(#lg)" stroke-width="3"/><circle cx="22.5" cy="9.5" r="2.5" fill="#67E8F9"/></svg>
+      <span class="t">Demosmith</span><span class="ws">Keystone</span>
+    </div>
+    <button class="nav" data-go="dashboard"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg><span class="tx">Demos</span><span class="ct">12</span></button>
+    <div class="navlab">Lumen Biotech</div>
+    <button class="nav" data-go="builder"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg><span class="tx">Demo builder</span></button>
+    <button class="nav" data-go="email"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/></svg><span class="tx">Email content</span></button>
+    <button class="nav" data-go="present"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M10 8l4 2-4 2z" fill="currentColor"/><path d="M8 20h8M12 16v4"/></svg><span class="tx">Present</span></button>
+    <button class="nav" data-go="share"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span class="tx">Share &amp; analytics</span></button>
+    <div class="navlab">Connected products</div>
+    <div class="prod" title="Keystone Participant Web"><span class="pi" style="background:#0E2347">K</span><span class="lbl">Participant Web<small>Keystone · SDK v3</small></span><span class="live"></span></div>
+    <div class="prod" title="Keystone Plan Sponsor Portal"><span class="pi" style="background:#475467">S</span><span class="lbl">Sponsor Portal<small>Keystone · snapshot</small></span><span class="live"></span></div>
+    <div class="grow"></div>
+    <div class="sidecard"><b>Prototype by Hartzell Design.</b> Fictional brands, sample data, and scripted AI. <a href="https://hartzell.design" target="_blank" rel="noopener">hartzell.design →</a></div>
+    <div class="me"><span class="av">JR</span><span class="tx">Jordan Reyes<small>Account Executive</small></span></div>
+  </aside>
+
+  <div class="main">
+    <header class="top">
+      <div class="crumbs" id="crumbs"></div>
+      <div class="sp"></div>
+      <span class="pill"><span class="dot"></span>Prototype · fictional data</span>
+      <button class="btn" id="tourBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l5 3.5-5 3.5z" fill="currentColor"/></svg>Take the tour</button>
+      <button class="btn pri hide-dash" id="presentBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5l12 7-12 7z"/></svg>Present</button>
+    </header>
+
+    <!-- 1. Dashboard -->
+    <section class="view" id="v-dashboard">
+      <div class="page">
+        <div class="ph">
+          <div><h1>Good evening, Jordan. <span class="serif"><i>Who are we wowing next?</i></span></h1>
+          <p>Every prospect gets a demo of the real product, in their brand, with their people in it.</p></div>
+          <div class="sp"></div>
+          <button class="btn ai" id="newDemo"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9z"/></svg>New demo</button>
+        </div>
+        <div class="kpis">
+          <div class="kpi"><div class="l">Active demos</div><div class="v">12 <span class="d">+3 this month</span></div></div>
+          <div class="kpi"><div class="l">Presented this quarter</div><div class="v">27 <span class="d">+42%</span></div></div>
+          <div class="kpi"><div class="l">Prospect views (shared links)</div><div class="v">318 <span class="d">+18%</span></div></div>
+          <div class="kpi"><div class="l">Avg. time to build a demo <span class="sample">Sample</span></div><div class="v">14 min <span class="d" style="color:var(--muted)">was ~2 wks</span></div></div>
+        </div>
+        <div class="connect">
+          <div class="ic">K</div>
+          <div><h3>Keystone Participant Web · connected</h3><p>Demos run on your real product UI. Demosmith swaps in brand, data and content, so there's no static mockup to maintain.</p></div>
+          <div class="sp"></div>
+          <div class="chipset hide-md"><span class="tag">Brand tokens</span><span class="tag">Data model</span><span class="tag">Email templates</span><span class="tag">7 modules</span></div>
+        </div>
+        <div class="card" id="demoTable">
+          <div class="card-h"><h3>Demos</h3><span class="tag">12</span><div class="sp"></div>
+            <div class="seg"><button class="on">All</button><button>Mine</button><button>Shared</button></div></div>
+          <table>
+            <thead><tr><th>Prospect</th><th>Status</th><th class="hide-md">Owner</th><th>Last presented</th><th>Views</th><th></th></tr></thead>
+            <tbody id="demoRows"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2/3. Builder -->
+    <section class="view" id="v-builder">
+      <div class="ctrl">
+        <div class="ctrl-h">
+          <div class="who"><span id="bLogo"></span><div><h2 id="bName">Lumen Biotech</h2><p>Keystone Participant Web · Draft</p></div></div>
+          <div class="tabs" role="tablist">
+            <button class="on" data-tab="brand">Brand</button>
+            <button data-tab="data">Data &amp; personas</button>
+            <button data-tab="modules">Modules</button>
+          </div>
+        </div>
+        <div class="ctrl-b">
+          <!-- Brand -->
+          <div class="tabp on" id="t-brand">
+            <div class="grp" id="brandCard">
+              <label>Prospect website <span class="sp"></span><span class="aitag">✦ AI</span></label>
+              <div class="inrow"><input class="inp" id="site" placeholder="company.com" value=""><button class="btn" id="pullBrand"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9z"/></svg>Pull brand</button></div>
+              <div class="detected" id="detected"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Found logo, palette &amp; voice on <b id="detSite">lumenbio.example</b></span><span class="pal"><i style="background:#0F8B74"></i><i style="background:#F2B544"></i><i style="background:#0B2E2A"></i></span></div>
+            </div>
+            <div class="grp"><label>Company name</label><input class="inp" id="pName" value="Lumen Biotech"></div>
+            <div class="grp"><label>Plan name</label><input class="inp" id="planName" value="Lumen Biotech 401(k) Plan"></div>
+            <div class="grp"><label>Logo</label><div class="logos" id="logos"></div></div>
+            <div class="grp"><label>Primary color</label><div class="sw" id="swatches"></div></div>
+            <div class="grp"><label>Corner style</label><div class="seg" id="corners"><button data-r="4">Sharp</button><button class="on" data-r="14">Rounded</button><button data-r="22">Soft</button></div></div>
+            <div class="hint"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg><span>Brand changes apply through Keystone's design tokens, so the preview is the real product, not a screenshot.</span></div>
+          </div>
+          <!-- Data -->
+          <div class="tabp" id="t-data">
+            <div class="aicard" id="aiCard"><div>
+              <h4><svg width="14" height="14" viewBox="0 0 24 24" fill="url(#lg)"><path d="M12 2l1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9z"/></svg>Generate from a description</h4>
+              <p>Describe the prospect's workforce. We'll create realistic personas, balances and fund mixes. All values are fictional.</p>
+              <textarea class="inp" id="prompt" placeholder="e.g. 500-person biotech, young workforce, Boston area"></textarea>
+              <ul class="aisteps" id="aiSteps"></ul>
+              <div class="aisum" id="aiSum"></div>
+              <div class="foot"><span class="tag">4 personas</span><span class="tag">Keystone fund lineup</span><span class="sp"></span><button class="btn ai sm" id="genBtn">✦ Generate</button></div>
+            </div></div>
+            <div class="grp" id="personaGrp">
+              <label>Personas <small>click to preview as</small><span class="sp"></span><small id="pCount"></small></label>
+              <div class="personas" id="personas"></div>
+            </div>
+            <div class="grp" id="dataGrp">
+              <label>Data for <span id="dWho" style="margin-left:3px"></span></label>
+              <div class="grp"><div class="lab">Account balance</div><div class="rng"><input type="range" id="dBal" min="0" max="600000" step="250"><div class="val" id="dBalV"></div></div></div>
+              <div class="grp"><div class="lab">Contribution rate</div><div class="rng"><input type="range" id="dC" min="0" max="20" step="1"><div class="val" id="dCV"></div></div></div>
+              <div class="two">
+                <div><div class="lab">Salary</div><input class="inp" id="dSal" inputmode="numeric"></div>
+                <div><div class="lab">Employer match</div><select class="inp" id="dMatch"><option value="4">100% up to 4%</option><option value="5">100% up to 5%</option><option value="6">100% up to 6%</option></select></div>
+              </div>
+              <div class="grp" style="margin-top:14px"><div class="lab">Fund mix <span class="sp"></span><small>Keystone lineup</small></div><div id="dFunds"></div></div>
+            </div>
+          </div>
+          <!-- Modules -->
+          <div class="tabp" id="t-modules">
+            <p style="margin:0 0 6px;color:var(--muted);font-size:12.5px">Show only what's in this prospect's plan. Modules come from the connected product.</p>
+            <div id="mods"></div>
+          </div>
+        </div>
+      </div>
+      <div class="stagewrap">
+        <div class="ptool">
+          <span class="lbl"><span class="live"></span>Live preview</span>
+          <span class="tag" id="viewingAs">Viewing as —</span>
+          <div class="sp"></div>
+          <div class="seg" id="device"><button class="on" data-d="desktop">Desktop</button><button data-d="tablet">Tablet</button></div>
+          <button class="btn" data-go="email">Email</button>
+          <button class="btn" data-go="share">Share</button>
+        </div>
+        <div class="frame-wrap"><div class="frame" id="bFrame">
+          <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="url"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span id="bUrl"></span></div><div style="width:48px"></div></div>
+          <div id="preview"></div>
+        </div></div>
+      </div>
+    </section>
+
+    <!-- 4. Email -->
+    <section class="view" id="v-email">
+      <div class="ctrl">
+        <div class="ctrl-h" style="padding-bottom:14px;border-bottom:1px solid var(--line)">
+          <h2>Enrollment email</h2><p>What Lumen employees receive when the plan launches. Merge fields fill from the selected persona.</p>
+        </div>
+        <div class="ctrl-b ed">
+          <div class="grp"><label>From</label><input class="inp" id="eFrom" value="Lumen Biotech Benefits"></div>
+          <div class="grp" id="subjGrp"><label>Subject <span class="sp"></span><button class="btn ghost sm" id="suggBtn" style="color:#6D28D9">✦ Suggest</button></label><input class="inp" id="eSubj"><div class="sugg" id="sugg"></div></div>
+          <div class="grp" id="toneGrp">
+            <label>Tone</label>
+            <div class="seg" id="tone"><button class="on" data-t="standard">Standard</button><button data-t="formal">Formal</button><button data-t="lumen">✦ Lumen's voice</button></div>
+          </div>
+          <div class="grp" id="bodyGrp">
+            <label>Body <span class="sp"></span><button class="btn ai sm" id="rewriteBtn">✦ Rewrite in Lumen's voice</button></label>
+            <textarea class="inp" id="eBody"></textarea>
+            <div class="mf" id="mfields"></div>
+          </div>
+          <div class="grp"><label>Button</label><input class="inp" id="eCta" value="Enroll in 5 minutes"></div>
+        </div>
+      </div>
+      <div class="stagewrap">
+        <div class="ptool"><span class="lbl"><span class="live"></span>Inbox preview</span><span class="tag" id="eAs"></span><div class="sp"></div><div class="seg" id="eRecip"></div></div>
+        <div class="frame-wrap"><div class="mail" id="mail"></div></div>
+      </div>
+    </section>
+
+    <!-- 6. Share -->
+    <section class="view" id="v-share">
+      <div class="page">
+        <div class="ph"><div><h1>Share &amp; analytics</h1><p>Send Lumen a live link to the tailored demo and see what they engage with.</p></div><div class="sp"></div><span class="sample">Sample data: engagement shown is illustrative</span></div>
+        <div class="share-grid">
+          <div style="display:grid;gap:18px;grid-template-columns:minmax(0,1fr)">
+            <div class="card" id="linkCard">
+              <div class="card-h"><h3>Share link</h3><div class="sp"></div><span class="st pres"><i></i>Live</span></div>
+              <div style="padding:16px 18px">
+                <div class="linkbox"><span class="mono">demosmith.app/d/lumen-biotech-7kq2</span><button class="btn sm pri" id="copyBtn">Copy link</button></div>
+                <div style="margin-top:14px">
+                  <div class="setrow"><div><b style="font-weight:600">Require email to view</b><small>Know who's watching</small></div><div class="sp"></div><button class="sw-t on" aria-label="Require email"></button></div>
+                  <div class="setrow"><div><b style="font-weight:600">Let viewers switch personas</b><small>Maya, Diego, Priya, Sam</small></div><div class="sp"></div><button class="sw-t on" aria-label="Switch personas"></button></div>
+                  <div class="setrow"><div><b style="font-weight:600">Guided walkthrough</b><small>Uses your talk track as captions</small></div><div class="sp"></div><button class="sw-t on" aria-label="Guided walkthrough"></button></div>
+                  <div class="setrow"><div><b style="font-weight:600">Link expires</b><small>Then it shows a "contact your rep" page</small></div><div class="sp"></div><select class="inp" style="width:auto;padding:5px 8px;font-size:12.5px"><option>In 30 days</option><option>In 7 days</option><option>Never</option></select></div>
+                </div>
+              </div>
+            </div>
+            <div class="insight" id="insight"><div>
+              <span class="aitag">✦ Next best action</span>
+              <p><b>Lumen's CFO spent 4m 10s on fund fees and the projection.</b> Cost is likely the open question. Send a fee comparison before Thursday's call.</p>
+              <div style="display:flex;gap:8px"><button class="btn sm pri" id="draftFU">Draft follow-up</button><button class="btn sm">Dismiss</button></div>
+            </div></div>
+          </div>
+          <div class="card" id="analytics">
+            <div class="card-h"><h3>Engagement</h3><span class="tag">Last 14 days</span><div class="sp"></div><span class="sample">Sample data</span></div>
+            <div class="akpis">
+              <div class="akpi"><div class="l">Views</div><div class="v">23</div></div>
+              <div class="akpi"><div class="l">Unique viewers</div><div class="v">7</div></div>
+              <div class="akpi"><div class="l">Avg. time in demo</div><div class="v">6m 12s</div></div>
+              <div class="akpi"><div class="l">Forwarded internally</div><div class="v">3×</div></div>
+            </div>
+            <div class="bars" id="bars"></div>
+            <div class="bx" id="bx"></div>
+            <div class="an-grid" style="border-top:1px solid var(--line2)">
+              <div><div class="card-h" style="border:0;padding-bottom:0"><h3>Where they spent time</h3></div><div class="attn" id="attn"></div></div>
+              <div style="border-left:1px solid var(--line2)"><div class="card-h" style="border:0;padding-bottom:4px"><h3>Viewers</h3></div>
+                <table class="vlist"><tbody id="viewers"></tbody></table></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- 5. Present -->
+<div class="present" id="present" aria-label="Present mode">
+  <div class="pbar">
+    <span class="rec"><i></i>Presenting</span><span class="tm" id="ptime">00:00</span>
+    <span style="color:#5D6574">·</span><span>Lumen Biotech · Keystone Participant Web</span>
+    <div class="sp"></div>
+    <div class="seg hide-md" id="pPersona" style="background:#151821;border-color:#262A36"></div>
+    <button class="btn sm" id="exitPresent">Exit <span class="mono" style="opacity:.6">Esc</span></button>
+  </div>
+  <div class="pstage"><div class="frame">
+    <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="url"><span id="pUrl"></span></div><div style="width:48px"></div></div>
+    <div id="stage"></div>
+  </div></div>
+  <aside class="pnotes" id="pnotes">
+    <div class="pn-steps" id="pSteps"></div>
+    <div class="pn-b" id="pBody"></div>
+    <div class="pn-f"><button class="btn" id="pPrev">← Back</button><button class="btn go" id="pNext">Next →</button></div>
+  </aside>
+</div>
+<a class="credit" href="https://hartzell.design" target="_blank" rel="noopener">Prototype by <b>Hartzell Design</b></a>
+
+<!-- Tour -->
+<div class="tour-spot" id="spot"></div>
+<div class="tour-pop" id="tpop" role="dialog" aria-live="polite">
+  <div class="k"><span id="tStep"></span><span class="bar"><i id="tBar"></i></span><button class="btn ghost sm" id="tSkip">Skip</button></div>
+  <h4 id="tTitle"></h4><p id="tBody"></p>
+  <div class="f"><span class="status" id="tStatus"></span><span class="sp"></span><button class="btn sm" id="tBack">Back</button><button class="btn pri sm" id="tNext">Next</button></div>
+</div>
+<div class="modal-bg" id="welcome"><div class="modal">
+  <div class="hero">
+    <span class="aitag">✦ Demosmith · product prototype</span>
+    <h2>Stop sending mockups. <span class="serif"><i>Demo the real thing,</i></span> in every prospect's brand.</h2>
+    <p>Demosmith connects to your product and lets reps spin up tailored, branded, data-rich demos in minutes. No more static InVision or Figma click-throughs that go stale.</p>
+    <ul>
+      <li><i>✦</i>AI generates realistic personas &amp; data from one sentence</li>
+      <li><i>◐</i>Prospect's logo, colors and voice applied to the live product</li>
+      <li><i>▶</i>Present with an AI talk track, then share a tracked link</li>
+    </ul>
+  </div>
+  <div class="mf2"><small>Fictional brands &amp; sample data · Prototype by Hartzell Design</small><span class="sp"></span><button class="btn" id="wSkip">Explore on my own</button><button class="btn ai" id="wTour">Take the 2-min tour →</button></div>
+</div></div>
+<div class="modal-bg" id="finale"><div class="modal">
+  <div class="hero">
+    <span class="aitag">✦ That's the tour</span>
+    <h2>From blank to a <span class="serif"><i>tailored, tracked demo</i></span> in about 2 minutes.</h2>
+    <p>Demosmith is a product concept designed and prototyped by <b>Hartzell Design</b>, an AI product design studio. We turn ideas like this into AI products people actually want to use, from strategy to clickable prototype to shipped UI.</p>
+  </div>
+  <div class="mf2"><span class="sp"></span><button class="btn" id="fExplore">Keep exploring</button><a class="btn pri" href="https://hartzell.design" target="_blank" rel="noopener" style="text-decoration:none">Work with Hartzell Design →</a></div>
+</div></div>
+<div class="toast" id="toast"></div>
+<script>
+(() => {
+"use strict";
+const SP = /[?&]fast/.test(location.search) ? 0.12 : 1;
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const sleep = ms => new Promise(r => setTimeout(r, ms * SP));
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const money = n => "$" + Math.round(n).toLocaleString("en-US");
+const short = n => n >= 1e6 ? "$" + (n/1e6).toFixed(2) + "M" : "$" + Math.round(n/1000) + "k";
+const SPARK = '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9z"/></svg>';
+const CHECK = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+
+/* ---------- Data (all fictional) ---------- */
+const FUNDS = {
+  tdf:{n:"Keystone Target Retirement Fund", er:.08, c:"var(--p)"},
+  us:{n:"Keystone Total US Stock Index", er:.03, c:"color-mix(in srgb,var(--p) 50%,#fff)"},
+  intl:{n:"Keystone International Index", er:.06, c:"#F2B544"},
+  bond:{n:"Keystone Bond Index", er:.04, c:"#7A8699"},
+  sv:{n:"Keystone Stable Value", er:.25, c:"#CBD5E1"}
+};
+const DEFAULT_P = [{first:"Alex",last:"Sample",age:45,role:"Employee",salary:95000,balance:120000,c:6,retire:65,funds:{tdf:60,us:20,bond:20},color:"#98A2B3",tag:"Placeholder"}];
+const GEN_P = [
+  {first:"Maya",last:"Chen",age:28,role:"Research Associate",salary:78000,balance:21480,c:6,retire:65,funds:{tdf:100},color:"#0F8B74",tag:"Median employee"},
+  {first:"Diego",last:"Ramírez",age:34,role:"Senior Scientist",salary:132000,balance:96750,c:10,retire:62,funds:{tdf:50,us:30,intl:20},color:"#6366F1",tag:"Engaged saver"},
+  {first:"Priya",last:"Natarajan",age:46,role:"Director, Clinical Ops",salary:188000,balance:312400,c:12,retire:63,funds:{us:45,intl:20,bond:25,sv:10},color:"#D97706",tag:"Mid-career"},
+  {first:"Sam",last:"Okafor",age:24,role:"Lab Technician",salary:54000,balance:3150,c:3,retire:67,funds:{tdf:100},color:"#E11D48",tag:"Missing match"}
+];
+const MODS = [
+  {k:"overview",n:"Balance overview",d:"Hero balance, growth and year-to-date change",lock:true},
+  {k:"nudge",n:"Smart nudges",d:"Personalized next-best-action banner"},
+  {k:"contrib",n:"Contributions & match",d:"Rate slider with live employer-match feedback"},
+  {k:"roth",n:"Roth 401(k) option",d:"Pre-tax / Roth split. Turn on if the plan offers Roth"},
+  {k:"alloc",n:"Fund allocation",d:"Donut chart of the participant's fund mix and fees"},
+  {k:"proj",n:"Retirement projection",d:"Projected balance and monthly income"},
+  {k:"loans",n:"Loans & withdrawals",d:"Hide if the plan doesn't allow loans"}
+];
+const SWATCHES = ["#1B3A6B","#0F8B74","#6D28D9","#C2410C","#BE123C","#0F172A"];
+const EMAIL = {
+  standard:"Hi {{first_name}},\n\nYou're eligible to join the {{plan_name}}. {{company}} matches 100% of what you contribute, up to {{match}}% of your pay.\n\nEnroll online in about 5 minutes. Pick a contribution rate and an investment, and you're set.\n\nPlease enroll by {{enroll_by}} so you don't miss any match.\n\nThanks,\n{{company}} Benefits Team",
+  formal:"Dear {{first_name}},\n\nWe are pleased to inform you that you are now eligible to participate in the {{plan_name}}. {{company}} will match 100% of your contributions, up to {{match}}% of your eligible compensation.\n\nEnrollment takes approximately five minutes. We encourage you to complete it by {{enroll_by}}.\n\nSincerely,\n{{company}} Human Resources",
+  lumen:"Hi {{first_name}},\n\nHere's an experiment with a guaranteed result: put in {{match}}% of your pay and {{company}} adds the same amount on top. That's a 100% return on day one, no peer review required.\n\nYour {{plan_name}} account is ready. Choose a rate, pick a fund (or let a target-date fund run the protocol for you), and you're done in about 5 minutes.\n\nEnroll by {{enroll_by}}. Future you will thank you.\n\nThe People Team at {{company}}"
+};
+const SUBJECTS = ["{{first_name}}, your {{match}}% match is waiting","A 100% return, guaranteed (really)","5 minutes today, a better retirement later"];
+const ROWS = [
+  {n:"Lumen Biotech",s:"500 employees · Biotech",lumen:true,st:"draft",stl:"Draft · AI-assisted",own:"Jordan Reyes",last:"Not yet",v:0},
+  {n:"Brightmoor Hospitality",s:"2,300 employees · Hotels",c:"#B42318",st:"shared",stl:"Shared",own:"Jordan Reyes",last:"Nov 11",v:41,sp:[2,4,3,6,9,7,10]},
+  {n:"Quillfield Credit Union",s:"640 employees · Financial services",c:"#175CD3",st:"pres",stl:"Presented",own:"Aisha Grant",last:"Nov 10",v:17,sp:[1,2,2,5,3,2,2]},
+  {n:"Ostrava Aerospace",s:"8,900 employees · Manufacturing",c:"#344054",st:"won",stl:"Closed won",own:"Jordan Reyes",last:"Oct 28",v:64,sp:[6,8,12,9,11,10,8]},
+  {n:"Pinecrest Unified Schools",s:"1,150 employees · Public education",c:"#7A5AF8",st:"ready",stl:"Ready to present",own:"Sam Patel",last:"Nov 18 (scheduled)",v:0},
+  {n:"Harbor & Vine Grocers",s:"3,400 employees · Retail",c:"#DC6803",st:"pres",stl:"Presented",own:"Aisha Grant",last:"Nov 6",v:22,sp:[3,1,4,2,5,4,3]}
+];
+
+const S = {
+  view:"dashboard", name:"Lumen Biotech", plan:"Lumen Biotech 401(k) Plan", logo:"mono", color:"#1B3A6B", rad:14, match:6,
+  personas: DEFAULT_P.map(p => ({...p, funds:{...p.funds}})), active:0, generated:false, branded:false,
+  mods:{overview:true,nudge:true,contrib:true,roth:false,alloc:true,proj:true,loans:true},
+  device:"desktop", tone:"standard", subject:"Enroll in your {{plan_name}}", body:EMAIL.standard, recip:0,
+  pStep:0, presenting:false
+};
+const cur = () => S.personas[S.active] || S.personas[0];
+const ini = p => (p.first[0] + (p.last[0]||"")).toUpperCase();
+const initials = n => n.split(/\s+/).filter(Boolean).slice(0,2).map(w => w[0]).join("").toUpperCase() || "?";
+
+/* ---------- Logos ---------- */
+function logo(kind, size, color){
+  color = color || S.color;
+  const s = `width="${size}" height="${size}" viewBox="0 0 32 32" aria-hidden="true"`;
+  if (kind === "lumen"){
+    let rays = "";
+    for (let i = 0; i < 8; i++){ const a = i * Math.PI / 4, x1 = 16 + Math.cos(a)*9.5, y1 = 16 + Math.sin(a)*9.5, x2 = 16 + Math.cos(a)*13.5, y2 = 16 + Math.sin(a)*13.5;
+      rays += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}"/>`; }
+    return `<svg ${s}><circle cx="16" cy="16" r="5.6" fill="${color}"/><g stroke="${color}" stroke-width="2.4" stroke-linecap="round">${rays}</g></svg>`;
+  }
+  if (kind === "hex") return `<svg ${s}><path d="M16 3.5l10.5 6v13L16 28.5l-10.5-6v-13z" fill="none" stroke="${color}" stroke-width="2.6" stroke-linejoin="round"/><circle cx="16" cy="16" r="4.2" fill="${color}"/></svg>`;
+  return `<svg ${s}><rect width="32" height="32" rx="8" fill="${color}"/><text x="16" y="20.5" text-anchor="middle" font-size="12" font-weight="700" fill="#fff" font-family="Inter,sans-serif">${esc(initials(S.name))}</text></svg>`;
+}
+
+/* ---------- Charts ---------- */
+function area(vals, W, H, min){
+  const max = Math.max(...vals); min = min ?? Math.min(...vals);
+  const pts = vals.map((v,i) => [i/(vals.length-1)*W, H - 4 - (v-min)/((max-min)||1)*(H-10)]);
+  const line = pts.map((p,i) => (i?"L":"M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ");
+  return {line, fill: line + ` L${W} ${H} L0 ${H} Z`};
+}
+function balSeries(b){
+  const n = 24, start = b * .74, out = [];
+  for (let i = 0; i < n; i++){ const t = i/(n-1); out.push(start + (b-start)*Math.pow(t,1.15) + (i<n-1 ? Math.sin(i*1.7)*b*.018 : 0)); }
+  return out;
+}
+function proj(p){
+  const n = Math.max(1, p.retire - p.age), r = .06, g = Math.pow(1+r, n);
+  const annual = p.salary * (p.c + Math.min(p.c, S.match)) / 100;
+  const fv = p.balance*g + annual*(g-1)/r;
+  const monthly = fv * .04 / 12;
+  const track = Math.min(100, Math.round(monthly / (p.salary*.6/12) * 100));
+  const series = []; for (let y = 0; y <= n; y++){ const gy = Math.pow(1+r,y); series.push(p.balance*gy + annual*(gy-1)/r); }
+  return {n, fv, monthly, track, series};
+}
+function donut(funds, size){
+  const r = 46, C = 2*Math.PI*r; let off = 0, segs = "";
+  for (const [k,v] of Object.entries(funds)){ if (!v) continue; const len = C*v/100;
+    segs += `<circle r="${r}" cx="60" cy="60" fill="none" stroke-width="18" style="stroke:${FUNDS[k].c}" stroke-dasharray="${Math.max(0,len-1.5).toFixed(2)} ${C.toFixed(2)}" stroke-dashoffset="${(-off).toFixed(2)}" transform="rotate(-90 60 60)"/>`; off += len; }
+  const nf = Object.values(funds).filter(Boolean).length;
+  return `<svg width="${size}" height="${size}" viewBox="0 0 120 120" aria-label="Fund allocation chart">${segs}<text x="60" y="58" text-anchor="middle" font-size="18" font-weight="650" fill="#101828" font-family="Inter">${nf}</text><text x="60" y="74" text-anchor="middle" font-size="10" fill="#667085" font-family="Inter">${nf===1?"fund":"funds"}</text></svg>`;
+}
+const er = f => Object.entries(f).reduce((a,[k,v]) => a + FUNDS[k].er*v/100, 0);
+
+/* ---------- The connected product: participant app ---------- */
+function partRate(p){ return `<span class="n">${p.c}%</span><small>of pay · ${money(p.salary*p.c/100/26)} per paycheck</small>`; }
+function partMatch(p){
+  const full = p.c >= S.match, emp = p.salary*Math.min(p.c,S.match)/100;
+  return full
+    ? `<div class="k-match ok">${CHECK}<span>You're getting the <b>full ${esc(S.name.split(" ")[0])} match</b>: ${money(emp)} a year added to your account.</span></div>`
+    : `<div class="k-match miss"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3l10 18H2z"/><path d="M12 10v4M12 17h.01"/></svg><span>You're leaving <b>${money(p.salary*(S.match-p.c)/100)}/yr</b> of free match on the table. Contribute ${S.match}% to get it all.</span></div>`;
+}
+function partSplit(p){
+  return `<span>Pre-tax<b>${Math.ceil(p.c/2)}%</b></span><span>Roth<b>${Math.floor(p.c/2)}%</b></span><span>Employer<b>${Math.min(p.c,S.match)}%</b></span>`;
+}
+function partProj(p){
+  const pr = proj(p), a = area(pr.series, 300, 90, 0);
+  return `<h3>Retirement projection <span class="sp"></span><span style="font-weight:500;color:#98A2B3;font-size:11px">Illustrative</span></h3>
+  <div style="display:flex;gap:18px;align-items:flex-end;flex-wrap:wrap"><div><div style="font-size:11.5px;color:#667085">Est. at age ${p.retire}</div><div class="big">${short(pr.fv)}</div></div>
+  <div><div style="font-size:11.5px;color:#667085">Est. monthly income</div><div class="big" style="font-size:20px">${money(pr.monthly)}<span style="font-size:12px;color:#667085;font-weight:500">/mo</span></div></div></div>
+  <svg viewBox="0 0 300 90" preserveAspectRatio="none"><path d="${a.fill}" style="fill:var(--pl)"/><path d="${a.line}" fill="none" style="stroke:var(--p)" stroke-width="2.2" vector-effect="non-scaling-stroke"/></svg>
+  <div style="display:flex;justify-content:space-between;font-size:12px;margin-top:4px"><span>On track for <b>${pr.track}%</b> of your income goal</span><span style="color:#98A2B3">6% assumed return</span></div>
+  <div class="k-gauge"><i style="width:${pr.track}%"></i></div>`;
+}
+function partNudge(p){
+  const co = esc(S.name.split(" ")[0]);
+  let t, d, b;
+  if (p.c < S.match){ t = `Get your full ${co} match`; d = `Raising from ${p.c}% to ${S.match}% adds ${money(p.salary*(S.match-p.c)/100)} a year from ${co}, for about ${money(p.salary*(S.match-p.c)/100/26*.78)} less take-home per paycheck.`; b = `Increase to ${S.match}%`; }
+  else if (p.age >= 45){ t = "Check your mix as retirement gets closer"; d = `You're ${p.retire - p.age} years from your target age. A 3-minute review keeps your risk on track.`; b = "Review my mix"; }
+  else { t = "Turn on auto-increase"; d = "Raise your rate by 1% each year until you reach 15%. Most people never notice the difference."; b = "Turn it on"; }
+  return `<span class="ic">${SPARK}</span><div><b>${t}</b><small>${d}</small></div><span class="sp"></span><button class="k-btn" data-nudge="${p.c < S.match ? 1 : 0}">${b}</button>`;
+}
+function appHTML(){
+  const p = cur(), m = S.mods, bs = balSeries(p.balance), a = area(bs, 400, 120);
+  const ytd = p.balance - p.balance/1.112, yourY = p.salary*p.c/100*.87, empY = p.salary*Math.min(p.c,S.match)/100*.87;
+  const fundRows = Object.entries(p.funds).filter(([,v]) => v).map(([k,v]) => `<div><i style="background:${FUNDS[k].c}"></i><span>${FUNDS[k].n}</span><b>${v}%</b></div>`).join("");
+  return `<div class="kapp">
+  <div class="k-top"><div class="k-brand">${logo(S.logo,30)}<div><div class="nm">${esc(S.name)}</div><div class="pl">${esc(S.plan)}</div></div></div>
+    <div class="k-nav"><span class="on">Overview</span><span>Investments</span><span>Contributions</span><span>Planner</span></div><span class="sp"></span>
+    <div class="k-pw">Administered by<br><b>Keystone Retirement</b></div><div class="k-av" style="background:${p.color}">${ini(p)}</div></div>
+  <div class="k-body">
+    <div class="k-hello"><div><h2>Good morning, ${esc(p.first)}</h2><p>${esc(p.role)} · ${esc(S.plan)}</p></div><span class="sp"></span><button class="k-btn lt">Statements</button><button class="k-btn">Manage account</button></div>
+    <div class="k-grid">
+      <div class="k-card k-hero" data-sec="overview"><div>
+        <div class="lb">Total balance</div><div class="big">${money(p.balance)}</div>
+        <span class="chg">▲ ${money(ytd)} (11.2%) this year</span>
+        <div class="sub"><div>Your contributions YTD<b>${money(yourY)}</b></div><div>${esc(S.name.split(" ")[0])} match YTD<b>${money(empY)}</b></div><div>Vested<b>100%</b></div></div>
+      </div><svg viewBox="0 0 400 120" preserveAspectRatio="none"><defs><linearGradient id="hg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><path d="${a.fill}" fill="url(#hg)"/><path d="${a.line}" fill="none" stroke="#fff" stroke-width="2.2" vector-effect="non-scaling-stroke"/></svg></div>
+      ${m.nudge ? `<div class="k-card k-nudge" data-sec="nudge" data-part="nudge">${partNudge(p)}</div>` : ""}
+      ${m.contrib ? `<div class="k-card" data-sec="contrib"><h3>Contributions <span class="sp"></span><span style="font-weight:500;color:#98A2B3;font-size:11px">Changes apply next paycheck</span></h3>
+        <div class="k-rate" data-part="rate">${partRate(p)}</div>
+        <input type="range" class="k-slider" min="0" max="20" step="1" value="${p.c}" aria-label="Contribution rate">
+        <div class="k-scale"><span>0%</span><span>Full match at ${S.match}%</span><span>20%</span></div>
+        <div data-part="match">${partMatch(p)}</div>
+        ${m.roth ? `<div class="k-split" data-part="split">${partSplit(p)}</div>` : ""}</div>` : ""}
+      ${m.alloc ? `<div class="k-card" data-sec="alloc"><h3>Fund allocation <span class="sp"></span><button class="k-btn lt" style="padding:4px 9px;font-size:11.5px">Change</button></h3>
+        <div class="k-alloc">${donut(p.funds,120)}<div class="k-leg">${fundRows}</div></div>
+        <div style="margin-top:12px;font-size:12px;color:#667085;display:flex;justify-content:space-between"><span>Weighted expense ratio</span><b style="color:#101828">${er(p.funds).toFixed(3)}% · ${money(p.balance*er(p.funds)/100)}/yr</b></div></div>` : ""}
+      ${m.proj ? `<div class="k-card k-proj" data-sec="proj" data-part="proj">${partProj(p)}</div>` : ""}
+      ${m.loans ? `<div class="k-card" data-sec="loans"><h3>Loans &amp; withdrawals</h3><div class="k-loan"><span>You could borrow up to <b>${money(Math.min(50000,p.balance*.5))}</b> from your vested balance.</span><span class="sp" style="flex:1"></span><button class="k-btn lt">Model a loan</button></div></div>` : ""}
+    </div>
+  </div>
+  <div class="k-foot">Sample participant data for demonstration · ${esc(S.plan)} administered by Keystone Retirement · All names fictional</div>
+  </div>`;
+}
+function patchApps(){
+  const p = cur();
+  $$(".kapp").forEach(root => {
+    const set = (sel, html) => { const el = root.querySelector(sel); if (el) el.innerHTML = html; };
+    set("[data-part=rate]", partRate(p)); set("[data-part=match]", partMatch(p)); set("[data-part=split]", partSplit(p));
+    set("[data-part=proj]", partProj(p)); set("[data-part=nudge]", partNudge(p));
+    const sl = root.querySelector(".k-slider"); if (sl && document.activeElement !== sl) sl.value = p.c;
+  });
+  renderDataFields();
+}
+function bindApp(root){
+  root.addEventListener("input", e => { if (e.target.classList.contains("k-slider")){ cur().c = +e.target.value; patchApps(); } });
+  root.addEventListener("click", e => { const b = e.target.closest("[data-nudge]"); if (b){ if (b.dataset.nudge === "1"){ cur().c = S.match; patchApps(); toast(`Contribution set to ${S.match}%: full match unlocked`); } else toast("Opens the next step in Keystone (prototype)"); } });
+}
+
+/* ---------- Render ---------- */
+const slug = () => S.name.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+function applyTheme(){ document.documentElement.style.setProperty("--p", S.color); document.documentElement.style.setProperty("--rad", S.rad + "px"); }
+function renderPreview(){
+  $("#preview").innerHTML = appHTML();
+  $("#bUrl").textContent = `${slug()}.keystone-retirement.example/participant`;
+  if (S.presenting) renderStage();
+}
+function renderBrandControls(){
+  $("#bLogo").innerHTML = logo(S.logo, 40); $("#bName").textContent = S.name;
+  const nm = $("#pName"); if (document.activeElement !== nm) nm.value = S.name;
+  const pl = $("#planName"); if (document.activeElement !== pl) pl.value = S.plan;
+  $("#logos").innerHTML = ["mono","lumen","hex"].map(k => `<button data-logo="${k}" class="${S.logo===k?"on":""}" aria-label="${k} logo">${logo(k,30)}</button>`).join("") + `<button class="up" data-logo="up"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 16V4M7 9l5-5 5 5M4 20h16"/></svg>Upload</button>`;
+  $("#swatches").innerHTML = SWATCHES.map(c => `<button data-c="${c}" class="${S.color.toLowerCase()===c.toLowerCase()?"on":""}" style="background:${c}" aria-label="Color ${c}"></button>`).join("") + `<label class="hex"><input type="color" id="cpick" value="${S.color}"><span class="mono">${S.color.toUpperCase()}</span></label>`;
+}
+function renderPersonas(skeleton){
+  const el = $("#personas");
+  if (skeleton){ el.innerHTML = Array.from({length:skeleton}, () => `<div class="skel pskel"></div>`).join(""); return; }
+  el.innerHTML = S.personas.map((p,i) => `<button class="pcard ${i===S.active?"on":""}" data-p="${i}" style="animation-delay:${i*40}ms">
+    <span class="pav" style="background:${p.color}">${ini(p)}</span>
+    <span><span class="nm"><span class="n">${esc(p.first)} ${esc(p.last)}</span> ${p.tag==="Placeholder" ? '<span class="tag">Placeholder</span>' : `<span class="aitag">${esc(p.tag)}</span>`}</span><span class="meta">${p.age} · ${esc(p.role)}</span></span>
+    <span class="bal">${short(p.balance)}<small>${p.c}% contrib.</small></span></button>`).join("");
+  $("#pCount").textContent = S.generated ? `${S.personas.length} generated` : "1 placeholder";
+}
+function renderDataFields(){
+  const p = cur();
+  $("#dWho").textContent = `${p.first} ${p.last}`;
+  const set = (id, v) => { const el = $(id); if (document.activeElement !== el) el.value = v; };
+  set("#dBal", p.balance); $("#dBalV").textContent = short(p.balance);
+  set("#dC", p.c); $("#dCV").textContent = p.c + "%";
+  set("#dSal", money(p.salary)); set("#dMatch", S.match);
+  $("#dFunds").innerHTML = Object.entries(p.funds).filter(([,v]) => v).map(([k,v]) => `<div class="fundrow"><i style="background:${FUNDS[k].c}"></i><span>${FUNDS[k].n}</span><b>${v}%</b></div>`).join("");
+  $("#viewingAs").textContent = `Viewing as ${p.first} ${p.last}`;
+  renderPersonasLight();
+}
+function renderPersonasLight(){ $$("#personas .pcard").forEach((b,i) => { const p = S.personas[i]; if (!p) return; b.classList.toggle("on", i===S.active); const bal = b.querySelector(".bal"); if (bal) bal.innerHTML = `${short(p.balance)}<small>${p.c}% contrib.</small>`; }); }
+function renderMods(){
+  $("#mods").innerHTML = MODS.map(m => `<div class="tog"><div class="tx"><b>${m.n}</b><small>${m.d}</small></div><button class="sw-t ${S.mods[m.k]?"on":""}" data-mod="${m.k}" ${m.lock?"disabled":""} aria-label="${m.n}" aria-pressed="${!!S.mods[m.k]}"></button></div>`).join("");
+}
+function renderDash(){
+  const spark = a => { const ar = area(a, 60, 20, 0); return `<svg width="60" height="20" viewBox="0 0 60 20"><path d="${ar.line}" fill="none" stroke="#6366F1" stroke-width="1.6"/></svg>`; };
+  $("#demoRows").innerHTML = ROWS.map((r,i) => `<tr data-row="${i}" class="${r.lumen?"hl-row":""}">
+    <td><div class="pros">${r.lumen ? `<span class="plogo" style="background:#fff;border:1px solid var(--line)">${logo(S.logo,26)}</span>` : `<span class="plogo" style="background:${r.c}">${initials(r.n)}</span>`}<div><b>${esc(r.lumen?S.name:r.n)}</b><small>${r.s}</small></div></div></td>
+    <td><span class="st ${r.st}"><i></i>${r.stl}</span></td>
+    <td class="hide-md">${r.own}</td><td>${r.last}</td>
+    <td><div class="views">${r.v ? spark(r.sp) + `<b>${r.v}</b>` : '<span style="color:var(--faint)">—</span>'}</div></td>
+    <td style="text-align:right"><button class="btn sm ${r.lumen?"pri":"rowact"}">${r.lumen?"Continue building":"Open"}</button></td></tr>`).join("");
+}
+function fill(t, p){
+  const vals = {first_name:p.first, plan_name:S.plan, company:S.name, match:S.match, enroll_by:"December 5"};
+  return esc(t).replace(/\{\{(\w+)\}\}/g, (m,k) => vals[k] != null ? `<span class="mfv">${esc(vals[k])}</span>` : m);
+}
+function renderMail(){
+  const p = S.personas[S.recip] || cur();
+  const body = $("#eBody").value.split(/\n{2,}/).map(par => `<p>${fill(par,p).replace(/\n/g,"<br>")}</p>`).join("");
+  $("#mail").innerHTML = `<div class="mail-h"><span class="pav" style="background:var(--p);width:36px;height:36px">${initials(S.name)}</span><div class="from"><b>${esc($("#eFrom").value)}</b><small>benefits@${slug().split("-")[0]}bio.example → ${esc(p.first.toLowerCase())}@${slug().split("-")[0]}bio.example</small></div><small style="color:var(--faint)">9:02 AM</small>
+    <div class="subj">${fill($("#eSubj").value,p)}</div></div>
+    <div class="mail-b"><div class="mail-in"><div class="mail-ban">${logo(S.logo,32,"#fff")}<div><div class="nm">${esc(S.name)}</div><div style="font-size:12px;opacity:.8">${esc(S.plan)}</div></div></div>
+    <div class="mail-txt">${body}</div><div class="mail-cta"><span>${esc($("#eCta").value)}</span></div>
+    <div class="mail-f">${esc(S.plan)} is administered by Keystone Retirement. Sample email for demonstration; all names fictional.</div></div></div>`;
+  $("#eAs").textContent = `To ${p.first} ${p.last}`;
+  $("#eRecip").innerHTML = S.personas.map((q,i) => `<button data-r="${i}" class="${i===S.recip?"on":""}">${esc(q.first)}</button>`).join("");
+}
+function renderAll(){
+  applyTheme(); renderBrandControls(); renderPreview(); renderDataFields(); renderMods(); renderDash(); renderMail();
+}
+
+/* ---------- Navigation ---------- */
+const CRUMB = {dashboard:["Demos"], builder:["Demos","Lumen Biotech","Builder"], email:["Demos","Lumen Biotech","Email content"], share:["Demos","Lumen Biotech","Share & analytics"]};
+function go(v){
+  if (v === "present"){ openPresent(); return; }
+  S.view = v;
+  $$(".view").forEach(el => el.classList.toggle("on", el.id === "v-" + v));
+  $$(".side .nav").forEach(b => b.classList.toggle("on", b.dataset.go === v));
+  const c = CRUMB[v].map(x => x === "Lumen Biotech" ? S.name : x);
+  $("#crumbs").innerHTML = c.map((x,i) => i === c.length-1 ? `<b>${esc(x)}</b>` : `<span>${esc(x)}</span><span class="sl">/</span>`).join("");
+  if (v === "email") renderMail();
+  if (v === "share") renderShare();
+}
+function tab(t){ $$(".tabs button").forEach(b => b.classList.toggle("on", b.dataset.tab === t)); $$(".tabp").forEach(p => p.classList.toggle("on", p.id === "t-" + t)); }
+let toastT;
+function toast(msg){ const t = $("#toast"); t.innerHTML = msg; t.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("on"), 2600); }
+function flash(sel){ const el = $(sel); if (!el) return; el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash"); }
+
+/* ---------- AI moments (scripted) ---------- */
+let busy = false;
+async function pullBrand(){
+  if (busy) return; busy = true;
+  const site = $("#site"); if (!site.value) site.value = "lumenbio.example";
+  const b = $("#pullBrand"); b.disabled = true; b.innerHTML = '<span class="spin dk"></span>Reading site…';
+  await sleep(1300);
+  S.logo = "lumen"; S.color = "#0F8B74"; S.branded = true;
+  $("#detSite").textContent = site.value; $("#detected").classList.add("on");
+  b.disabled = false; b.innerHTML = SPARK + "Pull brand";
+  renderAll(); flash("#bFrame"); busy = false;
+}
+async function generate(){
+  if (busy) return; busy = true;
+  const pr = $("#prompt"); if (!pr.value.trim()) pr.value = "500-person biotech in the Boston area, young workforce, lots of first-time savers";
+  const btn = $("#genBtn"); btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Generating';
+  const ul = $("#aiSteps"); ul.innerHTML = ""; ul.classList.add("on"); $("#aiSum").classList.remove("on");
+  const steps = ["Reading the prospect description","Modeling workforce: ~500 employees, median age 29","Creating 4 representative personas","Setting salaries, balances & contribution rates","Building fund mixes from the Keystone lineup"];
+  const add = t => { const li = document.createElement("li"); li.innerHTML = `<span class="ck"><span class="spin dk" style="width:12px;height:12px"></span></span>${t}`; ul.appendChild(li); return li; };
+  const done = li => { li.classList.add("done"); li.querySelector(".ck").innerHTML = CHECK; };
+  for (let i = 0; i < steps.length; i++){
+    const li = add(steps[i]);
+    if (i === 2){
+      renderPersonas(4); await sleep(500);
+      S.personas = []; S.active = 0;
+      for (const g of GEN_P){ S.personas.push({...g, funds:{...g.funds}}); S.generated = true; renderPersonas(); const rest = 4 - S.personas.length; if (rest) $("#personas").insertAdjacentHTML("beforeend", Array.from({length:rest}, () => `<div class="skel pskel"></div>`).join("")); renderPreview(); renderDataFields(); await sleep(380); }
+    } else await sleep(i < 2 ? 600 : 520);
+    done(li);
+  }
+  S.match = 6; renderAll(); flash("#bFrame");
+  const sum = $("#aiSum"); sum.innerHTML = `<b>4 personas created.</b> Median balance $59k · ages 24 to 46 · plan match set to 100% up to 6%. <span style="color:var(--muted)">All values fictional.</span>`; sum.classList.add("on");
+  btn.disabled = false; btn.innerHTML = "✦ Regenerate"; busy = false;
+}
+async function typeInto(el, text, cps){
+  el.focus(); el.value = "";
+  for (let i = 0; i < text.length; i += 2){ el.value = text.slice(0, i+2); el.dispatchEvent(new Event("input",{bubbles:true})); await sleep(1000/cps*2); }
+  el.value = text; el.dispatchEvent(new Event("input",{bubbles:true})); el.blur();
+}
+async function rewrite(tone){
+  if (busy) return; busy = true; tone = tone || "lumen";
+  $$("#tone button").forEach(b => b.classList.toggle("on", b.dataset.t === tone)); S.tone = tone;
+  const btn = $("#rewriteBtn"), ta = $("#eBody"); btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Rewriting';
+  if (tone === "lumen"){ await sleep(700); }
+  const txt = EMAIL[tone], step = tone === "lumen" ? 6 : 14;
+  ta.classList.add("typing");
+  for (let i = 0; i < txt.length; i += step){ ta.value = txt.slice(0, i+step); renderMail(); ta.scrollTop = ta.scrollHeight; await sleep(tone === "lumen" ? 22 : 10); }
+  ta.value = txt; ta.classList.remove("typing"); ta.scrollTop = 0; renderMail();
+  if (tone === "lumen"){ $("#eSubj").value = SUBJECTS[0]; renderMail(); }
+  btn.disabled = false; btn.innerHTML = "✦ Rewrite in Lumen's voice"; busy = false;
+  if (tone === "lumen") toast(SPARK + " Rewritten using the voice found on lumenbio.example");
+}
+async function suggest(){
+  const el = $("#sugg"); el.innerHTML = '<div class="skel" style="height:30px"></div><div class="skel" style="height:30px"></div>';
+  await sleep(700);
+  el.innerHTML = SUBJECTS.map((s,i) => `<button data-s="${i}" style="animation-delay:${i*80}ms">${esc(s)}</button>`).join("");
+}
+
+/* ---------- Present mode ---------- */
+const TALK = {
+  overview:{t:"Open on someone they'll recognize", pts:p => [`"This is ${p.first}, a ${p.age}-year-old ${p.role.toLowerCase()}. People like ${p.first} make up much of ${S.name}'s workforce."`, `Point out the branding: employees see ${S.name}, not us. That builds trust and lifts enrollment.`, "Keep it jargon-free. Lead with the balance and what changed this year."], q:["\"Do employees need yet another login?\"", `No. Single sign-on through ${S.name}'s identity provider, and first login takes under a minute.`]},
+  nudge:{t:"Show that it nudges people to act", pts:p => ["Nudges are personalized: missed match, auto-increase, mix reviews.", `${p.first} sees the most valuable next step first, and it's one tap.`, "That's where the participation lift comes from, not from more emails."], q:["\"Can HR control which nudges run?\"", "Yes. The sponsor portal has per-campaign controls and reporting."]},
+  contrib:{t:"Land the match moment", pts:p => [`Drag ${p.first}'s rate toward ${S.match}%. The match message updates live.`, `${S.name}'s stated goal: more early-career staff capturing the full match.`, `Mention auto-enroll at ${S.match}% with a 1%-a-year auto-increase.`], q:["\"Can we auto-enroll new hires?\"", "Yes, with a default rate and fund set per plan, and opt-out handled in the app."]},
+  alloc:{t:"Make investing feel simple", pts:p => [`Most people never change their fund. A target-date default keeps ${p.first} diversified automatically.`, "Fund names are plain-language and fees are shown up front.", "The lineup comes straight from the connected product, so there's no stale mock data."], q:["\"What do the funds cost?\"", "The weighted expense ratio is on the card. Offer the full fee schedule as a follow-up."]},
+  proj:{t:"Make the future concrete", pts:p => [`Show ${p.first}'s estimated monthly income at ${p.retire}. It turns a balance into a lifestyle.`, "Go back and change the contribution rate. The projection reacts instantly.", "Projections are illustrative and use a disclosed return assumption."], q:["\"Is this okay to show employees?\"", "Yes. Assumptions are disclosed, and Keystone provides the regulatory language."]},
+  loans:{t:"Address the 'what if' question", pts:() => ["Loan modeling shows the long-term cost before anyone borrows.", "Only appears if the plan allows loans; it's a module toggle."], q:["\"Can we turn loans off?\"", "Yes, it's a plan setting and the module disappears."]}
+};
+const pSteps = () => ["overview","nudge","contrib","alloc","proj","loans"].filter(k => S.mods[k]);
+let timer, t0;
+function renderStage(){
+  $("#stage").innerHTML = appHTML();
+  $("#pUrl").textContent = `${slug()}.keystone-retirement.example/participant`;
+  highlight(false);
+}
+function renderNotes(){
+  const steps = pSteps(); S.pStep = Math.min(S.pStep, steps.length-1);
+  const k = steps[S.pStep], T = TALK[k], p = cur();
+  $("#pSteps").innerHTML = steps.map((s,i) => `<button class="${i===S.pStep?"on":i<S.pStep?"done":""}" data-ps="${i}" aria-label="Step ${i+1}"></button>`).join("");
+  $("#pBody").innerHTML = `<div class="k">Step ${S.pStep+1} of ${steps.length}<span class="sp" style="flex:1"></span><span class="aitag" style="background:#241C45;border-color:#3B2F70;color:#C4B5FD">✦ Tailored to ${esc(S.name)}</span></div>
+    <h3>${T.t}</h3><ul>${T.pts(p).map((x,i) => `<li><i>${i+1}</i><span>${esc(x)}</span></li>`).join("")}</ul>
+    <div class="pn-q"><span class="aitag">✦ Likely question</span><b>${esc(T.q[0])}</b><span>${esc(T.q[1])}</span></div>
+    <div class="pn-ctx"><span>Prospect<b>${esc(S.name)} · ~500 employees</b></span><span>In the room<b>Head of People, CFO</b></span><span>Their goal<b>Raise match capture</b></span></div>`;
+  $("#pPrev").disabled = S.pStep === 0;
+  $("#pNext").textContent = S.pStep === steps.length-1 ? "Finish" : "Next →";
+  $("#pPersona").innerHTML = S.personas.map((q,i) => `<button data-pp="${i}" class="${i===S.active?"on":""}" style="${i===S.active?"background:#2A3044;color:#fff":"color:#9AA2B2"}">${esc(q.first)}</button>`).join("");
+}
+function highlight(scroll = true){
+  const k = pSteps()[S.pStep];
+  $$("#stage .k-card").forEach(c => c.classList.toggle("k-hl", c.dataset.sec === k));
+  const el = $(`#stage [data-sec="${k}"]`);
+  if (el && scroll){ const st = $(".pstage"), r = el.getBoundingClientRect(), sr = st.getBoundingClientRect(); st.scrollTo({top: st.scrollTop + r.top - sr.top - (sr.height - r.height)/2, behavior:"smooth"}); }
+}
+function openPresent(){
+  S.presenting = true; $("#toast").classList.remove("on"); $("#present").classList.add("on"); S.pStep = 0;
+  renderStage(); renderNotes(); highlight();
+  t0 = Date.now(); clearInterval(timer);
+  timer = setInterval(() => { const s = Math.floor((Date.now()-t0)/1000); $("#ptime").textContent = String(Math.floor(s/60)).padStart(2,"0") + ":" + String(s%60).padStart(2,"0"); }, 1000);
+}
+function closePresent(){ S.presenting = false; $("#present").classList.remove("on"); clearInterval(timer); $("#stage").innerHTML = ""; renderPreview(); }
+function pGo(i){ const n = pSteps().length; if (i >= n){ closePresent(); go("share"); toast("Demo complete. Share a link while it's fresh."); return; } S.pStep = Math.max(0, i); renderNotes(); highlight(); }
+
+/* ---------- Share ---------- */
+function renderShare(){
+  const v = [0,0,3,5,2,0,1,4,2,0,0,3,2,1], mx = Math.max(...v);
+  $("#bars").innerHTML = v.map((x,i) => `<div class="${x?"":"z"}" style="height:${x? x/mx*100 : 3}%;animation-delay:${i*30}ms" title="${x} views"></div>`).join("");
+  const d0 = new Date(2026, 9, 31);
+  $("#bx").innerHTML = v.map((_,i) => { const d = new Date(d0); d.setDate(d0.getDate()+i); return `<span>${i%2 ? "" : (d.getMonth()+1) + "/" + d.getDate()}</span>`; }).join("");
+  const at = [["Retirement projection","2m 40s",100],["Fund allocation & fees","1m 30s",56],["Contributions & match","1m 05s",41],["Enrollment email","0m 32s",20],["Balance overview","0m 25s",16]];
+  $("#attn").innerHTML = at.map(a => `<div><span>${a[0]}</span><span class="tr"><i style="width:${a[2]}%"></i></span><b>${a[1]}</b></div>`).join("");
+  const vw = [["Dana Whitfield","Head of People",9,"2h ago","#0F8B74"],["Marcus Lee","CFO",5,"Yesterday","#6366F1"],["Elena Brooks","Benefits Manager",5,"3d ago","#D97706"],["Benefits committee","Forwarded link",4,"4d ago","#98A2B3"]];
+  $("#viewers").innerHTML = vw.map(r => `<tr><td><div class="pros"><span class="pav" style="background:${r[4]};width:28px;height:28px;font-size:11px">${initials(r[0])}</span><div><b>${r[0]}</b><small>${r[1]}</small></div></div></td><td style="text-align:right"><b>${r[2]}</b> <span style="color:var(--muted);font-size:12px">views · ${r[3]}</span></td></tr>`).join("");
+}
+
+/* ---------- Events ---------- */
+document.addEventListener("click", e => {
+  const g = e.target.closest("[data-go]"); if (g){ go(g.dataset.go); return; }
+});
+$$(".tabs button").forEach(b => b.addEventListener("click", () => tab(b.dataset.tab)));
+$("#demoRows").addEventListener("click", e => { const tr = e.target.closest("tr"); if (!tr) return; const r = ROWS[+tr.dataset.row]; if (r.lumen) go("builder"); else toast(`Opens the ${esc(r.n)} demo. This prototype focuses on Lumen Biotech.`); });
+$("#newDemo").addEventListener("click", () => { go("builder"); tab("brand"); toast("New demo started for Lumen Biotech"); });
+$("#pullBrand").addEventListener("click", pullBrand);
+$("#genBtn").addEventListener("click", generate);
+$("#pName").addEventListener("input", e => { const old = S.name; S.name = e.target.value || "Prospect"; if (S.plan.startsWith(old)) S.plan = S.name + " 401(k) Plan"; renderAll(); });
+$("#planName").addEventListener("input", e => { S.plan = e.target.value; renderPreview(); });
+$("#logos").addEventListener("click", e => { const b = e.target.closest("[data-logo]"); if (!b) return; if (b.dataset.logo === "up"){ toast("Upload a logo file (not wired up in this prototype)"); return; } S.logo = b.dataset.logo; renderAll(); });
+$("#swatches").addEventListener("click", e => { const b = e.target.closest("[data-c]"); if (b){ S.color = b.dataset.c; renderAll(); } });
+$("#swatches").addEventListener("input", e => { if (e.target.id === "cpick"){ S.color = e.target.value; applyTheme(); renderPreview(); } });
+$("#swatches").addEventListener("change", e => { if (e.target.id === "cpick") renderAll(); });
+$("#corners").addEventListener("click", e => { const b = e.target.closest("[data-r]"); if (!b) return; $$("#corners button").forEach(x => x.classList.toggle("on", x === b)); S.rad = +b.dataset.r; applyTheme(); });
+$("#personas").addEventListener("click", e => { const b = e.target.closest("[data-p]"); if (!b) return; S.active = +b.dataset.p; S.recip = S.active; renderPreview(); renderDataFields(); renderMail(); flash("#bFrame"); });
+$("#dBal").addEventListener("input", e => { cur().balance = +e.target.value; renderPreview(); renderDataFields(); });
+$("#dC").addEventListener("input", e => { cur().c = +e.target.value; patchApps(); });
+$("#dSal").addEventListener("change", e => { const v = +e.target.value.replace(/[^0-9]/g,""); if (v) cur().salary = v; renderPreview(); renderDataFields(); });
+$("#dMatch").addEventListener("change", e => { S.match = +e.target.value; renderPreview(); renderMail(); });
+$("#mods").addEventListener("click", e => { const b = e.target.closest("[data-mod]"); if (!b || b.disabled) return; S.mods[b.dataset.mod] = !S.mods[b.dataset.mod]; renderMods(); renderPreview(); });
+$("#device").addEventListener("click", e => { const b = e.target.closest("[data-d]"); if (!b) return; $$("#device button").forEach(x => x.classList.toggle("on", x === b)); $("#bFrame").classList.toggle("tablet", b.dataset.d === "tablet"); });
+["#eBody","#eSubj","#eFrom","#eCta"].forEach(id => $(id).addEventListener("input", renderMail));
+$("#mfields").innerHTML = ["first_name","company","plan_name","match","enroll_by"].map(k => `<button data-mf="${k}">{{${k}}}</button>`).join("");
+$("#mfields").addEventListener("click", e => { const b = e.target.closest("[data-mf]"); if (!b) return; const ta = $("#eBody"), s = ta.selectionStart ?? ta.value.length, ins = `{{${b.dataset.mf}}}`; ta.value = ta.value.slice(0,s) + ins + ta.value.slice(ta.selectionEnd ?? s); ta.focus(); ta.selectionStart = ta.selectionEnd = s + ins.length; renderMail(); });
+$("#tone").addEventListener("click", e => { const b = e.target.closest("[data-t]"); if (b) rewrite(b.dataset.t); });
+$("#rewriteBtn").addEventListener("click", () => rewrite("lumen"));
+$("#suggBtn").addEventListener("click", suggest);
+$("#sugg").addEventListener("click", e => { const b = e.target.closest("[data-s]"); if (b){ $("#eSubj").value = SUBJECTS[+b.dataset.s]; renderMail(); } });
+$("#eRecip").addEventListener("click", e => { const b = e.target.closest("[data-r]"); if (b){ S.recip = +b.dataset.r; renderMail(); } });
+$("#presentBtn").addEventListener("click", openPresent);
+$("#exitPresent").addEventListener("click", closePresent);
+$("#pNext").addEventListener("click", () => pGo(S.pStep + 1));
+$("#pPrev").addEventListener("click", () => pGo(S.pStep - 1));
+$("#pSteps").addEventListener("click", e => { const b = e.target.closest("[data-ps]"); if (b) pGo(+b.dataset.ps); });
+$("#pPersona").addEventListener("click", e => { const b = e.target.closest("[data-pp]"); if (!b) return; S.active = +b.dataset.pp; renderStage(); renderNotes(); highlight(); });
+$("#copyBtn").addEventListener("click", () => { try { navigator.clipboard.writeText("https://demosmith.app/d/lumen-biotech-7kq2").catch(() => {}); } catch(_){} toast("Link copied. Views will show up here."); });
+$("#draftFU").addEventListener("click", () => toast(SPARK + " Follow-up drafted with a fee comparison for Marcus Lee (prototype)"));
+$$(".setrow .sw-t").forEach(b => b.addEventListener("click", () => b.classList.toggle("on")));
+document.addEventListener("keydown", e => {
+  if (tour.on){ if (e.key === "Escape") endTour(); return; }
+  if (!S.presenting) return;
+  if (e.target.matches("input,textarea,select")) return;
+  if (e.key === "Escape") closePresent();
+  if (e.key === "ArrowRight") pGo(S.pStep + 1);
+  if (e.key === "ArrowLeft") pGo(S.pStep - 1);
+});
+bindApp($("#preview")); bindApp($("#stage"));
+
+/* ---------- Guided tour ---------- */
+const tour = {on:false, i:0, running:false, done:new Set(), follow:null, target:null};
+const STEPS = [
+  {pre:() => go("dashboard"), target:"#demoTable", title:"A tailored demo for every prospect",
+   body:"Reps used to rebuild static click-through prototypes for every deal. Demosmith connects to the real product, so each prospect gets their own live demo in minutes."},
+  {pre:() => { go("builder"); tab("brand"); }, target:"#brandCard", title:"Brand it from their website",
+   body:"Paste the prospect's site. Demosmith pulls their logo, palette and voice…", status:"Reading lumenbio.example",
+   run:async () => { if (!S.branded){ await typeInto($("#site"), "lumenbio.example", 28); await pullBrand(); } },
+   then:"#bFrame", thenBody:"…and applies them to the real Keystone product through its design tokens. This is the live product, not a mockup."},
+  {pre:() => { go("builder"); tab("data"); }, target:"#aiCard", title:"Generate their people with AI",
+   body:"Describe the prospect in one sentence. AI creates realistic personas, salaries, balances and fund mixes. Every value is fictional.", status:"Generating personas",
+   run:async () => { if (!S.generated){ await typeInto($("#prompt"), "500-person biotech in the Boston area, young workforce, lots of first-time savers", 60); await generate(); } },
+   then:"#personaGrp", thenBody:"Four personas, each with a story to tell. Maya is Lumen's median employee, and the preview already shows her account."},
+  {pre:() => { go("builder"); tab("data"); }, target:"#bFrame", title:"Demo as anyone, edit anything",
+   body:"Switching to Sam, who contributes only 3%. The product surfaces the missed match, which is the exact story Lumen's HR team wants to tell.", status:"Switching persona",
+   run:async () => { await sleep(700); S.active = 3; S.recip = 3; renderPreview(); renderDataFields(); renderMail(); flash("#bFrame"); }},
+  {pre:() => { go("builder"); tab("modules"); }, target:"#mods", title:"Match their actual plan",
+   body:"Lumen offers Roth and doesn't allow loans. Toggle modules and the demo matches the prospect's plan design exactly.", status:"Updating modules",
+   run:async () => { await sleep(600); S.mods.roth = true; renderMods(); renderPreview(); await sleep(600); S.mods.loans = false; renderMods(); renderPreview(); }},
+  {pre:() => go("email"), target:"#bodyGrp", title:"Rewrite content in their voice",
+   body:"The enrollment email employees would get. AI rewrites it in the tone found on Lumen's website, with merge fields filled from the persona.", status:"Rewriting",
+   run:async () => { if (S.tone !== "lumen") await rewrite("lumen"); },
+   then:"#mail", thenBody:"Branded, personalized and ready to show. Generic templates are a thing of the past."},
+  {pre:() => { if (!S.presenting) openPresent(); }, target:"#pnotes", title:"Present with an AI talk track",
+   body:"Full-screen demo for the meeting. Only you see the notes: a talk track tailored to Lumen, plus the questions they're likely to ask.", status:"Moving to the match moment",
+   run:async () => { await sleep(1400); pGo(pSteps().indexOf("contrib")); await sleep(900);
+     for (let c = cur().c; c <= S.match; c++){ cur().c = c; patchApps(); await sleep(260); } },
+   then:'#stage [data-sec="contrib"]', thenBody:"The rep drags the slider live. Missed match turns into full match. That's the moment that closes deals."},
+  {pre:() => { if (S.presenting) closePresent(); go("share"); }, target:"#analytics", title:"Share it, and see what lands",
+   body:"Send a tracked link after the meeting. See who viewed, what they lingered on, and who they forwarded it to. (Sample data.)",
+   then:"#insight", thenBody:"AI turns engagement into a next step. The CFO lingered on fees, so follow up with a fee comparison."}
+];
+function rectOf(sel){ const el = $(sel); if (!el) return null; return el.getBoundingClientRect(); }
+function place(sel){
+  tour.target = sel;
+  const spot = $("#spot"), pop = $("#tpop"), r = rectOf(sel);
+  if (!r){ return; }
+  const pad = 6, vw = innerWidth, vh = innerHeight;
+  const R = {l:Math.max(4,r.left-pad), t:Math.max(4,r.top-pad), r:Math.min(vw-4,r.right+pad), b:Math.min(vh-4,r.bottom+pad)};
+  Object.assign(spot.style, {left:R.l+"px", top:R.t+"px", width:(R.r-R.l)+"px", height:(R.b-R.t)+"px"});
+  const pw = 340, ph = pop.offsetHeight || 220, gap = 14;
+  let x, y;
+  if (vw - R.r >= pw + gap + 8){ x = R.r + gap; y = R.t; }
+  else if (R.l >= pw + gap + 8){ x = R.l - gap - pw; y = R.t; }
+  else if (vh - R.b >= ph + gap + 8){ x = R.l; y = R.b + gap; }
+  else if (R.t >= ph + gap + 8){ x = R.l; y = R.t - gap - ph; }
+  else { x = R.r - pw - 16; y = R.b - ph - 16; }
+  x = Math.min(Math.max(12, x), vw - pw - 12); y = Math.min(Math.max(12, y), vh - ph - 12);
+  pop.style.left = x + "px"; pop.style.top = y + "px";
+}
+async function showStep(i){
+  tour.i = i; const s = STEPS[i];
+  if (!s){ endTour(); $("#finale").classList.add("on"); return; }
+  s.pre && s.pre();
+  await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+  const el = $(s.target); if (el && el.scrollIntoView && !s.target.startsWith("#stage")) el.scrollIntoView({block:"nearest"});
+  $("#tStep").textContent = `${i+1} / ${STEPS.length}`; $("#tBar").style.width = ((i+1)/STEPS.length*100) + "%";
+  $("#tTitle").textContent = s.title; $("#tBody").textContent = s.body;
+  $("#tBack").style.visibility = i ? "visible" : "hidden";
+  $("#tNext").textContent = i === STEPS.length-1 ? "Finish" : "Next";
+  $("#spot").classList.add("on"); $("#tpop").classList.add("on");
+  place(s.target);
+  if (s.run && !tour.done.has(i)){
+    tour.running = true; $("#tNext").disabled = true; $("#tBack").disabled = true;
+    $("#tStatus").innerHTML = `<span class="spin dk"></span>${s.status || "Working"}…`;
+    await sleep(500);
+    await s.run();
+    tour.done.add(i); tour.running = false; $("#tNext").disabled = false; $("#tBack").disabled = false; $("#tStatus").innerHTML = "";
+    if (!tour.on || tour.i !== i) return;
+  }
+  if (s.then){
+    await sleep(tour.done.has(i) && !s.run ? 0 : 500);
+    if (!tour.on || tour.i !== i) return;
+    const tel = $(s.then); if (tel && s.then.startsWith("#stage")) highlight(true);
+    else if (tel) tel.scrollIntoView({block:"nearest"});
+    await sleep(300);
+    $("#tBody").textContent = s.thenBody; place(s.then);
+  }
+}
+function startTour(){
+  $("#welcome").classList.remove("on"); $("#finale").classList.remove("on");
+  tour.on = true; tour.i = 0;
+  clearInterval(tour.follow); tour.follow = setInterval(() => { if (tour.on && tour.target) place(tour.target); }, 400);
+  showStep(0);
+}
+function endTour(){ tour.on = false; clearInterval(tour.follow); $("#spot").classList.remove("on"); $("#tpop").classList.remove("on"); }
+$("#tNext").addEventListener("click", () => { if (!tour.running) showStep(tour.i + 1); });
+$("#tBack").addEventListener("click", () => { if (!tour.running && tour.i > 0) showStep(tour.i - 1); });
+$("#tSkip").addEventListener("click", endTour);
+$("#wTour").addEventListener("click", startTour);
+$("#tourBtn").addEventListener("click", startTour);
+$("#wSkip").addEventListener("click", () => $("#welcome").classList.remove("on"));
+$("#fExplore").addEventListener("click", () => $("#finale").classList.remove("on"));
+addEventListener("resize", () => { if (tour.on && tour.target) place(tour.target); });
+
+/* ---------- Boot ---------- */
+$("#eSubj").value = S.subject; $("#eBody").value = S.body;
+renderPersonas(); renderAll(); go("dashboard");
+if (!/[?&]notour/.test(location.search)) $("#welcome").classList.add("on");
+window.__demo = {S, go, startTour, showStep, openPresent, closePresent, tour, pGo};
+})();
+</script>
+</body>
+</html>
