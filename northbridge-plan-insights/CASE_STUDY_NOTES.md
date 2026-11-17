@@ -69,9 +69,19 @@ The "Send reminder" state is shared: it updates the Engagement alert, the Overvi
 - `npm run lint:tokens` fails the build on any hard-coded hex, rgb/hsl, named color, font family or px size in `src/`. It currently passes.
 - `npm run tokens:check` confirms that `tokens.css` matches what `tokens.json` generates.
 
+### The legacy era skin (added after review)
+
+At first the legacy theme was only the token kit's legacy mode: teal colors, rounder corners, sans type and card shadows. That read as circa 2016, not old enough. What really dates a UI to around 2011 can't be expressed as a token: glossy gradient mastheads, beveled tabs and buttons, embossed text, Verdana at 11px, gridded zebra tables, "chrome" gradient chart bars, and a fixed-width white sheet framed on a grey page. So these live in a separate stylesheet, `src/styles/legacy-skin.css`, that applies only under `data-theme="legacy"`.
+
+- **Colors still come from tokens.** The skin uses the legacy palette primitives (`--nb-color-teal-*`, `cool-*`, `amber-*`), and gloss highlights and shadows are `color-mix()` blends of them. SVG gradient stops read the same tokens through CSS (`LegacyDefs.tsx`).
+- **It's a deliberate exception to "tokens only".** Pixel sizes and the Verdana/Arial/Georgia font stacks are period detail, so the file is excluded from the token lint (the lint comment says why). Everything the 2026 theme renders is still token-only and still passes the lint.
+- **Nothing changes for 2026.** Every rule is scoped to `[data-theme="legacy"]`.
+- **Tradeoff:** this is the clearest place where tokens stop. A token swap changes color, type and shape. It doesn't change visual era, and that takes component-level styling.
+- Accessibility still holds: axe reports 0 violations on all five tabs in the skinned legacy theme, at desktop and phone widths. Focus uses a period-style dotted outline, kept at 2px.
+
 ### What the legacy toggle does and doesn't show
 
-The `legacy` mode is the token kit's pre-rebrand mapping: the teal brand, cool grays, sans display type, rounder corners and card shadows. That's closest to Legacy B (2016). **Legacy A (2011) has no token mode**, since its navy gradients predate the token system. So the toggle shows the same new layout in the old brand, not either original screen. The two originals are served unchanged at `legacy/` and linked from the footer for a real before/after.
+The `legacy` mode is the token kit's pre-rebrand mapping (the teal brand), plus the era skin above, which borrows the *treatments* of Legacy A (2011): gloss, bevels, gradient title bars, Verdana. It keeps the teal brand rather than Legacy A's navy, because navy isn't in the token kit. So the toggle shows the new layout and information architecture dressed in the old brand and the old era's styling. It isn't a pixel copy of either original screen. The two originals are served unchanged at `legacy/` and linked from the footer for a real before/after.
 
 ## Decisions and tradeoffs
 

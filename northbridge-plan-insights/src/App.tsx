@@ -11,6 +11,8 @@ import { ContributionsPage } from "./pages/ContributionsPage";
 import { ReportsPage } from "./pages/ReportsPage";
 import "./App.css";
 import "./pages/pages.css";
+import "./styles/legacy-skin.css";
+import { LegacyDefs } from "./components/LegacyDefs";
 
 const DEFAULT: Section = "Engagement";
 
@@ -53,6 +55,7 @@ export function App() {
 
   return (
     <>
+      <LegacyDefs />
       <a className="skip-link" href="#main" onClick={(e) => { e.preventDefault(); mainRef.current?.focus(); }}>Skip to main content</a>
 
       <aside className="proto-bar" aria-label="Prototype controls">

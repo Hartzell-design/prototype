@@ -7,7 +7,8 @@ import { join, relative } from "node:path";
 
 const ROOT = new URL("..", import.meta.url).pathname;
 const SRC = join(ROOT, "src");
-const ALLOW_FILES = new Set(["src/styles/layout.css"]);
+// legacy-skin.css: 2011-era gradients, bevels and font stacks the token set can't express (legacy theme only).
+const ALLOW_FILES = new Set(["src/styles/layout.css", "src/styles/legacy-skin.css"]);
 
 const walk = (d) => readdirSync(d).flatMap((f) => (statSync(join(d, f)).isDirectory() ? walk(join(d, f)) : [join(d, f)]));
 
