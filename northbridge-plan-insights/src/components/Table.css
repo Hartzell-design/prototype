@@ -1,0 +1,52 @@
+.nb-table-scroll { overflow-x: auto; }
+.nb-table-scroll:focus-visible { outline-offset: calc(-1 * var(--nb-border-width-2)); }
+
+.nb-table { width: 100%; border-collapse: collapse; font-size: var(--nb-font-size-14); }
+.nb-table th, .nb-table td {
+  padding: var(--nb-space-12) var(--nb-space-20);
+  text-align: left;
+  border-bottom: var(--nb-border-width-1) solid var(--nb-border-subtle);
+  white-space: nowrap;
+}
+.nb-table .is-end { text-align: right; }
+
+.nb-table thead th {
+  padding-top: var(--nb-space-10);
+  padding-bottom: var(--nb-space-10);
+  background: var(--nb-bg-subtle);
+  border-bottom-color: var(--nb-border-default);
+  font-family: var(--nb-type-label-caps-font-family);
+  font-size: var(--nb-type-caption-font-size);
+  font-weight: var(--nb-type-label-caps-font-weight);
+  letter-spacing: var(--nb-type-label-caps-letter-spacing);
+  text-transform: uppercase;
+  color: var(--nb-text-muted);
+}
+.nb-table__sort {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--nb-space-4);
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: inherit;
+  cursor: pointer;
+  border-radius: var(--nb-shape-radius-control);
+}
+.nb-table__sort:hover { color: var(--nb-text-primary); }
+.nb-table__sort svg { width: var(--nb-space-12); height: var(--nb-space-12); fill: none; stroke: currentColor; stroke-width: var(--nb-border-width-1); stroke-linecap: round; stroke-linejoin: round; opacity: .55; }
+.nb-table__sort svg[data-dir="ascending"] { opacity: 1; }
+.nb-table__sort svg[data-dir="ascending"] .down,
+.nb-table__sort svg[data-dir="descending"] .up { visibility: hidden; }
+.nb-table__sort svg[data-dir="descending"] { opacity: 1; }
+.nb-table th[aria-sort="ascending"], .nb-table th[aria-sort="descending"] { color: var(--nb-text-primary); }
+
+.nb-table tbody th { font-weight: var(--nb-font-weight-500); color: var(--nb-text-primary); }
+.nb-table tbody td { color: var(--nb-text-secondary); }
+.nb-table tbody tr { transition: background-color var(--nb-duration-fast) var(--nb-easing-standard); }
+.nb-table tbody tr:hover { background: var(--nb-bg-subtle); }
+.nb-table tbody tr:last-child > * { border-bottom: 0; }
+.nb-table__empty { text-align: center; color: var(--nb-text-muted); padding: var(--nb-space-24); }

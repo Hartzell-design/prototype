@@ -1,0 +1,42 @@
+/* Card shell, shared by Chart Card and the table card. */
+.nb-card {
+  background: var(--nb-surface-default);
+  border: var(--nb-border-width-1) solid var(--nb-border-default);
+  border-radius: var(--nb-shape-radius-card);
+  box-shadow: var(--nb-elevation-card);
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.nb-card__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--nb-space-12);
+  padding: var(--nb-space-16) var(--nb-space-20);
+  border-bottom: var(--nb-border-width-1) solid var(--nb-border-subtle);
+}
+.nb-card__titles { display: flex; flex-direction: column; gap: var(--nb-space-2); min-width: 0; }
+.nb-card__title {
+  font-family: var(--nb-font-display);
+  font-size: var(--nb-font-size-19);
+  font-weight: var(--nb-font-weight-600);
+  line-height: var(--nb-line-height-1-25);
+  color: var(--nb-text-primary);
+}
+.nb-card__description { font-size: var(--nb-type-small-font-size); color: var(--nb-text-muted); }
+
+.nb-chart-card__body { padding: var(--nb-space-16) var(--nb-space-20) var(--nb-space-12); flex: 1; min-width: 0; }
+.nb-chart-card__footnote {
+  padding: var(--nb-space-10) var(--nb-space-20) var(--nb-space-14);
+  font-size: var(--nb-type-caption-font-size);
+  color: var(--nb-text-muted);
+}
+
+/* Compact data table used for the chart's "Table" view */
+.nb-mini-table { width: 100%; border-collapse: collapse; font-size: var(--nb-type-small-font-size); }
+.nb-mini-table caption { text-align: left; color: var(--nb-text-muted); padding-bottom: var(--nb-space-8); }
+.nb-mini-table th, .nb-mini-table td { padding: var(--nb-space-6) var(--nb-space-8); border-bottom: var(--nb-border-width-1) solid var(--nb-border-subtle); text-align: left; }
+.nb-mini-table th { font-weight: var(--nb-font-weight-600); color: var(--nb-text-muted); }
+.nb-mini-table .num { text-align: right; }

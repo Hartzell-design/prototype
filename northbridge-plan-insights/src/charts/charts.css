@@ -1,0 +1,40 @@
+.nb-chart { width: 100%; min-width: 0; }
+.nb-chart svg { display: block; overflow: visible; touch-action: pan-y; }
+
+.nb-chart__grid { stroke: var(--nb-dataviz-grid); stroke-width: var(--nb-border-width-1); }
+.nb-chart__baseline { stroke: var(--nb-dataviz-axis); stroke-width: var(--nb-border-width-1); }
+.nb-chart__tick {
+  font-family: var(--nb-font-ui);
+  font-size: var(--nb-font-size-11-5);
+  fill: var(--nb-dataviz-label);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.nb-chart__value {
+  font-family: var(--nb-font-ui);
+  font-size: var(--nb-font-size-12);
+  font-weight: var(--nb-font-weight-600);
+  fill: var(--nb-text-secondary);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.nb-chart__area { fill: var(--nb-accent-soft); }
+.nb-chart__line { fill: none; stroke: var(--nb-dataviz-series-1); stroke-width: var(--nb-border-width-2); stroke-linejoin: round; stroke-linecap: round; }
+.nb-chart__point { fill: var(--nb-surface-default); stroke: var(--nb-dataviz-series-1); stroke-width: var(--nb-border-width-2); transition: r var(--nb-duration-fast) var(--nb-easing-standard); }
+.nb-chart__point.is-active { fill: var(--nb-dataviz-series-1); stroke: var(--nb-surface-default); }
+.nb-chart__guide { stroke: var(--nb-dataviz-event); stroke-width: var(--nb-border-width-1); stroke-dasharray: 3 3; }
+.nb-chart__callout {
+  font-family: var(--nb-font-display);
+  font-size: var(--nb-font-size-17);
+  font-weight: var(--nb-font-weight-600);
+  fill: var(--nb-text-primary);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.nb-chart__callout-sub {
+  font-family: var(--nb-font-ui);
+  font-size: var(--nb-font-size-11);
+  fill: var(--nb-text-muted);
+}
+
+.nb-chart__hit { fill: transparent; }
+.nb-chart__bar { fill: var(--nb-dataviz-series-1); transition: fill var(--nb-duration-fast) var(--nb-easing-standard); }
+.nb-chart__bar.is-dim { fill: var(--nb-dataviz-bar-muted); }

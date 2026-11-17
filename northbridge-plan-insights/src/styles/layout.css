@@ -1,0 +1,15 @@
+/*
+ * Layout constants. The Northbridge token set has no layout or breakpoint tokens,
+ * so these live in one place instead of being scattered through components.
+ * They're candidates for the token set (see CASE_STUDY_NOTES.md, "Token gaps").
+ * Breakpoints can't be custom properties (media queries don't read them), so the
+ * @media rules in components repeat these two values: 720px and 1040px.
+ */
+:root {
+  --app-content-max: 1200px;
+  --app-gutter: var(--nb-space-16);
+  --app-chart-height: 240px;
+}
+@media (min-width: 720px) {
+  :root { --app-gutter: var(--nb-space-24); }
+}

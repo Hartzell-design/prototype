@@ -33,11 +33,28 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: northbridge-plan-insights/package-lock.json
+      - name: Build Northbridge Plan Insights (Vite + React)
+        working-directory: northbridge-plan-insights
+        run: |
+          npm ci
+          npm run check
+      - name: Assemble site
+        # Static prototypes are copied as-is; the React prototype is replaced by its built dist/.
+        run: |
+          mkdir _site
+          tar --exclude=./.git --exclude=./.github --exclude=./_site --exclude=./northbridge-plan-insights -cf - . | tar -xf - -C _site
+          cp -r northbridge-plan-insights/dist _site/northbridge-plan-insights
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload the repository root, including .nojekyll
-          path: '.'
+          # Upload the assembled site, including .nojekyll
+          path: '_site'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5

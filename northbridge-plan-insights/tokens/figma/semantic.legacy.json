@@ -1,0 +1,379 @@
+{
+  "bg": {
+    "$type": "color",
+    "canvas": {
+      "$value": "{color.cool.50}",
+      "$description": "Page background"
+    },
+    "subtle": {
+      "$value": "{color.cool.25}",
+      "$description": "Table headers"
+    },
+    "sunken": {
+      "$value": "{color.cool.40}",
+      "$description": "Totals rows"
+    }
+  },
+  "surface": {
+    "$type": "color",
+    "default": {
+      "$value": "{color.white}",
+      "$description": "Cards, panels, top bar"
+    },
+    "chip": {
+      "$value": "{color.cool.20}",
+      "$description": "Signal chips"
+    },
+    "brand": {
+      "$value": "{color.teal.800}",
+      "$description": "Large brand fields: mastheads, AI header"
+    },
+    "inverse": {
+      "$value": "{color.teal.990}",
+      "$description": "Sidebar"
+    },
+    "inverse-hover": {
+      "$value": "{color.teal.940}"
+    },
+    "inverse-selected": {
+      "$value": "{color.teal.920}"
+    },
+    "inverse-raised": {
+      "$value": "{color.teal.960}",
+      "$description": "Plan chip on sidebar"
+    }
+  },
+  "text": {
+    "$type": "color",
+    "primary": {
+      "$value": "{color.cool.975}"
+    },
+    "secondary": {
+      "$value": "{color.neutral.800}"
+    },
+    "muted": {
+      "$value": "{color.neutral.600}"
+    },
+    "faint": {
+      "$value": "{color.neutral.400}"
+    },
+    "on-brand": {
+      "$value": "{color.white}"
+    },
+    "on-brand-muted": {
+      "$value": "{color.teal.350}"
+    },
+    "on-inverse": {
+      "$value": "{color.forest.210}"
+    },
+    "on-inverse-muted": {
+      "$value": "{color.teal.400}"
+    },
+    "accent-on-brand": {
+      "$value": "{color.teal.240}"
+    }
+  },
+  "border": {
+    "$type": "color",
+    "default": {
+      "$value": "{color.cool.100}"
+    },
+    "subtle": {
+      "$value": "{color.cool.75}"
+    },
+    "strong": {
+      "$value": "{color.cool.150}"
+    },
+    "inverse": {
+      "$value": "{color.teal.910}"
+    },
+    "accent": {
+      "$value": "{color.teal.600}",
+      "$description": "Masthead rule (2026); glacier accent (legacy)"
+    }
+  },
+  "accent": {
+    "$type": "color",
+    "primary": {
+      "$value": "{color.teal.800}"
+    },
+    "primary-hover": {
+      "$value": "{color.teal.850}"
+    },
+    "secondary": {
+      "$value": "{color.teal.700}"
+    },
+    "soft": {
+      "$value": "{color.teal.50}"
+    },
+    "highlight": {
+      "$value": "{color.teal.600}",
+      "$description": "Sparing accent"
+    },
+    "highlight-muted": {
+      "$value": "{color.teal.250}"
+    }
+  },
+  "status": {
+    "$type": "color",
+    "positive": {
+      "fg": {
+        "$value": "{color.green.700}",
+        "$description": "Observed"
+      },
+      "bg": {
+        "$value": "{color.green.50}"
+      },
+      "border": {
+        "$value": "{color.green.200}"
+      }
+    },
+    "warning": {
+      "fg": {
+        "$value": "{color.amber.700}",
+        "$description": "Inferred"
+      },
+      "bg": {
+        "$value": "{color.amber.50}"
+      },
+      "border": {
+        "$value": "{color.amber.200}"
+      }
+    },
+    "negative": {
+      "fg": {
+        "$value": "{color.red.700}"
+      },
+      "bg": {
+        "$value": "{color.red.50}"
+      }
+    },
+    "info": {
+      "fg": {
+        "$value": "{color.violet.700}",
+        "$description": "Not inferred / hidden / privacy"
+      },
+      "bg": {
+        "$value": "{color.violet.50}"
+      },
+      "border": {
+        "$value": "{color.violet.200}"
+      },
+      "text-strong": {
+        "$value": "{color.violet.900}"
+      }
+    },
+    "live": {
+      "$value": "{color.green.500}",
+      "$description": "Fresh-data dot"
+    }
+  },
+  "focus": {
+    "$type": "color",
+    "ring": {
+      "$value": "{color.teal.700}"
+    },
+    "spotlight": {
+      "$value": "{color.alpha.teal-95}",
+      "$description": "Tour spotlight ring"
+    }
+  },
+  "overlay": {
+    "$type": "color",
+    "scrim": {
+      "$value": "{color.alpha.scrim-35}"
+    },
+    "modal": {
+      "$value": "{color.alpha.scrim-50}"
+    },
+    "spotlight": {
+      "$value": "{color.alpha.teal-spot-55}"
+    }
+  },
+  "dataviz": {
+    "$type": "color",
+    "series": {
+      "1": {
+        "$value": "{color.teal.700}",
+        "$description": "Chose to increase / primary"
+      },
+      "2": {
+        "$value": "{color.amber.500}",
+        "$description": "Chose to decrease"
+      },
+      "3": {
+        "$value": "{color.teal.250}",
+        "$description": "Automatic increase"
+      }
+    },
+    "categorical": {
+      "1": {
+        "$value": "{color.teal.800}"
+      },
+      "2": {
+        "$value": "{color.teal.600}"
+      },
+      "3": {
+        "$value": "{color.teal.250}"
+      },
+      "4": {
+        "$value": "{color.amber.450}"
+      },
+      "5": {
+        "$value": "{color.cool.160}"
+      }
+    },
+    "track": {
+      "$value": "{color.teal.150}"
+    },
+    "bar-muted": {
+      "$value": "{color.teal.150}"
+    },
+    "grid": {
+      "$value": "{color.cool.75}"
+    },
+    "axis": {
+      "$value": "{color.neutral.400}"
+    },
+    "label": {
+      "$value": "{color.neutral.600}"
+    },
+    "event": {
+      "$value": "{color.neutral.600}"
+    },
+    "heat-min": {
+      "$value": "{color.alpha.teal-heat-08}"
+    },
+    "heat-max": {
+      "$value": "{color.alpha.teal-heat-93}"
+    }
+  },
+  "identity": {
+    "$type": "color",
+    "role-admin": {
+      "$value": "{color.teal.800}"
+    },
+    "role-finance": {
+      "$value": "{color.blue.600}"
+    },
+    "role-committee": {
+      "$value": "{color.amber.800}"
+    }
+  },
+  "elevation": {
+    "$type": "shadow",
+    "card": {
+      "$value": "{shadow.sm}"
+    },
+    "overlay": {
+      "$value": "{shadow.lg}"
+    },
+    "tour": {
+      "$value": "{shadow.tour}"
+    }
+  },
+  "shape": {
+    "$type": "dimension",
+    "radius-control": {
+      "$value": "{radius.9}",
+      "$description": "Buttons, inputs, tabs"
+    },
+    "radius-card": {
+      "$value": "{radius.12}"
+    },
+    "radius-modal": {
+      "$value": "{radius.18}"
+    },
+    "radius-popover": {
+      "$value": "{radius.14}"
+    },
+    "radius-tag": {
+      "$value": "{radius.pill}"
+    }
+  },
+  "font": {
+    "$type": "fontFamily",
+    "display": {
+      "$value": "{font-family.sans}",
+      "$description": "Headlines and big figures (legacy used the sans)"
+    },
+    "accent": {
+      "$value": "{font-family.serif-legacy}"
+    },
+    "ui": {
+      "$value": "{font-family.sans}"
+    },
+    "mono": {
+      "$value": "{font-family.mono}"
+    }
+  },
+  "type": {
+    "$type": "typography",
+    "page-title": {
+      "$value": {
+        "fontFamily": "{font-family.sans}",
+        "fontSize": "{font-size.24}",
+        "fontWeight": "{font-weight.650}",
+        "lineHeight": "{line-height.1-5}",
+        "letterSpacing": "{letter-spacing.n0-02}"
+      },
+      "$description": "View h1"
+    },
+    "metric": {
+      "$value": {
+        "fontFamily": "{font-family.sans}",
+        "fontSize": "{font-size.34}",
+        "fontWeight": "{font-weight.600}",
+        "lineHeight": "{line-height.1-05}",
+        "letterSpacing": "{letter-spacing.n0-03}"
+      },
+      "$description": "Signal card figure"
+    },
+    "dialog-title": {
+      "$value": {
+        "fontFamily": "{font-family.sans}",
+        "fontSize": "{font-size.26}",
+        "fontWeight": "{font-weight.650}",
+        "lineHeight": "{line-height.1-2}",
+        "letterSpacing": "{letter-spacing.n0-02}"
+      }
+    },
+    "label-caps": {
+      "$value": {
+        "fontFamily": "{font-family.sans}",
+        "fontSize": "{font-size.13}",
+        "fontWeight": "{font-weight.600}",
+        "lineHeight": "{line-height.1-5}",
+        "letterSpacing": "{letter-spacing.0}"
+      },
+      "$description": "Card labels (uppercase in 2026)"
+    },
+    "body": {
+      "$value": {
+        "fontFamily": "{font-family.sans}",
+        "fontSize": "{font-size.14}",
+        "fontWeight": "{font-weight.400}",
+        "lineHeight": "{line-height.1-5}",
+        "letterSpacing": "{letter-spacing.0}"
+      }
+    },
+    "small": {
+      "$value": {
+        "fontFamily": "{font-family.sans}",
+        "fontSize": "{font-size.12-5}",
+        "fontWeight": "{font-weight.400}",
+        "lineHeight": "{line-height.1-5}",
+        "letterSpacing": "{letter-spacing.0}"
+      }
+    },
+    "caption": {
+      "$value": {
+        "fontFamily": "{font-family.sans}",
+        "fontSize": "{font-size.11-5}",
+        "fontWeight": "{font-weight.500}",
+        "lineHeight": "{line-height.1-5}",
+        "letterSpacing": "{letter-spacing.0}"
+      }
+    }
+  }
+}

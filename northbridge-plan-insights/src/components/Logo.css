@@ -1,0 +1,30 @@
+.nb-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--nb-space-10);
+  color: var(--nb-text-on-brand);
+  text-decoration: none;
+  border-radius: var(--nb-shape-radius-control);
+}
+.nb-logo:focus-visible { outline-color: var(--nb-focus-spotlight); }
+.nb-logo__mark { width: var(--nb-space-30); height: var(--nb-space-30); flex: none; }
+.nb-logo__tile { fill: var(--nb-surface-brand); rx: var(--nb-shape-radius-control); }
+.nb-logo__arch { fill: none; stroke: var(--nb-text-accent-on-brand); stroke-width: var(--nb-border-width-3); }
+.nb-logo__tick { stroke: var(--nb-text-on-brand); stroke-width: var(--nb-border-width-3); }
+.nb-logo__words { display: flex; align-items: baseline; gap: var(--nb-space-6); white-space: nowrap; }
+.nb-logo__brand {
+  font-family: var(--nb-font-display);
+  font-size: var(--nb-font-size-21);
+  font-weight: var(--nb-font-weight-600);
+  letter-spacing: var(--nb-letter-spacing-n0-01);
+  line-height: var(--nb-line-height-1);
+}
+.nb-logo__product {
+  font-family: var(--nb-font-ui);
+  font-size: var(--nb-font-size-14);
+  font-weight: var(--nb-font-weight-400);
+  color: var(--nb-text-on-brand-muted);
+}
+@media (max-width: 719px) {
+  .nb-logo__product { display: none; }
+}

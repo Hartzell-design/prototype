@@ -1,0 +1,61 @@
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  background: var(--nb-bg-canvas);
+  color: var(--nb-text-primary);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--nb-type-body-font-family);
+  font-size: var(--nb-type-body-font-size);
+  font-weight: var(--nb-type-body-font-weight);
+  line-height: var(--nb-type-body-line-height);
+  -webkit-font-smoothing: antialiased;
+  transition: background-color var(--nb-duration-base) var(--nb-easing-standard);
+}
+
+h1, h2, h3, p { margin: 0; }
+
+button, input, select { font: inherit; color: inherit; }
+
+a { color: var(--nb-accent-secondary); }
+
+/*
+ * Tabular, lining figures on every number. Scoped to numeric elements rather than
+ * <body>: Inter's tnum feature also widens hyphens and parentheses in running text.
+ */
+.num, table, .nb-kpi__value, .nb-kpi__delta, .nb-chart text {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+:focus-visible {
+  outline: var(--nb-border-width-2) solid var(--nb-focus-ring);
+  outline-offset: var(--nb-space-2);
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px; /* lint-allow: standard a11y clip */
+  padding: 0; margin: -1px; /* lint-allow */
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--nb-space-8);
+  top: calc(-1 * var(--nb-space-30) * 2);
+  z-index: 10;
+  padding: var(--nb-space-8) var(--nb-space-12);
+  background: var(--nb-surface-default);
+  color: var(--nb-text-primary);
+  border-radius: var(--nb-shape-radius-control);
+  box-shadow: var(--nb-elevation-overlay);
+}
+.skip-link:focus { top: var(--nb-space-8); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}

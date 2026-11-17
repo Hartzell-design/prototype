@@ -1,0 +1,28 @@
+/* Segmented control: a group of toggle buttons using aria-pressed. */
+.nb-segmented {
+  display: inline-flex;
+  padding: var(--nb-space-2);
+  gap: var(--nb-space-2);
+  background: var(--nb-bg-sunken);
+  border: var(--nb-border-width-1) solid var(--nb-border-default);
+  border-radius: var(--nb-shape-radius-control);
+  flex: none;
+}
+.nb-segmented button {
+  border: 0;
+  background: transparent;
+  color: var(--nb-text-muted);
+  font-weight: var(--nb-font-weight-600);
+  font-size: var(--nb-font-size-13);
+  padding: var(--nb-space-6) var(--nb-space-12);
+  border-radius: var(--nb-shape-radius-control);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.nb-segmented button:hover { color: var(--nb-text-primary); }
+.nb-segmented button[aria-pressed="true"] {
+  background: var(--nb-surface-default);
+  color: var(--nb-text-primary);
+  box-shadow: var(--nb-shadow-sm);
+}
+.nb-segmented--sm button { font-size: var(--nb-font-size-12); padding: var(--nb-space-4) var(--nb-space-10); }
