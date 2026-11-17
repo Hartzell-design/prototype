@@ -38,3 +38,6 @@
 .nb-chart__hit { fill: transparent; }
 .nb-chart__bar { fill: var(--nb-dataviz-series-1); transition: fill var(--nb-duration-fast) var(--nb-easing-standard); }
 .nb-chart__bar.is-dim { fill: var(--nb-dataviz-bar-muted); }
+/* Second series sits on top of the first; a surface-colored hairline separates the stack. */
+.nb-chart__bar--series-2 { fill: var(--nb-dataviz-series-2); stroke: var(--nb-surface-default); stroke-width: var(--nb-border-width-1); }
+.nb-chart__bar--series-2.is-dim { fill: var(--nb-dataviz-track); }

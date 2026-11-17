@@ -10,6 +10,7 @@
   line-height: var(--nb-line-height-1-2);
   white-space: nowrap;
   cursor: pointer;
+  text-decoration: none;
   transition: background-color var(--nb-duration-fast) var(--nb-easing-standard),
     border-color var(--nb-duration-fast) var(--nb-easing-standard);
 }

@@ -1,0 +1,18 @@
+.nb-barlist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--nb-space-14); }
+.nb-barlist__item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "label value" "track track";
+  gap: var(--nb-space-6) var(--nb-space-12);
+  align-items: baseline;
+}
+.nb-barlist__label { grid-area: label; color: var(--nb-text-primary); font-weight: var(--nb-font-weight-500); display: flex; flex-direction: column; }
+.nb-barlist__note { font-size: var(--nb-type-small-font-size); font-weight: var(--nb-font-weight-400); color: var(--nb-text-muted); }
+.nb-barlist__value { grid-area: value; color: var(--nb-text-secondary); font-weight: var(--nb-font-weight-600); }
+.nb-barlist__track { grid-area: track; display: block; block-size: var(--nb-space-8); background: var(--nb-dataviz-track); border-radius: var(--nb-shape-radius-tag); overflow: hidden; }
+.nb-barlist__fill { display: block; block-size: 100%; border-radius: inherit; }
+.nb-barlist__fill--series-1 { background: var(--nb-dataviz-series-1); }
+.nb-barlist__fill--series-2 { background: var(--nb-dataviz-series-2); }
+@media (min-width: 720px) {
+  .nb-barlist--columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(calc(var(--nb-space-30) * 6), 1fr)); gap: var(--nb-space-16) var(--nb-space-30); }
+}

@@ -14,11 +14,13 @@ export function KpiCard({ kpi }: { kpi: Kpi }) {
     <article className="nb-kpi" aria-labelledby={id}>
       <h3 id={id} className="nb-kpi__label">{kpi.label}</h3>
       <p className="nb-kpi__value">{kpi.value}</p>
-      <p className={`nb-kpi__delta nb-kpi__delta--${kpi.tone}`}>
-        <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">{arrows[kpi.trend]}</svg>
-        <span aria-hidden="true">{kpi.delta}</span>
-        <span className="visually-hidden">{kpi.deltaSpoken}</span>
-      </p>
+      {kpi.delta && (
+        <p className={`nb-kpi__delta nb-kpi__delta--${kpi.tone ?? "neutral"}`}>
+          {kpi.trend && <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">{arrows[kpi.trend]}</svg>}
+          <span aria-hidden={kpi.deltaSpoken ? true : undefined}>{kpi.delta}</span>
+          {kpi.deltaSpoken && <span className="visually-hidden">{kpi.deltaSpoken}</span>}
+        </p>
+      )}
     </article>
   );
 }

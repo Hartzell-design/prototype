@@ -8,19 +8,18 @@ export type Section = (typeof sections)[number];
 
 interface TopNavBarProps {
   current: Section;
-  onNavigate: (s: Section) => void;
   plans: string[];
   user: { name: string; initials: string };
 }
 
-export function TopNavBar({ current, onNavigate, plans, user }: TopNavBarProps) {
+export function TopNavBar({ current, plans, user }: TopNavBarProps) {
   return (
     <header className="nb-topnav">
       <div className="nb-topnav__inner">
         <Logo />
         <nav className="nb-topnav__tabs" aria-label="Primary">
           {sections.map((s) => (
-            <Tab key={s} href={`#${s.toLowerCase()}`} current={s === current} onSelect={() => onNavigate(s)}>{s}</Tab>
+            <Tab key={s} href={`#${s.toLowerCase()}`} current={s === current}>{s}</Tab>
           ))}
         </nav>
         <div className="nb-topnav__right">

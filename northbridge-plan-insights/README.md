@@ -11,6 +11,18 @@ Northbridge and Quillfield Instruments are fictional. Every figure is sample dat
 
 ![Northbridge 2026 theme](docs/screenshots/northbridge-2026-desktop.png)
 
+## Tabs
+
+Each tab is a URL hash, so you can link straight to one:
+
+| Tab | URL | What's on it |
+|---|---|---|
+| Overview | `#overview` | Section summaries that link into each tab, a "Needs attention" list, plan details |
+| Engagement (default) | `#engagement` | The rebuilt legacy dashboard: alert, 4 KPIs, participation trend, deferral distribution, division table |
+| Participants | `#participants` | Enrollment counts, not-enrolled by division, a filterable directory of 30 sample records. `#participants?beneficiary=missing` opens it pre-filtered |
+| Contributions | `#contributions` | Year-to-date totals, monthly employee/employer chart, contributions by source, payroll remittances |
+| Reports | `#reports` | CSV downloads built from the data on the other tabs, plus key plan-year dates |
+
 ## Run it
 
 Needs Node 18 or later.
@@ -41,11 +53,13 @@ npm run dev        # http://localhost:5173
 
 ```
 src/
-  components/   Logo, Button, Badge, Tab, Field (Input, Select), Alert, KpiCard,
-                ChartCard, TopNavBar, Table (TableHeader, TableRow), ThemeToggle
-  charts/       ParticipationChart, DeferralChart (+ their table views)
+  components/   Logo, Button (+ ButtonLink), Badge, Tab, Field (Input, Select), Alert, KpiCard,
+                ChartCard, Card, BarList, PageHeader, TopNavBar, Table (TableHeader, TableRow), ThemeToggle
+  charts/       ParticipationChart, DeferralChart, ContributionsChart (+ their table views)
+  pages/        OverviewPage, EngagementPage, ParticipantsPage, ContributionsPage, ReportsPage
   styles/       base.css, layout.css
-  data.ts       Sample data, copied from the legacy files
+  data.ts       Sample data: the legacy figures, plus data for the other tabs
+  csv.ts        CSV download and currency formatting
   theme.ts      data-theme hook
 tokens/         Northbridge tokens kit (tokens.json is the source; tokens.css is generated)
 public/legacy/  The two original designs, served alongside the app for comparison

@@ -6,7 +6,7 @@ import "./Logo.css";
  */
 export function Logo({ product = "Plan Insights" }: { product?: string }) {
   return (
-    <a className="nb-logo" href="#main" aria-label={`Northbridge ${product}, home`}>
+    <a className="nb-logo" href="#overview" aria-label={`Northbridge ${product}, home`}>
       <svg className="nb-logo__mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
         <rect className="nb-logo__tile" x="0" y="0" width="32" height="32" />
         <path className="nb-logo__arch" d="M7 24v-6a9 9 0 0 1 18 0v6" />

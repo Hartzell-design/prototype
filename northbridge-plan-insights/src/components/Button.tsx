@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react";
 import "./Button.css";
 
 type Variant = "primary" | "secondary" | "ghost";
@@ -16,5 +16,19 @@ export function Button({ variant = "secondary", size = "md", icon, className, ch
       {icon && <span className="nb-button__icon" aria-hidden="true">{icon}</span>}
       {children}
     </button>
+  );
+}
+
+interface ButtonLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
+  variant?: Variant;
+  size?: Size;
+}
+
+/** Looks like a Button, behaves like a link (navigates). */
+export function ButtonLink({ variant = "secondary", size = "md", className, children, ...rest }: ButtonLinkProps) {
+  return (
+    <a className={["nb-button", `nb-button--${variant}`, `nb-button--${size}`, className].filter(Boolean).join(" ")} {...rest}>
+      {children}
+    </a>
   );
 }

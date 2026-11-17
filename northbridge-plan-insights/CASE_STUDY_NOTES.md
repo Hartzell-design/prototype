@@ -41,9 +41,29 @@ Screenshots: `docs/screenshots/northbridge-2026-{desktop,mobile}.png` and `docs/
 - **Deltas are spoken in full** ("Up 2.1 points versus last quarter") through visually hidden text. The arrow glyph is hidden from screen readers.
 - **Responsive.** The legacy designs were fixed at 960px and 1170px. The new layout runs from 4 to 2 to 1 KPI columns and from a 7/5 split to stacked charts; the nav tabs scroll sideways under the logo, and the table scrolls inside its card.
 
+## The other tabs (added after the first review)
+
+The legacy designs had four tabs, but only Overview was designed. After the first review the dashboard moved into its own **Engagement** tab (the default view), and Overview, Participants, Contributions and Reports were built out with the same components and tokens. Tabs are URL hashes (`#participants` and so on), so the back button and deep links work.
+
+- **Overview:** four section summaries (each card links to its tab), a "Needs attention" list and plan details.
+- **Participants:** enrollment KPIs, not-enrolled counts by division, and a directory of 30 sample records you can search and filter by division, status and beneficiary. The alert's "Review participants" link opens it pre-filtered to missing beneficiaries.
+- **Contributions:** year-to-date KPIs, a stacked monthly chart (employee deferrals and employer match, with a Table view), contributions by source, and a sortable payroll remittance table.
+- **Reports:** seven CSV downloads, filterable by category, plus four key plan-year dates.
+
+New components: **Card**, **BarList** (horizontal bars written as a real list, so it reads without the bars), **PageHeader**, **ButtonLink** and **ContributionsChart**. Everything still passes the token lint.
+
+**About this data.** The legacy files only cover the engagement screen, so the other tabs need more sample data. Where possible it's *derived* from the legacy figures in code rather than typed in:
+- 1,284 eligible, 1,102 enrolled and 182 not enrolled are summed from the division table. Not enrolled by division is eligible minus enrolled.
+- The deferral distribution adds up to the 1,102 enrolled.
+- Contribution totals, the source split and each payroll's amounts are calculated from the monthly figures.
+
+The new values that are made up are all fictional: the 30 participant names, the monthly contribution amounts, the 28% Roth share, rollovers, plan details such as the match formula, and the key dates. The directory says it shows 30 sample records out of 1,284.
+
+The "Send reminder" state is shared: it updates the Engagement alert, the Overview task and the Participants button together.
+
 ## Token usage
 
-- **118 distinct tokens** are referenced in `src/`: 78 semantic and 40 primitive.
+- **121 distinct tokens** are referenced in `src/` across all five tabs. The first build (Engagement only) used 118: 78 semantic and 40 primitive.
 - **Every color is semantic.** `src/` has zero `--nb-color-*` references, so the legacy mode changes every color on the page.
 - The **primitives used are scales only**: `space` (13), `font-size` (9), `line-height` (5), `font-weight` (3), `border-width` (3), `letter-spacing` (2), `duration` (2), `easing` (1), `radius-pill` (1) and `shadow-sm` (1). The token set has no semantic layer for spacing or type size outside its typography composites, so these come straight from the scale.
 - `npm run lint:tokens` fails the build on any hard-coded hex, rgb/hsl, named color, font family or px size in `src/`. It currently passes.
@@ -67,7 +87,7 @@ The `legacy` mode is the token kit's pre-rebrand mapping: the teal brand, cool g
 ## How it was checked
 
 - **TypeScript** in strict mode; `npm run build` passes.
-- **axe-core 4.10.3** at 1280px with the WCAG 2.0/2.1 A/AA and best-practice rule sets: **0 violations in both themes**. The first run flagged two landmark issues (the prototype bar was outside a landmark, and two landmarks shared a name); both were fixed.
+- **axe-core 4.10.3** on all five tabs, both themes, at 1280px and 390px: 0 violations, with no sideways page scroll at either width. The original check for the first build was at 1280px with the WCAG 2.0/2.1 A/AA and best-practice rule sets: **0 violations in both themes**. The first run flagged two landmark issues (the prototype bar was outside a landmark, and two landmarks shared a name); both were fixed.
 - **Contrast for SVG text and marks,** which axe doesn't fully cover, was calculated from the token hex values:
 
   | Pair | 2026 | Legacy |

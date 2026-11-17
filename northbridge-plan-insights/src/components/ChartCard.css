@@ -10,6 +10,7 @@
 }
 .nb-card__header {
   display: flex;
+  flex: none;
   flex-wrap: wrap;
   align-items: flex-start;
   justify-content: space-between;
@@ -40,3 +41,28 @@
 .nb-mini-table th, .nb-mini-table td { padding: var(--nb-space-6) var(--nb-space-8); border-bottom: var(--nb-border-width-1) solid var(--nb-border-subtle); text-align: left; }
 .nb-mini-table th { font-weight: var(--nb-font-weight-600); color: var(--nb-text-muted); }
 .nb-mini-table .num { text-align: right; }
+
+.nb-card__body { padding: var(--nb-space-16) var(--nb-space-20) var(--nb-space-20); }
+
+/* Definition list used for plan details */
+.nb-deflist { margin: 0; }
+.nb-deflist__row {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  gap: var(--nb-space-12);
+  padding: var(--nb-space-10) 0;
+  border-bottom: var(--nb-border-width-1) solid var(--nb-border-subtle);
+}
+.nb-deflist__row:first-child { padding-top: 0; }
+.nb-deflist__row:last-child { border-bottom: 0; padding-bottom: 0; }
+.nb-deflist dt { color: var(--nb-text-muted); }
+.nb-deflist dd { margin: 0; color: var(--nb-text-primary); font-weight: var(--nb-font-weight-500); }
+
+.nb-legend { display: flex; flex-wrap: wrap; gap: var(--nb-space-6) var(--nb-space-16); margin: 0 0 var(--nb-space-12); padding: 0; list-style: none; font-size: var(--nb-type-small-font-size); color: var(--nb-text-secondary); }
+.nb-legend li { display: inline-flex; align-items: center; gap: var(--nb-space-6); }
+.nb-legend__swatch { inline-size: var(--nb-space-10); block-size: var(--nb-space-10); border-radius: var(--nb-radius-2); }
+.nb-legend__swatch--series-1 { background: var(--nb-dataviz-series-1); }
+.nb-legend__swatch--series-2 { background: var(--nb-dataviz-series-2); }
+
+/* Header whose controls wrap onto their own row (many filters) */
+.nb-card__header--stack { flex-direction: column; align-items: stretch; }
