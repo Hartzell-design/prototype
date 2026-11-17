@@ -3,7 +3,7 @@ import { Tab } from "./Tab";
 import { Select } from "./Field";
 import "./TopNavBar.css";
 
-export const sections = ["Overview", "Participants", "Contributions", "Reports"] as const;
+export const sections = ["Overview", "Engagement", "Participants", "Contributions", "Reports"] as const;
 export type Section = (typeof sections)[number];
 
 interface TopNavBarProps {

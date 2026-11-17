@@ -63,7 +63,7 @@ function exportCsv() {
 
 export function App() {
   const [theme, setTheme] = useTheme();
-  const [section, setSection] = useState<Section>("Overview");
+  const [section, setSection] = useState<Section>("Engagement");
   const [reminder, setReminder] = useState(false);
   const [query, setQuery] = useState("");
 
@@ -89,11 +89,11 @@ export function App() {
       <TopNavBar current={section} onNavigate={setSection} plans={plans} user={plan.user} />
 
       <main id="main" tabIndex={-1} className="page">
-        {section !== "Overview" ? (
+        {section !== "Engagement" ? (
           <section className="nb-card placeholder" aria-labelledby="placeholder-title">
             <h1 id="placeholder-title" className="page__title">{section}</h1>
-            <p>This screen isn't part of the prototype. The Overview page is the one rebuilt on the Northbridge 2026 design system.</p>
-            <div><Button variant="primary" onClick={() => setSection("Overview")}>Back to Overview</Button></div>
+            <p>This screen isn't part of the prototype. The Engagement page is the one rebuilt on the Northbridge 2026 design system.</p>
+            <div><Button variant="primary" onClick={() => setSection("Engagement")}>Go to Engagement</Button></div>
           </section>
         ) : (
           <>

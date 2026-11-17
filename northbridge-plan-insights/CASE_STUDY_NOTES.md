@@ -21,7 +21,7 @@ Screenshots: `docs/screenshots/northbridge-2026-{desktop,mobile}.png` and `docs/
 | Legacy A (2011) | Legacy B (2016) | New component | Tokens doing the work |
 |---|---|---|---|
 | Glossy navy gradient masthead, "NorthBridge Online" serif logo | Teal Bootstrap navbar, "**Northbridge** Plan Insights" | **Top Nav Bar** + **Logo** | `surface-inverse`, `border-inverse`, `text-on-inverse`, `text-on-brand(-muted)`, `text-accent-on-brand`, `surface-brand` |
-| Beveled gradient tabs | Navbar links, active in darker teal | **Tab** (a link with `aria-current="page"`) | `surface-inverse-hover/-selected`, `accent-highlight` for the 3px underline |
+| Beveled gradient tabs (dashboard under "Overview") | Navbar links (dashboard under "Overview") | **Tab** (a link with `aria-current="page"`). The dashboard moved out of Overview into its own **Engagement** tab, which is the default view | `surface-inverse-hover/-selected`, `accent-highlight` for the 3px underline |
 | Glossy plan dropdown | Outlined dropdown + avatar circle | **Select** (native `<select>`, inverse tone) + avatar | `surface-inverse-raised`, `border-inverse`, `identity-role-admin` |
 | "Print" / "Export to Excel" gradient buttons | Bootstrap `btn` / `btn-primary` | **Button** (secondary, primary, ghost; md, sm) | `accent-primary(-hover)`, `text-on-brand`, `border-strong`, `shape-radius-control` |
 | Yellow gradient "Attention:" bar with an "!" disc | Bootstrap `alert-warning`, "Heads up!" | **Alert** (warning) with a title and a "Send reminder" action | `status-warning-fg/-bg/-border` |
@@ -80,5 +80,5 @@ The `legacy` mode is the token kit's pre-rebrand mapping: the teal brand, cool g
 
   The dimmed bars shown on hover (`dataviz-bar-muted`) are 1.52:1 against white. That's intentional de-emphasis while another bar is hovered; every bar keeps its value label.
 - **Keyboard:** a skip link, a visible `:focus-visible` ring on everything interactive (brass on the dark nav), and a logical tab order through the toggle, nav, plan select, actions, chart switches, filter and sort headers.
-- **Interaction smoke test** in Playwright: the theme toggles both ways, sorting sets `aria-sort`, the filter narrows rows and shows the empty state, the chart Table view renders 12 rows, the reminder announces through `role="status"`, the CSV downloads, and the non-Overview tabs show a placeholder. No console errors.
+- **Interaction smoke test** in Playwright: the theme toggles both ways, sorting sets `aria-sort`, the filter narrows rows and shows the empty state, the chart Table view renders 12 rows, the reminder announces through `role="status"`, the CSV downloads, and the other tabs show a placeholder. No console errors.
 - **Not tested:** real screen readers (VoiceOver, NVDA), Safari, Firefox, and printing on paper. Print CSS exists but wasn't checked against a printout.
