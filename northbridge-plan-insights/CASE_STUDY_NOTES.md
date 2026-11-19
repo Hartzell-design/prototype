@@ -83,6 +83,15 @@ At first the legacy theme was only the token kit's legacy mode: teal colors, rou
 
 The `legacy` mode is the token kit's pre-rebrand mapping (the teal brand), plus the era skin above, which borrows the *treatments* of Legacy A (2011): gloss, bevels, gradient title bars, Verdana. It keeps the teal brand rather than Legacy A's navy, because navy isn't in the token kit. So the toggle shows the new layout and information architecture dressed in the old brand and the old era's styling. It isn't a pixel copy of either original screen. The two originals are served unchanged at `legacy/` and linked from the footer for a real before/after.
 
+### How the theme toggle works under the hood
+
+1. **Two token modes, one set of names.** `tokens/tokens.css` (generated from `tokens.json`) defines the primitives once. Then it defines every *semantic* token twice: under `:root` for Northbridge 2026, and again under `[data-theme="legacy"]` with the same names pointing at different primitives. For example, `--nb-accent-primary` is `var(--nb-color-forest-900)` in 2026 and `var(--nb-color-teal-800)` in legacy.
+2. **Components only reference semantic names.** No component CSS mentions a raw color (the token lint enforces this), so none of them know which theme is active.
+3. **The switch is one attribute.** `useTheme()` (`src/theme.ts`) sets or removes `data-theme="legacy"` on `<html>`. The attribute selector then wins the cascade for every semantic variable, and the browser restyles the whole page. React doesn't re-render a single component to change the theme.
+4. **No flash on load.** A small inline script in `index.html` reads `?theme=legacy` or the saved choice in `localStorage` and sets the attribute *before* first paint. The hook saves each change and handles blocked storage.
+5. **The era skin rides on the same attribute.** `src/styles/legacy-skin.css` scopes every rule to `[data-theme="legacy"]`, so the same toggle turns on the 2011 treatments (gradients, bevels, Verdana). SVG gradients for the chart bars are defined once (`LegacyDefs.tsx`), and their stop colors come from tokens through CSS.
+6. **Fonts follow the tokens too.** Headings use `--nb-font-display` / `--nb-type-*-font-family`, which point at Source Serif 4 in 2026 and at the sans stack in legacy.
+
 ## Decisions and tradeoffs
 
 - **Layout constants are a token gap.** The kit has no tokens for content width, breakpoints or chart height. Three constants live in `src/styles/layout.css` (content max 1200px, gutter, chart height) and are excluded from the lint. Breakpoints (720px, 1040px) are repeated in `@media` rules because CSS can't read custom properties there. All of these are candidates for the token set.
@@ -93,6 +102,39 @@ The `legacy` mode is the token kit's pre-rebrand mapping (the teal brand), plus 
 - **Fonts:** only Source Serif 4 and Inter are loaded. The legacy mode's accent serif (Newsreader) isn't loaded, because the page never uses `--nb-font-accent`.
 - **Brand rules:** no maroon or burgundy (the only red is `status-negative`, used for the one negative delta). The logo is an abstract arch with a north tick at its crown: no ships, sails, or lookalike wordmark.
 - **Known exceptions to "tokens only":** the favicon is an inline SVG data URL in `index.html` with literal hex values, because a favicon can't read CSS variables. The visually-hidden utility uses the standard 1px clip and is marked `lint-allow`.
+
+## What Claude got wrong, and what was corrected
+
+These are listed in the order they happened. "Caught by Chris" means it only changed because of his review. "Caught by Claude" means Claude's own checks found it before it shipped.
+
+### Caught by Chris (review and direction)
+1. **The dashboard lived under "Overview".** Claude copied the legacy information architecture literally: Overview was the active tab and the other three tabs were empty placeholders. Chris moved the dashboard into its own **Engagement** tab, which is now the default view.
+2. **Only one screen was real.** The first build left Overview, Participants, Contributions and Reports as "not part of this prototype" placeholders. Chris asked for them to be built out. Claude then built all four, deriving their totals from the legacy figures so the tabs agree with each other.
+3. **The legacy theme wasn't old enough.** Claude treated "legacy" as only the token kit's legacy mode, which reads as circa 2016. Chris said it needed to look *even older*. That led to the realization that era is not a token property, and to the separate 2011 era skin. (This is the most useful lesson in the study: a token swap changes color, type and shape, but not era.)
+4. **Shipping without a paper trail.** Asked to "push this live", Claude pushed straight to `main`, breaking the repo's habit of PRs (#2–#4) and leaving no release notes. Chris asked whether release notes were going into the PR. That led to `CHANGELOG.md`, PR #5 with the notes in its description, and a prepared `northbridge-v1.0` release.
+
+### Caught by Claude (its own checks) before it shipped
+- **Tabular figures applied globally** widened hyphens and parentheses in Inter ("plan - year", "401 (k)"). Found in the screenshots, then scoped to numeric elements.
+- **Two accessibility landmark errors** (content outside a landmark, and two landmarks with the same name). Found by axe and fixed before the first share.
+- **Clipped controls:** the Reports "Download" column was cut off at 1280px, and in the legacy skin the 980px fixed-width page clipped the nav tabs. Both were found in screenshots and fixed (the Format column was dropped, and the tabs got their own row).
+- **Awkward generated copy:** "44 of 196 eligible employees in Remote", and "Next: next payroll".
+- **Deploy script assumptions:** the first Pages assembly step used `rsync`, which a local dry run showed isn't always available, so it was switched to `tar`. The token lint's first font-family rule also flagged valid `var()` usage, and was fixed.
+
+### Not caught by anyone yet
+- No real screen-reader, Safari or Firefox testing (see "How it was checked").
+
+## Who did what
+
+| | Chris (by hand) | Claude Code (on its own) |
+|---|---|---|
+| **Inputs** | Wrote the brief. Supplied the token kit, the two legacy designs and the Figma files *(Chris: note here which of these you made by hand and which came from earlier AI-assisted work)*. Uploaded the kit when the Mac path couldn't be read from the cloud session. | Read the brief, the token README and CSS, and both legacy HTML files and PNGs. Recovered the 12 monthly participation values from the legacy SVG coordinates. |
+| **Design decisions** | Moved the dashboard into its own Engagement tab. Asked for the other four tabs. Set the bar for the legacy look ("even older"). Chose to keep the teal legacy brand. *(Chris: add any other calls you made while reviewing.)* | Page layouts for all five tabs, the component breakdown, chart designs, the Chart/Table switch, the prototype bar for the theme toggle, the 2011 era skin, and the sample data for the new tabs (derived where possible, invented and labeled where not). |
+| **Code** | None written by hand in this session. | All of it: the Vite + React + TypeScript app, 15 components, 3 charts, 5 pages, the token lint script, and the Pages workflow change. |
+| **Quality** | Reviewed each version on a private review link and on the live site. | Typecheck, token lint, axe-core on every tab in both themes at two widths, Playwright smoke tests, and screenshot review. Fixed everything listed under "Caught by Claude". |
+| **Shipping** | Approved going live. Asked for release notes. Publishes the GitHub Release (this session can't create releases or push tags). | Pushed to `main`, watched the Pages deploy (run #6), wrote `CHANGELOG.md`, and opened and merged PR #5. |
+| **Writing** | *(Chris: note any edits you make to these notes.)* | Drafted the README, these notes and the changelog. |
+
+**Time:** not measured. No time-saved figure is claimed.
 
 ## How it was checked
 
